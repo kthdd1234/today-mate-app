@@ -1,46 +1,37 @@
 import {Text, View} from 'react-native';
-import {useRecoilState} from 'recoil';
-import {timeSettingValuesAtom} from '../../states';
 import DefaultButton from '../button/defaultButton';
 
-const TimeSettingSection = () => {
-  /** useRecoilState */
-  const [timeSettingValues, setTimeSettingValues] = useRecoilState(
-    timeSettingValuesAtom,
-  );
-
-  const {time, hour, miniute} = timeSettingValues;
-
-  const onPressTime = (id: string) => {
-    setTimeSettingValues({...timeSettingValues, time: id});
+interface IOutingTimeSettingSection {
+  states: {time: string; hour: string; minute: string};
+  onPressed: {
+    Time: (id: string) => void;
+    Hour: (id: string) => void;
+    Minute: (id: string) => void;
   };
+}
 
-  const onPressHour = (id: string) => {
-    setTimeSettingValues({...timeSettingValues, hour: id});
-  };
-
-  const onPressMiniute = (id: string) => {
-    setTimeSettingValues({...timeSettingValues, miniute: id});
-  };
-
+const OutingTimeSettingSection = ({
+  states,
+  onPressed,
+}: IOutingTimeSettingSection) => {
   const timeSettingInfo = {
     timeInfo: {
       title: '오전/오후',
-      state: time,
+      state: states.time,
       values: ['오전', '오후'],
-      onPress: onPressTime,
+      onPress: onPressed.Time,
     },
     hourInfo: {
       title: '시',
-      state: hour,
+      state: states.hour,
       values: Array.from(new Array(12), (_, i) => (i + 1).toString()),
-      onPress: onPressHour,
+      onPress: onPressed.Hour,
     },
     minuteInfo: {
       title: '분',
-      state: miniute,
+      state: states.minute,
       values: Array.from(new Array(12), (_, i) => (i * 5).toString()),
-      onPress: onPressMiniute,
+      onPress: onPressed.Minute,
     },
   };
 
@@ -70,4 +61,4 @@ const TimeSettingSection = () => {
   );
 };
 
-export default TimeSettingSection;
+export default OutingTimeSettingSection;

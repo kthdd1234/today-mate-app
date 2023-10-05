@@ -15,11 +15,9 @@ export interface ITimeSettingSection {
 export interface ITimeValues {
   time: string;
   hour: string;
-  miniute: string;
+  minute: string;
 }
 
 export interface ITimeSettingBottomSheet {
-  initTime: ITimeValues;
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
-  onCompleted: () => void;
 }

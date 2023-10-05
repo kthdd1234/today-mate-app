@@ -1,18 +1,24 @@
-import {View, Text} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {useEffect, useRef} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DefaultButton from '../../components/button/defaultButton';
-import TimeSettingSection from '../../components/section/TimeSettingSection';
 import {useRecoilState} from 'recoil';
-import {timeSettingValuesAtom} from '../../states';
+import {isAlarmOutingTimeAtom, outingTimeSettingValuesAtom} from '../../states';
+import OutingTimeSettingBottomSheet from '../../components/bottomSheet/OutingTimeSettingBottomSheet';
+import {Switch} from 'react-native-paper';
+
+const testImg = require('../../images/test-img.png');
 
 const OutingTimeScreen = ({navigation}) => {
   /** useRecoilState */
-  const [timeSettingValues, setTimeSettingValues] = useRecoilState(
-    timeSettingValuesAtom,
+  const [outingTimeSettingValues, setOutingTimeSettingValues] = useRecoilState(
+    outingTimeSettingValuesAtom,
+  );
+  const [isAlarmOutingTime, setIsAlarmOutingTime] = useRecoilState(
+    isAlarmOutingTimeAtom,
   );
 
-  const {time, hour, miniute} = timeSettingValues;
+  const {time, hour, minute} = outingTimeSettingValues;
 
   useEffect(() => {
     const today = new Date();
@@ -21,32 +27,40 @@ const OutingTimeScreen = ({navigation}) => {
       .split(' ')
       .sort()[1];
 
-    setTimeSettingValues({time: localTime, hour: '9', miniute: '30'});
-  }, []);
+    setOutingTimeSettingValues({time: localTime, hour: '9', minute: '30'});
+  }, [setOutingTimeSettingValues]);
+
+  /** useRef */
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const onPressOpenOutingTime = () => {
+    bottomSheetModalRef.current?.present();
+  };
 
   const onPressNext = () => {
     navigation.navigate('TodoSettingScreen');
   };
 
+  const onToggleSwitchButton = (newValue: boolean) => {
+    setIsAlarmOutingTime(newValue);
+  };
+
   return (
     <View className="h-full">
       <Text>몇시에 외출하나요?</Text>
-      <TimeSettingSection />
-      <Text>외출 시간: {`${time} ${hour}시 ${miniute}분`}</Text>
-      <DefaultButton id="next-btn" text="다음" onPress={() => onPressNext()} />
+      <Image className="w-10 h-10" source={testImg} />
+      <DefaultButton
+        id={'outing-time'}
+        text={`외출 시간: ${time} ${hour}시 ${minute}분`}
+        onPress={onPressOpenOutingTime}
+      />
+      <Text>외출 알림: </Text>
+      <Switch value={isAlarmOutingTime} onValueChange={onToggleSwitchButton} />
+      <Text>외출 전 실천한 일을 체크하는 알림을 보내 드려요.</Text>
+      <DefaultButton id="next-btn" text="다음" onPress={onPressNext} />
+      <OutingTimeSettingBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </View>
   );
 };
 
 export default OutingTimeScreen;
-
-// /** useRef */
-// const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-// const onPressOpenOutingTime = () => {
-//   bottomSheetModalRef.current?.present();
-// };
-
-// const onPressCompleteOutingTime = () => {
-//   bottomSheetModalRef.current?.close();
-// };
