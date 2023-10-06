@@ -86,6 +86,7 @@
 		13B07FAE1A68108700A75B9A /* TodayMateApp */ = {
 			isa = PBXGroup;
 			children = (
+				D305E6AE2ACFBFCA00E23C97 /* fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -146,6 +147,13 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-TodayMateApp-TodayMateAppTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D305E6AE2ACFBFCA00E23C97 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

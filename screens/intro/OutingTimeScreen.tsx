@@ -33,7 +33,7 @@ const OutingTimeScreen = ({navigation}) => {
   /** useRef */
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const onPressOpenOutingTime = () => {
+  const onOpenOutingTime = () => {
     bottomSheetModalRef.current?.present();
   };
 
@@ -52,7 +52,7 @@ const OutingTimeScreen = ({navigation}) => {
       <DefaultButton
         id={'outing-time'}
         text={`외출 시간: ${time} ${hour}시 ${minute}분`}
-        onPress={onPressOpenOutingTime}
+        onPress={onOpenOutingTime}
       />
       <Text>외출 알림: </Text>
       <Switch value={isAlarmOutingTime} onValueChange={onToggleSwitchButton} />

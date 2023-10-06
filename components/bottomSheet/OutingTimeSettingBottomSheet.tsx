@@ -6,14 +6,14 @@ import {
 import {useMemo, useCallback, useState} from 'react';
 import {Text, View} from 'react-native';
 import DefaultButton from '../button/defaultButton';
-import {ITimeSettingBottomSheet} from '../../types/interface';
+import {IPropsBottomSheet} from '../../types/interface';
 import TimeSettingSection from '../section/OutingTimeSettingSection';
 import {initOutingTime, outingTimeSettingValuesAtom} from '../../states';
 import {useSetRecoilState} from 'recoil';
 
 const OutingTimeSettingBottomSheet = ({
   bottomSheetModalRef,
-}: ITimeSettingBottomSheet) => {
+}: IPropsBottomSheet) => {
   /** useState */
   const [outingTimeValues, setOutingTimeValues] = useState(initOutingTime);
   const {time, hour, minute} = outingTimeValues;

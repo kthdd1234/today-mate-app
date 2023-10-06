@@ -1,19 +1,18 @@
-import {
-  FlatList,
-  SectionList,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {SectionList, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {outingBeforeCheckList} from '../../constants';
 import DefaultButton from '../../components/button/defaultButton';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import CreateTodoBottomSheet from '../../components/bottomSheet/CreateTodoBottomSheet';
+import {FloatingAction as FloatingActionButton} from 'react-native-floating-action';
 
 const TodoSettingScreen = ({navigation}) => {
   /** useState */
   const [checkedIdList, setCheckedIdList] = useState<string[]>([]);
+
+  /** useRef */
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const onPressCheckbox = ({id, newValue}: {id: string; newValue: boolean}) => {
     if (newValue) {
@@ -24,8 +23,8 @@ const TodoSettingScreen = ({navigation}) => {
     }
   };
 
-  const onPressAddTodo = () => {
-    //
+  const onPressFloatingAction = () => {
+    bottomSheetModalRef.current?.present();
   };
 
   const onPressCompleted = () => {
@@ -33,30 +32,21 @@ const TodoSettingScreen = ({navigation}) => {
   };
 
   return (
-    <View>
+    <View className="h-full">
       <Text>외출 전 해야 할 일들은 무엇인가요?</Text>
       <View style={styles.container}>
-        {/* <FlatList
+        <SectionList
+          sections={outingBeforeCheckList}
           keyExtractor={item => item.id}
-          data={outingBeforeTodoList}
           renderItem={({item}) => (
             <View style={styles.item}>
               <BouncyCheckbox
-                isChecked={checkedIdList.includes(item.id as never)}
-                onPress={checked =>
-                  onPressCheckbox({id: item.id, newValue: checked})
+                text={item.name}
+                isChecked={checkedIdList.includes(item.id)}
+                onPress={isChecked =>
+                  onPressCheckbox({id: item.id, newValue: isChecked})
                 }
               />
-              <Text style={styles.title}>{item.todo}</Text>
-            </View>
-          )}
-        /> */}
-        <SectionList
-          sections={outingBeforeCheckList}
-          keyExtractor={({id}) => id}
-          renderItem={({item}) => (
-            <View style={styles.item}>
-              <Text style={styles.title}>{item}</Text>
             </View>
           )}
           renderSectionHeader={({section: {title}}) => (
@@ -64,12 +54,16 @@ const TodoSettingScreen = ({navigation}) => {
           )}
         />
       </View>
-      <DefaultButton id="add-todo" text="할 일 추가" onPress={onPressAddTodo} />
-      <DefaultButton
-        id="intro-completed"
-        text="완료"
-        onPress={onPressCompleted}
-      />
+      <View className="absolute bottom-0">
+        <DefaultButton
+          id="intro-completed"
+          text="완료"
+          onPress={onPressCompleted}
+        />
+      </View>
+      <FloatingActionButton />
+      {/* <FAB icon="plus" style={styles.fab} onPress={onPressFloatingAction} /> */}
+      <CreateTodoBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </View>
   );
 };
@@ -86,9 +80,19 @@ const styles = StyleSheet.create({
     padding: 10,
     marginHorizontal: 0,
   },
+  header: {
+    fontSize: 20,
+    backgroundColor: '#fff',
+  },
   title: {
     color: 'black',
     fontSize: 13,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 

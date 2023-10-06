@@ -18,6 +18,6 @@ export interface ITimeValues {
   minute: string;
 }
 
-export interface ITimeSettingBottomSheet {
+export interface IPropsBottomSheet {
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
 }

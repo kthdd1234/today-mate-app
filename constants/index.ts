@@ -1,13 +1,9 @@
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
-
 const convertData = (data: string[]) => {
-  return data.map(name => ({id: uuidv4() as string, name: name}));
+  return data.map((name, i) => ({id: (Date.now() + i).toString(), name: name}));
 };
 
 const outingBeforeCheckList = [
   {
-    id: 'group-1',
     title: '안전 점검',
     data: convertData([
       '가스레인지 벨브 잠그기',
@@ -23,7 +19,6 @@ const outingBeforeCheckList = [
     ]),
   },
   {
-    id: 'group-2',
     title: '물건 챙기기',
     data: convertData([
       '휴대폰 충전기 챙기기',
@@ -37,7 +32,6 @@ const outingBeforeCheckList = [
     ]),
   },
   {
-    id: 'group-3',
     title: '할 일',
     data: convertData([
       '선크림 꼼꼼이 바르기',
@@ -57,4 +51,31 @@ const outingBeforeCheckList = [
   },
 ];
 
-export {outingBeforeCheckList};
+const sectionColors = {
+  safetyInspection: 'red',
+  takingObject: 'blue',
+  todo: 'green',
+};
+
+const actions = [
+  {
+    text: '안전 점검',
+    icon: require('./images/ic_accessibility_white.png'),
+    name: 'safetyInspection',
+    position: 1,
+  },
+  {
+    text: '물건 챙김',
+    icon: require('./images/ic_language_white.png'),
+    name: 'takingObject',
+    position: 2,
+  },
+  {
+    text: '할 일',
+    icon: require('./images/ic_room_white.png'),
+    name: 'todo',
+    position: 3,
+  },
+];
+
+export {outingBeforeCheckList, sectionColors};
