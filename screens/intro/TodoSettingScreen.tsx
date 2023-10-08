@@ -1,13 +1,19 @@
 import {SectionList, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {outingBeforeCheckList} from '../../constants';
+import {floatingActions} from '../../constants';
 import DefaultButton from '../../components/button/defaultButton';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {useRef, useState} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import CreateTodoBottomSheet from '../../components/bottomSheet/CreateTodoBottomSheet';
 import {FloatingAction as FloatingActionButton} from 'react-native-floating-action';
+import {outingBeforeCheckListAtom} from '../../states';
+import {useRecoilState} from 'recoil';
 
 const TodoSettingScreen = ({navigation}) => {
+  /** useRecoilState */
+  const [outingBeforeCheckListState, setOutingBeforeCheckListState] =
+    useRecoilState(outingBeforeCheckListAtom);
+
   /** useState */
   const [checkedIdList, setCheckedIdList] = useState<string[]>([]);
 
@@ -23,8 +29,10 @@ const TodoSettingScreen = ({navigation}) => {
     }
   };
 
-  const onPressFloatingAction = () => {
-    bottomSheetModalRef.current?.present();
+  const onPressFloatingActionItem = (name?: string) => {
+    if (name) {
+      bottomSheetModalRef.current?.present();
+    }
   };
 
   const onPressCompleted = () => {
@@ -36,7 +44,7 @@ const TodoSettingScreen = ({navigation}) => {
       <Text>외출 전 해야 할 일들은 무엇인가요?</Text>
       <View style={styles.container}>
         <SectionList
-          sections={outingBeforeCheckList}
+          sections={outingBeforeCheckListState}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
             <View style={styles.item}>
@@ -61,8 +69,10 @@ const TodoSettingScreen = ({navigation}) => {
           onPress={onPressCompleted}
         />
       </View>
-      <FloatingActionButton />
-      {/* <FAB icon="plus" style={styles.fab} onPress={onPressFloatingAction} /> */}
+      <FloatingActionButton
+        actions={floatingActions}
+        onPressItem={onPressFloatingActionItem}
+      />
       <CreateTodoBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </View>
   );

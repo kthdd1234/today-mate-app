@@ -51,12 +51,12 @@ const OutingTimeScreen = ({navigation}) => {
       <Image className="w-10 h-10" source={testImg} />
       <DefaultButton
         id={'outing-time'}
-        text={`외출 시간: ${time} ${hour}시 ${minute}분`}
+        text={`외출 시간: ${time} ${hour}:${minute}`}
         onPress={onOpenOutingTime}
       />
       <Text>외출 알림: </Text>
       <Switch value={isAlarmOutingTime} onValueChange={onToggleSwitchButton} />
-      <Text>외출 전 실천한 일을 체크하는 알림을 보내 드려요.</Text>
+      <Text>외출 전 알림 메세지를 보내 드려요.</Text>
       <DefaultButton id="next-btn" text="다음" onPress={onPressNext} />
       <OutingTimeSettingBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </View>

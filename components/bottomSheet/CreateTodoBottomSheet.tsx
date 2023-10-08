@@ -5,7 +5,7 @@ import {
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
 import {useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {IPropsBottomSheet} from '../../types/interface';
 
 const CreateTodoBottomSheet = ({bottomSheetModalRef}: IPropsBottomSheet) => {
@@ -48,6 +48,7 @@ const CreateTodoBottomSheet = ({bottomSheetModalRef}: IPropsBottomSheet) => {
         onDismiss={onDismiss}
         backdropComponent={renderBackdrop}>
         <View>
+          <Text></Text>
           <BottomSheetTextInput
             style={styles.textInput}
             autoFocus={true}
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 12,
     borderRadius: 12,
-    color: 'blacks',
+    color: 'black',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
   },

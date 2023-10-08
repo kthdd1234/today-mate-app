@@ -1,11 +1,7 @@
 import {atom} from 'recoil';
 import {ITimeValues} from '../types/interface';
-
-const initOutingTime = {
-  time: '',
-  hour: '',
-  minute: '',
-};
+import {initOutingTime, outingBeforeCheckList} from '../constants';
+import {eTodoGroupIds} from '../types/enum';
 
 const outingTimeSettingValuesAtom = atom<ITimeValues>({
   key: 'timeSettingValuesAtom',
@@ -17,4 +13,24 @@ const isAlarmOutingTimeAtom = atom<boolean>({
   default: false,
 });
 
-export {initOutingTime, outingTimeSettingValuesAtom, isAlarmOutingTimeAtom};
+const outingBeforeCheckListAtom = atom({
+  key: 'outingBeforeCheckListAtom',
+  default: outingBeforeCheckList,
+});
+
+const todoItemAtom = atom({
+  key: 'todoItemAtom',
+  default: {
+    groupId: eTodoGroupIds.None,
+    itemId: '',
+    itemName: '',
+  },
+});
+
+export {
+  initOutingTime,
+  outingTimeSettingValuesAtom,
+  isAlarmOutingTimeAtom,
+  outingBeforeCheckListAtom,
+  todoItemAtom,
+};

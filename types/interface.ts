@@ -21,3 +21,10 @@ export interface ITimeValues {
 export interface IPropsBottomSheet {
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
 }
+
+export interface ITodoSettingState {
+  groupId: string;
+  groupName: string;
+  itemId: string;
+  itemName: string;
+}

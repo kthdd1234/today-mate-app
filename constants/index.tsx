@@ -1,9 +1,27 @@
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import {eTodoGroupIds} from '../types/enum';
+
+const getUniqueId = () => {
+  return Date.now().toString();
+};
+
 const convertData = (data: string[]) => {
-  return data.map((name, i) => ({id: (Date.now() + i).toString(), name: name}));
+  return data.map((name, i) => ({
+    id: getUniqueId() + i,
+    name: name,
+  }));
+};
+
+const initOutingTime = {
+  time: '',
+  hour: '',
+  minute: '',
 };
 
 const outingBeforeCheckList = [
   {
+    groupId: eTodoGroupIds.SafetyInspection,
     title: '안전 점검',
     data: convertData([
       '가스레인지 벨브 잠그기',
@@ -19,6 +37,7 @@ const outingBeforeCheckList = [
     ]),
   },
   {
+    groupId: eTodoGroupIds.TakingThing,
     title: '물건 챙기기',
     data: convertData([
       '휴대폰 충전기 챙기기',
@@ -32,6 +51,7 @@ const outingBeforeCheckList = [
     ]),
   },
   {
+    groupId: eTodoGroupIds.WorkTodo,
     title: '할 일',
     data: convertData([
       '선크림 꼼꼼이 바르기',
@@ -57,25 +77,25 @@ const sectionColors = {
   todo: 'green',
 };
 
-const actions = [
+const floatingActions = [
   {
     text: '안전 점검',
-    icon: require('./images/ic_accessibility_white.png'),
+    icon: <MaterialIcon name="health-and-safety" size={21} color="white" />,
     name: 'safetyInspection',
     position: 1,
   },
   {
-    text: '물건 챙김',
-    icon: require('./images/ic_language_white.png'),
+    text: '물건 챙기기',
+    icon: <FeatherIcon name="shopping-bag" size={21} color="white" />,
     name: 'takingObject',
     position: 2,
   },
   {
     text: '할 일',
-    icon: require('./images/ic_room_white.png'),
+    icon: <MaterialIcon name="category" size={21} color="white" />,
     name: 'todo',
     position: 3,
   },
 ];
 
-export {outingBeforeCheckList, sectionColors};
+export {outingBeforeCheckList, sectionColors, floatingActions, initOutingTime};
