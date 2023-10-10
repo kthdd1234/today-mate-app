@@ -6,10 +6,14 @@ import {useRecoilState} from 'recoil';
 import {isAlarmOutingTimeAtom, outingTimeSettingValuesAtom} from '../../states';
 import OutingTimeSettingBottomSheet from '../../components/bottomSheet/OutingTimeSettingBottomSheet';
 import {Switch} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 const testImg = require('../../images/test-img.png');
 
 const OutingTimeScreen = ({navigation}) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
   /** useRecoilState */
   const [outingTimeSettingValues, setOutingTimeSettingValues] = useRecoilState(
     outingTimeSettingValuesAtom,
@@ -47,20 +51,27 @@ const OutingTimeScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
-      <Text>몇시에 외출하나요?</Text>
+      <Text>{t('몇시에 외출하나요?')}</Text>
       <Image className="w-10 h-10" source={testImg} />
       <DefaultButton
-        id={'outing-time'}
-        text={`외출 시간: ${time} ${hour}:${minute}`}
+        id="outing-time"
+        text={`${t('외출 시간')}: ${t(`${time}`)} ${hour}:${minute}`} // 오전/오후은 앞으로, PM/AM 은 뒤로, localDB 정보 가져오기
         onPress={onOpenOutingTime}
       />
-      <Text>외출 알림: </Text>
+      <Text>{t('외출 알림')}: </Text>
       <Switch value={isAlarmOutingTime} onValueChange={onToggleSwitchButton} />
-      <Text>외출 전 알림 메세지를 보내 드려요.</Text>
-      <DefaultButton id="next-btn" text="다음" onPress={onPressNext} />
+      <Text>{t('외출 전 알림 메세지를 보내 드려요.')}</Text>
+      <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
       <OutingTimeSettingBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </View>
   );
 };
 
 export default OutingTimeScreen;
+// {['ko', 'en'].map(value => (
+//   <Button
+//     key={value}
+//     title={value}
+//     onPress={() => i18n.changeLanguage(value)}
+//   />
+// ))}

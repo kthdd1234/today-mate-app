@@ -2,11 +2,11 @@ enum eTodoGroupIds {
   /** */
   None = 'None',
   /** */
-  SafetyInspection = 'SafetyInspection',
+  Safety = 'Safety',
   /** */
-  TakingThing = 'TakingThing',
+  Taking = 'Taking',
   /** */
-  WorkTodo = 'WorkTodo',
+  Work = 'Work',
 }
 
 export {eTodoGroupIds};

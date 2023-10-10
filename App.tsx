@@ -11,7 +11,6 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import './i18n/i18n.config';
-import {getLocales} from 'react-native-localize';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -22,6 +21,7 @@ const {Navigator, Screen} = createNativeStackNavigator();
 // };
 
 const App = () => {
+  /** useTranslation */
   const {t} = useTranslation();
 
   const screenList = [

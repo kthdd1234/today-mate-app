@@ -1,18 +1,44 @@
-import {SectionList, StatusBar, StyleSheet, Text, View} from 'react-native';
-import {floatingActions} from '../../constants';
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import DefaultButton from '../../components/button/defaultButton';
-import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import {useRef, useState} from 'react';
+import {useRef, useState, useEffect} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import CreateTodoBottomSheet from '../../components/bottomSheet/CreateTodoBottomSheet';
 import {FloatingAction as FloatingActionButton} from 'react-native-floating-action';
-import {outingBeforeCheckListAtom} from '../../states';
-import {useRecoilState} from 'recoil';
+import {
+  safetyCheckAtom,
+  takingThingsAtom,
+  todoGroupIdAtom,
+  todoWorkAtom,
+} from '../../states';
+import {useRecoilState, useSetRecoilState} from 'recoil';
+import {useTranslation} from 'react-i18next';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import {eTodoGroupIds} from '../../types/enum';
+import {
+  safetyCheckItems,
+  takingThingsItems,
+  todoWorkItems,
+} from '../../constants';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 const TodoSettingScreen = ({navigation}) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
   /** useRecoilState */
-  const [outingBeforeCheckListState, setOutingBeforeCheckListState] =
-    useRecoilState(outingBeforeCheckListAtom);
+  const [safetyCheckState, setSafetyCheckState] =
+    useRecoilState(safetyCheckAtom);
+  const [takingThingsState, setTakingThingsState] =
+    useRecoilState(takingThingsAtom);
+  const [todoWorkState, setTodoWorkState] = useRecoilState(todoWorkAtom);
+  const setTodoGroupIdState = useSetRecoilState(todoGroupIdAtom);
 
   /** useState */
   const [checkedIdList, setCheckedIdList] = useState<string[]>([]);
@@ -20,17 +46,47 @@ const TodoSettingScreen = ({navigation}) => {
   /** useRef */
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const onPressCheckbox = ({id, newValue}: {id: string; newValue: boolean}) => {
-    if (newValue) {
-      setCheckedIdList([...checkedIdList, id]);
+  /** useEffect */
+  useEffect(() => {
+    setSafetyCheckState(safetyCheckItems);
+    setTakingThingsState(takingThingsItems);
+    setTodoWorkState(todoWorkItems);
+  }, [setSafetyCheckState, setTakingThingsState, setTodoWorkState]);
+
+  /** floatingActions */
+  const floatingActions = [
+    {
+      text: t('안전 점검'),
+      icon: <MaterialIcon name="health-and-safety" size={21} color="white" />,
+      name: eTodoGroupIds.Safety,
+      position: 1,
+    },
+    {
+      text: t('물건 챙기기'),
+      icon: <FeatherIcon name="shopping-bag" size={21} color="white" />,
+      name: eTodoGroupIds.Taking,
+      position: 2,
+    },
+    {
+      text: t('할 일'),
+      icon: <MaterialIcon name="category" size={21} color="white" />,
+      name: eTodoGroupIds.Work,
+      position: 3,
+    },
+  ];
+
+  const onPressChip = ({text}: {text: string}) => {
+    if (!checkedIdList.includes(text)) {
+      setCheckedIdList([...checkedIdList, text]);
     } else {
-      const filter = checkedIdList.filter(elmentId => elmentId !== id);
-      setCheckedIdList(filter);
+      const filterList = checkedIdList.filter(element => element !== text);
+      setCheckedIdList(filterList);
     }
   };
 
   const onPressFloatingActionItem = (name?: string) => {
     if (name) {
+      setTodoGroupIdState(eTodoGroupIds[name]);
       bottomSheetModalRef.current?.present();
     }
   };
@@ -41,31 +97,31 @@ const TodoSettingScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
-      <Text>외출 전 해야 할 일들은 무엇인가요?</Text>
-      <View style={styles.container}>
-        <SectionList
-          sections={outingBeforeCheckListState}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.item}>
-              <BouncyCheckbox
-                text={item.name}
-                isChecked={checkedIdList.includes(item.id)}
-                onPress={isChecked =>
-                  onPressCheckbox({id: item.id, newValue: isChecked})
-                }
-              />
+      <Text>{t('외출 전 할 일은 무엇인가요?')}</Text>
+      {[safetyCheckState, takingThingsState, todoWorkState].map(
+        (state, key1) => (
+          <View key={state.title + key1}>
+            <Text style={styles.title}>{state.title}</Text>
+            <View>
+              {state.data.map((text, key2) => (
+                <TouchableOpacity
+                  key={text + key2}
+                  className="flex-row"
+                  onPress={() => onPressChip({text: text})}>
+                  {checkedIdList.includes(text) && (
+                    <AntDesignIcon name="check" size={15} color="#900" />
+                  )}
+                  <Text>{t(`${text}`)}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          )}
-          renderSectionHeader={({section: {title}}) => (
-            <Text style={styles.header}>{title}</Text>
-          )}
-        />
-      </View>
-      <View className="absolute bottom-0">
+          </View>
+        ),
+      )}
+      <View className="absolute bottom-10">
         <DefaultButton
           id="intro-completed"
-          text="완료"
+          text={t('완료')}
           onPress={onPressCompleted}
         />
       </View>
@@ -81,7 +137,6 @@ const TodoSettingScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: StatusBar.currentHeight || 0,
-    height: 300,
   },
   item: {
     display: 'flex',
@@ -95,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    color: 'black',
+    color: 'red',
     fontSize: 13,
   },
   fab: {
@@ -107,9 +162,3 @@ const styles = StyleSheet.create({
 });
 
 export default TodoSettingScreen;
-
-/**
- * 안전 점검
- * 물건 챙기기
- * 할 일
- */

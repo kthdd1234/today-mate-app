@@ -10,10 +10,14 @@ import {IPropsBottomSheet} from '../../types/interface';
 import TimeSettingSection from '../section/OutingTimeSettingSection';
 import {initOutingTime, outingTimeSettingValuesAtom} from '../../states';
 import {useSetRecoilState} from 'recoil';
+import {useTranslation} from 'react-i18next';
 
 const OutingTimeSettingBottomSheet = ({
   bottomSheetModalRef,
 }: IPropsBottomSheet) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
   /** useState */
   const [outingTimeValues, setOutingTimeValues] = useState(initOutingTime);
   const {time, hour, minute} = outingTimeValues;
@@ -69,7 +73,7 @@ const OutingTimeSettingBottomSheet = ({
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>
         <View>
-          <Text>시간 설정</Text>
+          <Text>{t('외출 시간 설정')}</Text>
           <TimeSettingSection
             states={{time: time, hour: hour, minute: minute}}
             onPressed={{
@@ -80,7 +84,7 @@ const OutingTimeSettingBottomSheet = ({
           />
           <DefaultButton
             id="time-setting"
-            text="완료"
+            text={t('완료')}
             onPress={onPressCompletedButton}
           />
         </View>
