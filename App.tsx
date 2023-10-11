@@ -1,16 +1,18 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import OutingTimeScreen from './screens/intro/OutingTimeScreen';
-import TodoSettingScreen from './screens/intro/TodoSettingScreen';
+import OutingTimeSettingScreen from './screens/intro/OutingTimeSettingScreen';
 import TodoMainScreen from './screens/main/TodoMainScreen';
-import TodoAddScreen from './screens/main/TodoAddScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
+import StartScreen from './screens/intro/StartScreen';
 import './i18n/i18n.config';
+import OutingBeforeSafetyScreen from './screens/intro/OutingBeforeSafetyScreen';
+import OutingBeforeTakingScreen from './screens/intro/OutingBeforeTakingScreen';
+import OutingBeforeTodoScreen from './screens/intro/OutingBeforeTodoScreen';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -25,10 +27,12 @@ const App = () => {
   const {t} = useTranslation();
 
   const screenList = [
-    {name: 'OutingTimeScreen', component: OutingTimeScreen},
-    {name: 'TodoSettingScreen', component: TodoSettingScreen},
+    {name: 'StartScreen', component: StartScreen},
+    {name: 'OutingTimeSettingScreen', component: OutingTimeSettingScreen},
+    {name: 'OutingBeforeSafetyScreen', component: OutingBeforeSafetyScreen},
+    {name: 'OutingBeforeTakingScreen', component: OutingBeforeTakingScreen},
+    {name: 'OutingBeforeTodoScreen', component: OutingBeforeTodoScreen},
     {name: 'TodoMainScreen', component: TodoMainScreen},
-    {name: 'TodoAddScreen', component: TodoAddScreen},
   ];
 
   return (

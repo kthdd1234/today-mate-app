@@ -1,11 +1,26 @@
 import {atom} from 'recoil';
 import {ITimeValues} from '../types/interface';
-import {initOutingBeforeTodo, initOutingTime, initTodoItem} from '../constants';
+import {initOutingTime} from '../constants';
 import {eTodoGroupIds} from '../types/enum';
 
 const outingTimeSettingValuesAtom = atom<ITimeValues>({
   key: 'outingTimeSettingValuesAtom',
   default: initOutingTime,
+});
+
+const safetySelectedIdsAtom = atom({
+  key: 'safetySelectedIdsAtom',
+  default: [''],
+});
+
+const takingSelectedIdsAtom = atom({
+  key: 'takingSelectedIdsAtom',
+  default: [''],
+});
+
+const todoSelectedIdsAtom = atom({
+  key: 'todoSelectedIdsAtom',
+  default: [''],
 });
 
 const isAlarmOutingTimeAtom = atom<boolean>({
@@ -18,27 +33,12 @@ const todoGroupIdAtom = atom({
   default: eTodoGroupIds.None,
 });
 
-const safetyCheckAtom = atom({
-  key: 'safetyCheckAtom',
-  default: initOutingBeforeTodo,
-});
-
-const takingThingsAtom = atom({
-  key: 'takingThingsAtom',
-  default: initOutingBeforeTodo,
-});
-
-const todoWorkAtom = atom({
-  key: 'todoWorkAtom',
-  default: initOutingBeforeTodo,
-});
-
 export {
   initOutingTime,
   outingTimeSettingValuesAtom,
   isAlarmOutingTimeAtom,
+  safetySelectedIdsAtom,
+  takingSelectedIdsAtom,
+  todoSelectedIdsAtom,
   todoGroupIdAtom,
-  safetyCheckAtom,
-  takingThingsAtom,
-  todoWorkAtom,
 };

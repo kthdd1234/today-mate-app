@@ -14,6 +14,7 @@ import {useTranslation} from 'react-i18next';
 
 const OutingTimeSettingBottomSheet = ({
   bottomSheetModalRef,
+  onPressCompleted,
 }: IPropsBottomSheet) => {
   /** useTranslation */
   const {t} = useTranslation();
@@ -62,6 +63,7 @@ const OutingTimeSettingBottomSheet = ({
   const onPressCompletedButton = () => {
     bottomSheetModalRef?.current?.close();
     setOutingTimeSettingValues({time, hour, minute});
+    onPressCompleted({time, hour, minute});
   };
 
   return (

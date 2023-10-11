@@ -20,6 +20,7 @@ export interface ITimeValues {
 
 export interface IPropsBottomSheet {
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
+  onPressCompleted: ({time, hour, minute}: ITimeValues) => void;
 }
 
 export interface ITodoSettingState {
@@ -27,4 +28,11 @@ export interface ITodoSettingState {
   groupName: string;
   itemId: string;
   itemName: string;
+}
+
+export interface ISelectItemsSection {
+  title: string;
+  selectedIds: string[];
+  renderList: {id: string; text: string; emoji: string}[];
+  onPress: (id: string) => void;
 }
