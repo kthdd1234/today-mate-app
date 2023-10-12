@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {safetyInspectionItems} from '../../constants';
 import {safetySelectedIdsAtom} from '../../states';
 import {useRecoilState} from 'recoil';
+import Stepper from '../../components/step/stepper';
 
 const OutingBeforeSafetyScreen = ({navigation}) => {
   /** useTranslation */
@@ -35,8 +36,9 @@ const OutingBeforeSafetyScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
+      <Stepper pos={1} />
       <SelectItemsSection
-        title="외출 전,\n안전 점검을 해보는 건 어떨까요?"
+        title="외출 전에,\n안전 점검을 해볼까요?"
         renderList={safetyInspectionItems}
         selectedIds={safetySelectedIds}
         onPress={onPressItem}

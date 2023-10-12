@@ -5,6 +5,7 @@ import {takingSelectedIdsAtom} from '../../states';
 import {useRecoilState} from 'recoil';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
+import Stepper from '../../components/step/stepper';
 
 const OutingBeforeTakingScreen = ({navigation}) => {
   /** useTranslation */
@@ -35,8 +36,9 @@ const OutingBeforeTakingScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
+      <Stepper pos={2} />
       <SelectItemsSection
-        title="외출 전,\n챙겨야 할 물건은 어떤 것들이 있나요?"
+        title="외출 전에,\n챙겨야 할 물건이 있나요?"
         renderList={takinkThingItems}
         selectedIds={takingSelectedIds}
         onPress={onPressItem}

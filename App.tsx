@@ -9,10 +9,11 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import StartScreen from './screens/intro/StartScreen';
-import './i18n/i18n.config';
 import OutingBeforeSafetyScreen from './screens/intro/OutingBeforeSafetyScreen';
 import OutingBeforeTakingScreen from './screens/intro/OutingBeforeTakingScreen';
 import OutingBeforeTodoScreen from './screens/intro/OutingBeforeTodoScreen';
+import AlarmRequestScreen from './screens/intro/AlarmRequestScreen';
+import './i18n/i18n.config';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -32,6 +33,7 @@ const App = () => {
     {name: 'OutingBeforeSafetyScreen', component: OutingBeforeSafetyScreen},
     {name: 'OutingBeforeTakingScreen', component: OutingBeforeTakingScreen},
     {name: 'OutingBeforeTodoScreen', component: OutingBeforeTodoScreen},
+    {name: 'AlarmRequestScreen', component: AlarmRequestScreen},
     {name: 'TodoMainScreen', component: TodoMainScreen},
   ];
 

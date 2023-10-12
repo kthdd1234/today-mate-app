@@ -5,6 +5,7 @@ import {todoWorkItems} from '../../constants';
 import {todoSelectedIdsAtom} from '../../states';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
+import Stepper from '../../components/step/stepper';
 
 const OutingBeforeTodoScreen = ({navigation}) => {
   /** useTranslation */
@@ -15,7 +16,8 @@ const OutingBeforeTodoScreen = ({navigation}) => {
     useRecoilState(todoSelectedIdsAtom);
 
   const onPressNext = () => {
-    navigation.navigate(''); //
+    //
+    navigation.navigate('AlarmRequestScreen'); //
   };
 
   const onPressItem = (id: string) => {
@@ -34,8 +36,9 @@ const OutingBeforeTodoScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
+      <Stepper pos={3} />
       <SelectItemsSection
-        title="외출 전,\n"
+        title="외출 전에,\n해야 할 일이 있나요?"
         renderList={todoWorkItems}
         selectedIds={todoSelectedIds}
         onPress={onPressItem}

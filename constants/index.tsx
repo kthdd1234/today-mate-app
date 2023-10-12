@@ -65,38 +65,53 @@ const takinkThingItems = [
 ];
 
 const todoWorkItems = [
-  {id: '0', text: '선크림 꼼꼼이 바르기', emoji: '🧴'},
+  {id: '0', text: '선크림 꼼꼼히 바르기', emoji: '🧴'},
   {id: '1', text: '향수 뿌리기', emoji: '🫧'},
-  {id: '2', text: '간단한 스트레칭 하기', emoji: '🕺'},
-  {id: '3', text: '모아둔 쓰레기 버리기', emoji: '🗑️'},
-  {id: '4', text: '설거지 하기', emoji: '🧽'},
-  {id: '5', text: '강아지 사료 주기', emoji: '🐶'},
-  {id: '6', text: '고양이 사료 주기', emoji: '🐱'},
-  {id: '7', text: '세탁기 돌리기', emoji: '🧺'},
-  {id: '8', text: '화분에 물 주기', emoji: '🪴'},
-  {id: '9', text: '냉장고 청소하기', emoji: '🧊'},
-  {id: '10', text: '화장실 청소하기', emoji: '🚽'},
-  {id: '11', text: '빨래 하기', emoji: '👕'},
+  {id: '2', text: '휴대폰 배터리 충전하기', emoji: '🪫'},
+  {id: '3', text: '간단한 스트레칭 하기', emoji: '🕺'},
+  {id: '4', text: '모아둔 쓰레기 버리기', emoji: '🗑️'},
+  {id: '5', text: '설거지 하기', emoji: '🧽'},
+  {id: '6', text: '강아지 사료 주기', emoji: '🐶'},
+  {id: '7', text: '고양이 사료 주기', emoji: '🐱'},
+  {id: '8', text: '세탁기 돌리기', emoji: '🧺'},
+  {id: '9', text: '화분에 물 주기', emoji: '🪴'},
+  {id: '10', text: '냉장고 청소하기', emoji: '🧊'},
+  {id: '11', text: '화장실 청소하기', emoji: '🚽'},
+  {id: '12', text: '빨래 하기', emoji: '👕'},
 ];
 
-// const todoWorkItems = {
-//   groupId: eTodoGroupIds.Work,
-//   title: '할 일',
-//   data: [
-//     '선크림 꼼꼼이 바르기',
-//     '향수 뿌리기',
-//     '화분에 물 주기',
-//     '세탁기 돌리기',
-//     '설거지하기',
-//     '모아둔 쓰레기 버리기',
-//     '강아지 사료 주기',
-//     '고양이 사료 주기',
-//     '간단한 스트레칭 하기',
-//     '냉장고 청소하기',
-//     '화장실 청소하기',
-//     '빨래하기',
-//   ],
-// };
+const stepLabels = [
+  '외출 시간',
+  '안전 점검',
+  '물건 챙기기',
+  '할 일',
+  '알람 설정',
+];
+
+const customStyles = {
+  stepIndicatorSize: 30,
+  currentStepIndicatorSize: 40,
+  separatorStrokeWidth: 2,
+  currentStepStrokeWidth: 3,
+  stepStrokeCurrentColor: '#fe7013',
+  stepStrokeWidth: 3,
+  separatorStrokeFinishedWidth: 4,
+  stepStrokeFinishedColor: '#fe7013',
+  stepStrokeUnFinishedColor: '#aaaaaa',
+  separatorFinishedColor: '#fe7013',
+  separatorUnFinishedColor: '#aaaaaa',
+  stepIndicatorFinishedColor: '#fe7013',
+  stepIndicatorUnFinishedColor: '#ffffff',
+  stepIndicatorCurrentColor: '#ffffff',
+  stepIndicatorLabelFontSize: 13,
+  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelCurrentColor: '#fe7013',
+  stepIndicatorLabelFinishedColor: '#ffffff',
+  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+  labelColor: '#999999',
+  labelSize: 13,
+  currentStepLabelColor: '#fe7013',
+};
 
 export {
   todoGroupNames,
@@ -107,5 +122,7 @@ export {
   safetyInspectionItems,
   takinkThingItems,
   todoWorkItems,
+  stepLabels,
+  customStyles,
   getUniqueId,
 };

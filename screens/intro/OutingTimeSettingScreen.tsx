@@ -8,6 +8,7 @@ import OutingTimeSettingBottomSheet from '../../components/bottomSheet/OutingTim
 import {useTranslation} from 'react-i18next';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import {outingTimeItems, outingTimeStates} from '../../constants';
+import Stepper from '../../components/step/stepper';
 
 const OutingTimeSettingScreen = ({navigation}) => {
   /** useTranslation */
@@ -61,6 +62,7 @@ const OutingTimeSettingScreen = ({navigation}) => {
 
   return (
     <View className="h-full">
+      <Stepper pos={0} />
       <SelectItemsSection
         title="오늘 또는 내일, 몇시에 외출하나요?"
         renderList={outingTimeItemState}
