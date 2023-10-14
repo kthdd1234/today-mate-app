@@ -7,7 +7,7 @@ import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
 import Stepper from '../../components/step/stepper';
 
-const OutingBeforeTodoScreen = ({navigation}) => {
+const TodoBeforeOutingScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -48,4 +48,4 @@ const OutingBeforeTodoScreen = ({navigation}) => {
   );
 };
 
-export default OutingBeforeTodoScreen;
+export default TodoBeforeOutingScreen;

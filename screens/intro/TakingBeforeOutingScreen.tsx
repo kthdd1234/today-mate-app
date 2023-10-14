@@ -7,7 +7,7 @@ import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
 import Stepper from '../../components/step/stepper';
 
-const OutingBeforeTakingScreen = ({navigation}) => {
+const TakingBeforeOutingScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -17,7 +17,7 @@ const OutingBeforeTakingScreen = ({navigation}) => {
   );
 
   const onPressNext = () => {
-    navigation.navigate('OutingBeforeTodoScreen');
+    navigation.navigate('TodoBeforeOutingScreen');
   };
 
   const onPressItem = (id: string) => {
@@ -48,4 +48,4 @@ const OutingBeforeTakingScreen = ({navigation}) => {
   );
 };
 
-export default OutingBeforeTakingScreen;
+export default TakingBeforeOutingScreen;

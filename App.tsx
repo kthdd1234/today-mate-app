@@ -8,10 +8,10 @@ import {RecoilRoot} from 'recoil';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import StartScreen from './screens/intro/StartScreen';
-import OutingBeforeSafetyScreen from './screens/intro/OutingBeforeSafetyScreen';
-import OutingBeforeTakingScreen from './screens/intro/OutingBeforeTakingScreen';
-import OutingBeforeTodoScreen from './screens/intro/OutingBeforeTodoScreen';
+import StartScreen from './screens/intro/IntroStartScreen';
+import SafetyBeforeOutingScreen from './screens/intro/SafetyBeforeOutingScreen';
+import TakingBeforeOutingScreen from './screens/intro/TakingBeforeOutingScreen';
+import TodoBeforeOutingScreen from './screens/intro/TodoBeforeOutingScreen';
 import AlarmRequestScreen from './screens/intro/AlarmRequestScreen';
 import './i18n/i18n.config';
 
@@ -30,9 +30,9 @@ const App = () => {
   const screenList = [
     {name: 'StartScreen', component: StartScreen},
     {name: 'OutingTimeSettingScreen', component: OutingTimeSettingScreen},
-    {name: 'OutingBeforeSafetyScreen', component: OutingBeforeSafetyScreen},
-    {name: 'OutingBeforeTakingScreen', component: OutingBeforeTakingScreen},
-    {name: 'OutingBeforeTodoScreen', component: OutingBeforeTodoScreen},
+    {name: 'SafetyBeforeOutingScreen', component: SafetyBeforeOutingScreen},
+    {name: 'TakingBeforeOutingScreen', component: TakingBeforeOutingScreen},
+    {name: 'TodoBeforeOutingScreen', component: TodoBeforeOutingScreen},
     {name: 'AlarmRequestScreen', component: AlarmRequestScreen},
     {name: 'TodoMainScreen', component: TodoMainScreen},
   ];

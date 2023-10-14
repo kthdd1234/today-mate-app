@@ -38,7 +38,7 @@ const OutingTimeSettingScreen = ({navigation}) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const onPressNext = () => {
-    navigation.navigate('OutingBeforeSafetyScreen');
+    navigation.navigate('SafetyBeforeOutingScreen');
   };
 
   const onPressItem = (id: string) => {

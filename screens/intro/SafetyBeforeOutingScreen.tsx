@@ -7,7 +7,7 @@ import {safetySelectedIdsAtom} from '../../states';
 import {useRecoilState} from 'recoil';
 import Stepper from '../../components/step/stepper';
 
-const OutingBeforeSafetyScreen = ({navigation}) => {
+const SafetyBeforeOutingScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -17,7 +17,7 @@ const OutingBeforeSafetyScreen = ({navigation}) => {
   );
 
   const onPressNext = () => {
-    navigation.navigate('OutingBeforeTakingScreen');
+    navigation.navigate('TakingBeforeOutingScreen');
   };
 
   const onPressItem = (id: string) => {
@@ -48,4 +48,4 @@ const OutingBeforeSafetyScreen = ({navigation}) => {
   );
 };
 
-export default OutingBeforeSafetyScreen;
+export default SafetyBeforeOutingScreen;
