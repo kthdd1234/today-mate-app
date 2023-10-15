@@ -1,14 +1,14 @@
-import TodoSpaceScreen from './TodoSpaceScreen';
-import MoreSeeScreen from './MoreSeeScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import OutingManageScreen from './OutingManageScreen';
+import OutingSettingScreen from './OutingSettingScreen';
 
 /** createBottomTabNavigator */
 const {Navigator, Screen} = createBottomTabNavigator();
 
-const TodoMainScreen = () => {
+const MainScreen = () => {
   const bottomTabList = [
-    {name: 'TodoSpaceScreen', component: TodoSpaceScreen},
-    {name: 'MoreSeeScreen', component: MoreSeeScreen},
+    {name: 'OutingManageScreen', component: OutingManageScreen},
+    {name: 'OutingSettingScreen', component: OutingSettingScreen},
   ];
 
   return (
@@ -20,4 +20,4 @@ const TodoMainScreen = () => {
   );
 };
 
-export default TodoMainScreen;
+export default MainScreen;

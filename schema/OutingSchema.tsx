@@ -5,13 +5,13 @@ export class Outing extends Realm.Object<Outing> {
   _id!: Realm.BSON.ObjectId;
   outingTime!: Date;
   isOutingTimeAlarm!: boolean;
-  task!: Task;
+  taskList!: Realm.List<Task>;
   isEveryDay!: boolean;
   beforeOutingTime?: Date;
   isBeforeOutingTimeAlarm!: boolean;
 
   static schema: ObjectSchema = {
-    name: 'Item',
+    name: 'Outing',
     primaryKey: '_id',
     properties: {
       _id: 'objectId',
@@ -21,6 +21,11 @@ export class Outing extends Realm.Object<Outing> {
       isEveryDay: {type: 'bool', default: false},
       beforeOutingTime: 'date?',
       isBeforeOutingTimeAlarm: {type: 'bool', default: false},
+      taskList: {
+        type: 'list',
+        objectType: 'Task',
+        optional: false,
+      },
     },
   };
 }

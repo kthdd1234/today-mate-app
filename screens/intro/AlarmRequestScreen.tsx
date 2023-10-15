@@ -8,22 +8,42 @@ import {
   takingSelectedIdsAtom,
   todoSelectedIdsAtom,
 } from '../../states';
+import {useRealm} from '@realm/react';
+import notifee, {AuthorizationStatus} from '@notifee/react-native';
 
 const testImg = require('../../images/test-img.png');
 
-const AlarmRequestScreen = () => {
+const AlarmRequestScreen = ({navigation}) => {
   /** useRecoilValue */
   const outingTimeSettingValues = useRecoilValue(outingTimeSettingValuesAtom);
   const safetySelectedIds = useRecoilValue(safetySelectedIdsAtom);
   const takingSelectedIds = useRecoilValue(takingSelectedIdsAtom);
   const todoSelectedIds = useRecoilValue(todoSelectedIdsAtom);
 
-  const onPressAlarmRequest = (isAlarm: boolean) => {
-    //
+  /** useRealm */
+  // const realm = useRealm();
+
+  const setNotifee = async (isOK: boolean) => {
+    if (isOK) {
+      const settings = await notifee.requestPermission();
+      return settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED;
+    }
+
+    return false;
   };
 
-  const setDataInLocalDB = () => {
+  const setRealm = async (isAlarm: boolean) => {
     //
+    return false;
+  };
+
+  const onPress = async (isOK: boolean) => {
+    const isAlarm = await setNotifee(isOK);
+    const isSaveInRealm = await setRealm(isAlarm);
+
+    return isSaveInRealm
+      ? navigation.navigate('MainScreen')
+      : console.log('경고창 띄우기');
   };
 
   return (
@@ -41,12 +61,12 @@ const AlarmRequestScreen = () => {
         <DefaultButton
           id="alarm-on"
           text="알람을 받을게요!"
-          onPress={() => onPressAlarmRequest(true)}
+          onPress={() => onPress(true)}
         />
         <DefaultButton
           id="alarm-off"
           text="안 받을게요."
-          onPress={() => onPressAlarmRequest(false)}
+          onPress={() => onPress(false)}
         />
       </View>
     </View>

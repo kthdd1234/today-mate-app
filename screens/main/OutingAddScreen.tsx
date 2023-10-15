@@ -1,12 +1,12 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 
-const TodoSpaceScreen = () => {
+const OutingAddScreen = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: 'red'}}>Details Screen</Text>
+      <Text style={{color: 'red'}}>외출 추가 화면</Text>
     </View>
   );
 };
 
-export default TodoSpaceScreen;
+export default OutingAddScreen;
