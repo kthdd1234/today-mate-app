@@ -1,7 +1,11 @@
 import {Text, View} from 'react-native';
 import DefaultButton from '../../components/button/defaultButton';
+import {useTranslation} from 'react-i18next';
 
 const IntroStartScreen = ({navigation}) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
   const onPressStart = () => {
     navigation.navigate('OutingTimeSettingScreen');
   };

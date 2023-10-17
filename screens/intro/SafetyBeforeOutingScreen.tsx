@@ -17,7 +17,9 @@ const SafetyBeforeOutingScreen = ({navigation}) => {
   );
 
   const onPressNext = () => {
-    navigation.navigate('TakingBeforeOutingScreen');
+    if (safetySelectedIds.length > 0) {
+      navigation.navigate('TakingBeforeOutingScreen');
+    }
   };
 
   const onPressItem = (id: string) => {

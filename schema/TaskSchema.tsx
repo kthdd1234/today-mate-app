@@ -1,4 +1,5 @@
 import {ObjectSchema} from 'realm';
+import {Realm} from '@realm/react';
 
 export class Task extends Realm.Object<Task> {
   _id!: Realm.BSON.ObjectId;

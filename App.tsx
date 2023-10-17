@@ -2,10 +2,9 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OutingTimeSettingScreen from './screens/intro/OutingTimeSettingScreen';
-import TodoMainScreen from './screens/main/MainScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
-import {createRealmContext} from '@realm/react';
+import {createRealmContext, RealmProvider, useRealm} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import StartScreen from './screens/intro/IntroStartScreen';
@@ -14,14 +13,14 @@ import TakingBeforeOutingScreen from './screens/intro/TakingBeforeOutingScreen';
 import TodoBeforeOutingScreen from './screens/intro/TodoBeforeOutingScreen';
 import AlarmRequestScreen from './screens/intro/AlarmRequestScreen';
 import {realmConfig} from './schema';
-import './i18n/i18n.config';
 import MainScreen from './screens/main/MainScreen';
+import './i18n/i18n.config';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
 
 /** createRealmContext */
-const {RealmProvider} = createRealmContext(realmConfig);
+// const {RealmProvider} = createRealmContext(realmConfig);
 
 const App = () => {
   /** useTranslation */
@@ -38,7 +37,7 @@ const App = () => {
   ];
 
   return (
-    <RealmProvider>
+    <RealmProvider {...realmConfig}>
       <PaperProvider>
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>

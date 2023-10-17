@@ -1,13 +1,13 @@
-import {eTodoGroupIds} from '../types/enum';
+import {eLabel} from '../types/enum';
 
 const getUniqueId = (num: number) => {
   return Date.now().toString() + num;
 };
 
 const todoGroupNames = {
-  [eTodoGroupIds.Safety]: '안전 점검',
-  [eTodoGroupIds.Taking]: '물건 챙기기',
-  [eTodoGroupIds.Work]: '할 일',
+  [eLabel.Safety]: '안전 점검',
+  [eLabel.Taking]: '물건 챙기기',
+  [eLabel.Work]: '할 일',
 };
 
 const initOutingTime = {
@@ -17,7 +17,7 @@ const initOutingTime = {
 };
 
 const initOutingBeforeTodo = {
-  groupId: eTodoGroupIds.None,
+  groupId: eLabel.None,
   title: '',
   data: [''],
 };

@@ -36,3 +36,29 @@ export interface ISelectItemsSection {
   renderList: {id: string; text: string; emoji: string}[];
   onPress: (id: string) => void;
 }
+
+export interface ISetRealmTask {
+  task: string;
+}
+
+export interface ISetRealmOuting {
+  isAlarm: boolean;
+}
+
+export interface ISetRealmUser {
+  isAlarm: boolean;
+}
+
+export interface IStringToDate {
+  year: number;
+  month: number;
+  day: number;
+  time: string;
+  hour: string;
+  minute: string;
+}
+
+export interface IGetBeforeOutingTime {
+  date: Date;
+  minute: number;
+}

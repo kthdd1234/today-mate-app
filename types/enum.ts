@@ -1,4 +1,4 @@
-enum eTodoGroupIds {
+enum eLabel {
   /** */
   None = 'None',
   /** */
@@ -6,7 +6,7 @@ enum eTodoGroupIds {
   /** */
   Taking = 'Taking',
   /** */
-  Work = 'Work',
+  Todo = 'Todo',
 }
 
-export {eTodoGroupIds};
+export {eLabel};

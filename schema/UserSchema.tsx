@@ -1,5 +1,6 @@
 import {ObjectSchema} from 'realm';
 import {Outing} from './OutingSchema';
+import {Realm} from '@realm/react';
 
 export class User extends Realm.Object<User> {
   _id!: Realm.BSON.ObjectId;
