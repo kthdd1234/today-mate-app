@@ -2,8 +2,8 @@ import {ObjectSchema} from 'realm';
 import {Realm} from '@realm/react';
 
 export class Task extends Realm.Object<Task> {
-  _id!: Realm.BSON.ObjectId;
-  outingId!: Realm.BSON.ObjectId;
+  _id!: string;
+  outingId!: string;
   label?: string;
   emoji?: string;
   name!: string;
@@ -13,8 +13,8 @@ export class Task extends Realm.Object<Task> {
     name: 'Task',
     primaryKey: '_id',
     properties: {
-      _id: 'objectId',
-      itemId: 'string',
+      _id: 'string',
+      outingId: 'string',
       label: 'string?',
       emoji: 'string?',
       name: 'string',

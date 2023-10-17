@@ -8,7 +8,7 @@ import {
   takingSelectedIdsAtom,
   todoSelectedIdsAtom,
 } from '../../states';
-import {Realm, useQuery, useRealm} from '@realm/react';
+import {useQuery, useRealm} from '@realm/react';
 import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {getLocales} from 'react-native-localize';
 import {
@@ -25,7 +25,10 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Task} from '../../schema/TaskSchema';
 import {Outing} from '../../schema/OutingSchema';
-import {getBeforeOutingTime, stringToDate} from '../../utils';
+import {momentBeforeFormatter, momentFormatter} from '../../utils';
+import RealmPlugin from 'realm-flipper-plugin-device';
+import {v4 as uuid} from 'uuid';
+import moment from 'moment';
 
 const testImg = require('../../images/test-img.png');
 
@@ -41,11 +44,11 @@ const AlarmRequestScreen = ({navigation}) => {
   const outingList = useQuery(Outing);
 
   /** Realm.BSON.ObjectId */
-  const userId = new Realm.BSON.ObjectId();
-  const outingId = new Realm.BSON.ObjectId();
+  const userId = uuid();
+  const outingId = uuid();
 
   /** useRecoilValue */
-  const {time, hour, minute} = useRecoilValue(outingTimeSettingValuesAtom);
+  const {ampm, hour, minute} = useRecoilValue(outingTimeSettingValuesAtom);
   const safetySelectedIds = useRecoilValue(safetySelectedIdsAtom);
   const takingSelectedIds = useRecoilValue(takingSelectedIdsAtom);
   const todoSelectedIds = useRecoilValue(todoSelectedIdsAtom);
@@ -81,7 +84,7 @@ const AlarmRequestScreen = ({navigation}) => {
 
       realm.write(() => {
         realm.create('Task', {
-          id: new Realm.BSON.ObjectId(),
+          _id: uuid(),
           outingId: outingId,
           label: taskArg.id,
           emoji: item.emoji,
@@ -93,17 +96,18 @@ const AlarmRequestScreen = ({navigation}) => {
   };
 
   const setRealmOuting = ({isAlarm}: ISetRealmOuting) => {
-    const {getFullYear, getMonth, getDay} = new Date();
-    const outingTime = stringToDate({
-      year: getFullYear(),
-      month: getMonth(),
-      day: getDay(),
-      time: time,
+    const now = moment();
+    const outingTime = momentFormatter({
+      year: now.format('YYYY'),
+      month: now.format('MM'),
+      day: now.format('DD'),
+      ampm: ampm,
       hour: hour,
       minute: minute,
     });
-    const beforeOutingTime = getBeforeOutingTime({
-      date: outingTime,
+
+    const beforeOutingTime = momentBeforeFormatter({
+      formatString: outingTime,
       minute: 10,
     });
 
@@ -113,7 +117,7 @@ const AlarmRequestScreen = ({navigation}) => {
         outingTime: outingTime,
         isOutingTimeAlarm: isAlarm,
         isEveryDay: true,
-        beforeOutingTime: beforeOutingTime,
+        beforeOutingTime: isAlarm ? beforeOutingTime : null,
         isBeforeOutingTimeAlarm: isAlarm,
         taskList: taskList,
       });
@@ -134,7 +138,15 @@ const AlarmRequestScreen = ({navigation}) => {
     });
   };
 
+  const deleteAllRealmData = () => {
+    realm.write(() => {
+      realm.deleteAll();
+    });
+  };
+
   const setRealm = async (isAlarm: boolean) => {
+    deleteAllRealmData();
+
     setRealmTask({task: 'Safety'});
     setRealmTask({task: 'Taking'});
     setRealmTask({task: 'Todo'});
@@ -142,7 +154,7 @@ const AlarmRequestScreen = ({navigation}) => {
     setRealmOuting({isAlarm: isAlarm});
     setRealmUser({isAlarm: isAlarm});
 
-    return false;
+    return true;
   };
 
   const onPress = async (isOK: boolean) => {
@@ -150,12 +162,15 @@ const AlarmRequestScreen = ({navigation}) => {
     const isSaveInRealm = await setRealm(isAlarm);
 
     return isSaveInRealm
-      ? navigation.navigate('MainScreen')
+      ? navigation.reset({
+          routes: [{name: 'MainScreen'}],
+        })
       : console.log('경고창 띄우기');
   };
 
   return (
     <View>
+      <RealmPlugin realms={[realm]} />
       <Stepper pos={4} />
       <View>
         <Text>외출 전 알람을 받으면</Text>

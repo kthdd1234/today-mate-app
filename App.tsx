@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OutingTimeSettingScreen from './screens/intro/OutingTimeSettingScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
-import {createRealmContext, RealmProvider, useRealm} from '@realm/react';
+import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import StartScreen from './screens/intro/IntroStartScreen';
@@ -18,9 +18,6 @@ import './i18n/i18n.config';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
-
-/** createRealmContext */
-// const {RealmProvider} = createRealmContext(realmConfig);
 
 const App = () => {
   /** useTranslation */
@@ -48,7 +45,7 @@ const App = () => {
                     key={name}
                     name={name}
                     component={component}
-                    options={{headerBackTitle: t('뒤로')}}
+                    options={{headerBackTitle: t('뒤로'), headerShown: false}}
                   />
                 ))}
               </Navigator>

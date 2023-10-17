@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {takinkThingItems} from '../../constants';
 import {useTranslation} from 'react-i18next';
 import {takingSelectedIdsAtom} from '../../states';
@@ -35,7 +35,7 @@ const TakingBeforeOutingScreen = ({navigation}) => {
   };
 
   return (
-    <View className="h-full">
+    <SafeAreaView className="h-full">
       <Stepper pos={2} />
       <SelectItemsSection
         title="외출 전에,\n챙겨야 할 물건이 있나요?"
@@ -44,7 +44,7 @@ const TakingBeforeOutingScreen = ({navigation}) => {
         onPress={onPressItem}
       />
       <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
-    </View>
+    </SafeAreaView>
   );
 };
 

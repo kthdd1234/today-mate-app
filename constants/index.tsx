@@ -7,13 +7,13 @@ const getUniqueId = (num: number) => {
 const todoGroupNames = {
   [eLabel.Safety]: '안전 점검',
   [eLabel.Taking]: '물건 챙기기',
-  [eLabel.Work]: '할 일',
+  [eLabel.Todo]: '할 일',
 };
 
 const initOutingTime = {
-  time: '',
-  hour: '',
-  minute: '',
+  ampm: '오전',
+  hour: '9',
+  minute: '30',
 };
 
 const initOutingBeforeTodo = {
@@ -35,7 +35,7 @@ const outingTimeItems = [
   {id: '1', text: '오전 9:00', emoji: '🕘'},
   {id: '2', text: '오전 10:00', emoji: '🕙'},
   {id: '3', text: '오후 6:00', emoji: '🕕'},
-  {id: '4', text: '오전 7:00', emoji: '🕖'},
+  {id: '4', text: '오후 7:00', emoji: '🕖'},
   {id: '5', text: '외출 시간 설정', emoji: '⚙️'},
 ];
 

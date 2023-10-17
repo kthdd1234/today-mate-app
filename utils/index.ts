@@ -1,15 +1,15 @@
-import {IGetBeforeOutingTime, IStringToDate} from '../types/interface';
+import {IGetBeforeOutingTime, IMomentFormatter} from '../types/interface';
 import moment from 'moment';
 
-const stringToDate = ({
+const momentFormatter = ({
   year,
   month,
   day,
-  time,
+  ampm,
   hour,
   minute,
-}: IStringToDate) => {
-  const ampmSetting = {
+}: IMomentFormatter) => {
+  const ampmInfo = {
     오전: 'AM',
     오후: 'PM',
     am: 'AM',
@@ -18,13 +18,19 @@ const stringToDate = ({
     PM: 'PM',
   };
 
-  return new Date(
-    `${month}/${day}/${year} ${hour}:${minute} ${ampmSetting[time]}`,
-  );
+  const formatString = `${year}-${month}-${day} ${hour}:${minute} ${ampmInfo[ampm]}`;
+  const result = moment(formatString, 'YYYY-MM-DD hh:mm a').format();
+
+  return result;
 };
 
-const getBeforeOutingTime = ({date, minute}: IGetBeforeOutingTime) => {
-  return moment(date).subtract(minute, 'minutes').toDate();
+const momentBeforeFormatter = ({
+  formatString,
+  minute,
+}: IGetBeforeOutingTime) => {
+  return moment(formatString, 'YYYY-MM-DD hh:mm a')
+    .subtract(minute, 'minutes')
+    .format();
 };
 
-export {stringToDate, getBeforeOutingTime};
+export {momentFormatter, momentBeforeFormatter};

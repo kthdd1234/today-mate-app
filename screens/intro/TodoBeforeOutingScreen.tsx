@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useRecoilState} from 'recoil';
 import {todoWorkItems} from '../../constants';
@@ -35,7 +35,7 @@ const TodoBeforeOutingScreen = ({navigation}) => {
   };
 
   return (
-    <View className="h-full">
+    <SafeAreaView className="h-full">
       <Stepper pos={3} />
       <SelectItemsSection
         title="외출 전에,\n해야 할 일이 있나요?"
@@ -44,7 +44,7 @@ const TodoBeforeOutingScreen = ({navigation}) => {
         onPress={onPressItem}
       />
       <DefaultButton id="next-btn" text={t('완료')} onPress={onPressNext} />
-    </View>
+    </SafeAreaView>
   );
 };
 

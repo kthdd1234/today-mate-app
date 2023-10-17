@@ -1,5 +1,5 @@
-import {View} from 'react-native';
-import {useEffect, useRef, useState} from 'react';
+import {SafeAreaView} from 'react-native';
+import {useRef, useState} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DefaultButton from '../../components/button/defaultButton';
 import {useSetRecoilState} from 'recoil';
@@ -24,16 +24,6 @@ const OutingTimeSettingScreen = ({navigation}) => {
     useState(outingTimeItems);
   const [selectedId, setSelectedId] = useState<string>('');
 
-  useEffect(() => {
-    const today = new Date();
-    const localTime = today
-      .toLocaleTimeString('ko-KR', {hour: 'numeric'}) // local setting 필요
-      .split(' ')
-      .sort()[1];
-
-    setOutingTimeSettingValues({time: localTime, hour: '9', minute: '30'});
-  }, [setOutingTimeSettingValues]);
-
   /** useRef */
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -44,24 +34,24 @@ const OutingTimeSettingScreen = ({navigation}) => {
   const onPressItem = (id: string) => {
     if (id < '5') {
       const timeState = outingTimeStates[id];
-      const {time, hour, minute} = timeState;
+      const {ampm, hour, minute} = timeState;
 
       setSelectedId(id);
-      setOutingTimeSettingValues({time, hour, minute});
+      setOutingTimeSettingValues({ampm, hour, minute});
     } else {
       bottomSheetModalRef.current?.present();
     }
   };
 
-  const onPressCompletedBottomSheet = ({time, hour, minute}) => {
-    outingTimeItemState[5].text = `${time} ${hour}:${minute}`;
+  const onPressCompletedBottomSheet = ({ampm, hour, minute}) => {
+    outingTimeItemState[5].text = `${ampm} ${hour}:${minute}`;
 
     setOutingTimeItemState([...outingTimeItemState]);
     setSelectedId('5');
   };
 
   return (
-    <View className="h-full">
+    <SafeAreaView className="h-full">
       <Stepper pos={0} />
       <SelectItemsSection
         title="오늘 또는 내일, 몇시에 외출하나요?"
@@ -74,7 +64,7 @@ const OutingTimeSettingScreen = ({navigation}) => {
         bottomSheetModalRef={bottomSheetModalRef}
         onPressCompleted={onPressCompletedBottomSheet}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

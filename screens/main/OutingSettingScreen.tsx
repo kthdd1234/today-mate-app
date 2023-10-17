@@ -1,7 +1,11 @@
-import {View} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 
 const OutingSettingScreen = () => {
-  return <View>설정 화면</View>;
+  return (
+    <SafeAreaView>
+      <Text>설정 화면</Text>
+    </SafeAreaView>
+  );
 };
 
 export default OutingSettingScreen;

@@ -21,7 +21,7 @@ const OutingTimeSettingBottomSheet = ({
 
   /** useState */
   const [outingTimeValues, setOutingTimeValues] = useState(initOutingTime);
-  const {time, hour, minute} = outingTimeValues;
+  const {ampm, hour, minute} = outingTimeValues;
 
   /** useSetRecoilState */
   const setOutingTimeSettingValues = useSetRecoilState(
@@ -29,7 +29,7 @@ const OutingTimeSettingBottomSheet = ({
   );
 
   const onPressTime = (value: string) => {
-    setOutingTimeValues({...outingTimeValues, time: value});
+    setOutingTimeValues({...outingTimeValues, ampm: value});
   };
 
   const onPressHour = (value: string) => {
@@ -62,8 +62,8 @@ const OutingTimeSettingBottomSheet = ({
 
   const onPressCompletedButton = () => {
     bottomSheetModalRef?.current?.close();
-    setOutingTimeSettingValues({time, hour, minute});
-    onPressCompleted({time, hour, minute});
+    setOutingTimeSettingValues({ampm, hour, minute});
+    onPressCompleted({ampm, hour, minute});
   };
 
   return (
@@ -77,7 +77,7 @@ const OutingTimeSettingBottomSheet = ({
         <View>
           <Text>{t('외출 시간 설정')}</Text>
           <TimeSettingSection
-            states={{time: time, hour: hour, minute: minute}}
+            states={{ampm: ampm, hour: hour, minute: minute}}
             onPressed={{
               Time: onPressTime,
               Hour: onPressHour,

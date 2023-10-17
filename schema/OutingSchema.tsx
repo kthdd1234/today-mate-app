@@ -3,11 +3,11 @@ import {Task} from './TaskSchema';
 import {Realm} from '@realm/react';
 
 export class Outing extends Realm.Object<Outing> {
-  _id!: Realm.BSON.ObjectId;
-  outingTime!: Date;
+  _id!: string;
+  outingTime!: string;
   isOutingTimeAlarm!: boolean;
   isEveryDay!: boolean;
-  beforeOutingTime?: Date;
+  beforeOutingTime?: string;
   isBeforeOutingTimeAlarm!: boolean;
   taskList!: Realm.List<Task>;
 
@@ -15,11 +15,11 @@ export class Outing extends Realm.Object<Outing> {
     name: 'Outing',
     primaryKey: '_id',
     properties: {
-      _id: 'objectId',
-      outingTime: 'date',
+      _id: 'string',
+      outingTime: 'string',
       isOutingTimeAlarm: {type: 'bool', default: false},
       isEveryDay: {type: 'bool', default: false},
-      beforeOutingTime: 'date?',
+      beforeOutingTime: 'string?',
       isBeforeOutingTimeAlarm: {type: 'bool', default: false},
       taskList: {
         type: 'list',

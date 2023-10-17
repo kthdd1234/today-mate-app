@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
 import {useTranslation} from 'react-i18next';
@@ -37,7 +37,7 @@ const SafetyBeforeOutingScreen = ({navigation}) => {
   };
 
   return (
-    <View className="h-full">
+    <SafeAreaView className="h-full">
       <Stepper pos={1} />
       <SelectItemsSection
         title="외출 전에,\n안전 점검을 해볼까요?"
@@ -46,7 +46,7 @@ const SafetyBeforeOutingScreen = ({navigation}) => {
         onPress={onPressItem}
       />
       <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
-    </View>
+    </SafeAreaView>
   );
 };
 

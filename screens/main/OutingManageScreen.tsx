@@ -1,7 +1,11 @@
-import {View} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 
 const OutingManageScreen = () => {
-  return <View>외출 관리 화면</View>;
+  return (
+    <SafeAreaView>
+      <Text>외출 관리 화면</Text>
+    </SafeAreaView>
+  );
 };
 
 export default OutingManageScreen;

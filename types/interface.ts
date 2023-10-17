@@ -13,14 +13,14 @@ export interface ITimeSettingSection {
 }
 
 export interface ITimeValues {
-  time: string;
+  ampm: string;
   hour: string;
   minute: string;
 }
 
 export interface IPropsBottomSheet {
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
-  onPressCompleted: ({time, hour, minute}: ITimeValues) => void;
+  onPressCompleted: ({ampm, hour, minute}: ITimeValues) => void;
 }
 
 export interface ITodoSettingState {
@@ -49,16 +49,16 @@ export interface ISetRealmUser {
   isAlarm: boolean;
 }
 
-export interface IStringToDate {
-  year: number;
-  month: number;
-  day: number;
-  time: string;
+export interface IMomentFormatter {
+  year: string;
+  month: string;
+  day: string;
+  ampm: string;
   hour: string;
   minute: string;
 }
 
 export interface IGetBeforeOutingTime {
-  date: Date;
+  formatString: string;
   minute: number;
 }

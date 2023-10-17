@@ -3,7 +3,7 @@ import {Outing} from './OutingSchema';
 import {Realm} from '@realm/react';
 
 export class User extends Realm.Object<User> {
-  _id!: Realm.BSON.ObjectId;
+  _id!: string;
   language!: string;
   isDarkMode!: boolean;
   isAlarm!: boolean;
@@ -13,7 +13,7 @@ export class User extends Realm.Object<User> {
     name: 'User',
     primaryKey: '_id',
     properties: {
-      _id: 'objectId',
+      _id: 'string',
       language: {type: 'string', default: 'ko'},
       isDarkMode: {type: 'bool', default: false},
       isAlarm: {type: 'bool', default: false},

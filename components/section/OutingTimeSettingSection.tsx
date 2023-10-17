@@ -3,7 +3,7 @@ import DefaultButton from '../button/defaultButton';
 import {useTranslation} from 'react-i18next';
 
 interface IOutingTimeSettingSection {
-  states: {time: string; hour: string; minute: string};
+  states: {ampm: string; hour: string; minute: string};
   onPressed: {
     Time: (id: string) => void;
     Hour: (id: string) => void;
@@ -22,7 +22,7 @@ const OutingTimeSettingSection = ({
   const timeSettingInfo = {
     timeInfo: {
       title: t('오전/오후'),
-      state: states.time,
+      state: states.ampm,
       values: [t('오전'), t('오후')],
       onPress: onPressed.Time,
     },
