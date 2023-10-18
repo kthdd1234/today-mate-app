@@ -1,5 +1,6 @@
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {Ref} from 'react';
+import {RepeatFrequency} from '@notifee/react-native';
 
 export interface IDefaultButton {
   id: string;
@@ -42,11 +43,11 @@ export interface ISetRealmTask {
 }
 
 export interface ISetRealmOuting {
-  isAlarm: boolean;
+  isNotify: boolean;
 }
 
 export interface ISetRealmUser {
-  isAlarm: boolean;
+  isNotify: boolean;
 }
 
 export interface IMomentFormatter {
@@ -61,4 +62,11 @@ export interface IMomentFormatter {
 export interface IGetBeforeOutingTime {
   formatString: string;
   minute: number;
+}
+
+export interface ITriggerNotification {
+  title: string;
+  body: string;
+  dateTime: string;
+  repeat: RepeatFrequency;
 }

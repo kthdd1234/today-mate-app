@@ -113,7 +113,18 @@ const customStyles = {
   currentStepLabelColor: '#fe7013',
 };
 
+const notificationCategories = {
+  outingTitle: '모두 완료 했어요!',
+  taskTitle: '완료 했어요!',
+};
+
+const outingTimeNotifiMessage = {
+  title: '외출 시간이 되었어요!',
+  body: '혹시 까먹은 일이 없는지 확인 해보세요. 🔍',
+};
+
 export {
+  getUniqueId,
   todoGroupNames,
   outingTimeStates,
   outingTimeItems,
@@ -124,5 +135,6 @@ export {
   todoWorkItems,
   stepLabels,
   customStyles,
-  getUniqueId,
+  outingTimeNotifiMessage,
+  notificationCategories,
 };

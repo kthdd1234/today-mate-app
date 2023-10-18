@@ -6,7 +6,7 @@ export class User extends Realm.Object<User> {
   _id!: string;
   language!: string;
   isDarkMode!: boolean;
-  isAlarm!: boolean;
+  isNotify!: boolean;
   outingList!: Realm.List<Outing>;
 
   static schema: ObjectSchema = {
@@ -16,7 +16,7 @@ export class User extends Realm.Object<User> {
       _id: 'string',
       language: {type: 'string', default: 'ko'},
       isDarkMode: {type: 'bool', default: false},
-      isAlarm: {type: 'bool', default: false},
+      isNotify: {type: 'bool', default: false},
       outingList: {
         type: 'list',
         objectType: 'Outing',

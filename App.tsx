@@ -11,7 +11,7 @@ import StartScreen from './screens/intro/IntroStartScreen';
 import SafetyBeforeOutingScreen from './screens/intro/SafetyBeforeOutingScreen';
 import TakingBeforeOutingScreen from './screens/intro/TakingBeforeOutingScreen';
 import TodoBeforeOutingScreen from './screens/intro/TodoBeforeOutingScreen';
-import AlarmRequestScreen from './screens/intro/AlarmRequestScreen';
+import AlarmRequestScreen from './screens/intro/NotificationRequestScreen';
 import {realmConfig} from './schema';
 import MainScreen from './screens/main/MainScreen';
 import './i18n/i18n.config';

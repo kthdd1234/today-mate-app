@@ -32,7 +32,6 @@ const MainScreen = () => {
           name={t(name)}
           component={component}
           options={{
-            headerShown: false,
             tabBarLabel: t(name),
             // eslint-disable-next-line react/no-unstable-nested-components
             tabBarIcon: ({color, size}) => (

@@ -1,4 +1,4 @@
-import {Text, View, Image} from 'react-native';
+import {Text, View, Image, SafeAreaView} from 'react-native';
 import DefaultButton from '../../components/button/defaultButton';
 import Stepper from '../../components/step/stepper';
 import {useRecoilValue} from 'recoil';
@@ -9,7 +9,6 @@ import {
   todoSelectedIdsAtom,
 } from '../../states';
 import {useQuery, useRealm} from '@realm/react';
-import notifee, {AuthorizationStatus} from '@notifee/react-native';
 import {getLocales} from 'react-native-localize';
 import {
   safetyInspectionItems,
@@ -25,16 +24,23 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Task} from '../../schema/TaskSchema';
 import {Outing} from '../../schema/OutingSchema';
-import {momentBeforeFormatter, momentFormatter} from '../../utils';
+import {momentBeforeFormatter, momentFormatter} from '../../utils/moment';
 import RealmPlugin from 'realm-flipper-plugin-device';
 import {v4 as uuid} from 'uuid';
 import moment from 'moment';
+import {
+  setNotificationCategories,
+  createTriggerNotification,
+  requestNotificationPermission,
+  createTaskTriggerNotification,
+} from '../../utils/notifee';
+import {outingTimeNotifiMessage, notificationCategories} from '../../constants';
 
 const testImg = require('../../images/test-img.png');
 
 const {Safety, Taking, Todo} = eLabel;
 
-const AlarmRequestScreen = ({navigation}) => {
+const NotificationRequestScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -53,10 +59,54 @@ const AlarmRequestScreen = ({navigation}) => {
   const takingSelectedIds = useRecoilValue(takingSelectedIdsAtom);
   const todoSelectedIds = useRecoilValue(todoSelectedIdsAtom);
 
-  const setNotifee = async (isOK: boolean) => {
+  const getOutingTime = () => {
+    const now = moment();
+
+    return momentFormatter({
+      year: now.format('YYYY'),
+      month: now.format('MM'),
+      day: now.format('DD'),
+      ampm: ampm,
+      hour: hour,
+      minute: minute,
+    });
+  };
+
+  const getBeforeOutingTime = () => {
+    const outingTime = getOutingTime();
+
+    return momentBeforeFormatter({
+      formatString: outingTime,
+      minute: 10,
+    });
+  };
+
+  const setNotifee = async ({isOK}: {isOK: boolean}) => {
     if (isOK) {
-      const settings = await notifee.requestPermission();
-      return settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED;
+      const isPermission = await requestNotificationPermission();
+      const {title, body} = outingTimeNotifiMessage;
+      const {outingTitle, taskTitle} = notificationCategories;
+
+      if (isPermission) {
+        await setNotificationCategories({
+          outingTitle: t(outingTitle),
+          taskTitle: t(taskTitle),
+        });
+
+        const outingTime = getOutingTime();
+        const beforeOutingTime = getBeforeOutingTime();
+
+        // const outingTimeNotifiId = await createTriggerNotification({
+        //   title: t(title),
+        //   body: t(body),
+        //   dateTime: outingTime,
+        //   repeat: RepeatFrequency.DAILY
+        // });
+
+        createTaskTriggerNotification();
+      }
+
+      return isPermission;
     }
 
     return false;
@@ -95,36 +145,24 @@ const AlarmRequestScreen = ({navigation}) => {
     });
   };
 
-  const setRealmOuting = ({isAlarm}: ISetRealmOuting) => {
-    const now = moment();
-    const outingTime = momentFormatter({
-      year: now.format('YYYY'),
-      month: now.format('MM'),
-      day: now.format('DD'),
-      ampm: ampm,
-      hour: hour,
-      minute: minute,
-    });
-
-    const beforeOutingTime = momentBeforeFormatter({
-      formatString: outingTime,
-      minute: 10,
-    });
+  const setRealmOuting = ({isNotify}: ISetRealmOuting) => {
+    const outingTime = getOutingTime();
+    const beforeOutingTime = getBeforeOutingTime();
 
     realm.write(() => {
       realm.create('Outing', {
         _id: outingId,
         outingTime: outingTime,
-        isOutingTimeAlarm: isAlarm,
+        isNotifyOutingTime: isNotify,
         isEveryDay: true,
-        beforeOutingTime: isAlarm ? beforeOutingTime : null,
-        isBeforeOutingTimeAlarm: isAlarm,
+        beforeOutingTime: isNotify ? beforeOutingTime : null,
+        isNotifyBeforeOutingTime: isNotify,
         taskList: taskList,
       });
     });
   };
 
-  const setRealmUser = ({isAlarm}: ISetRealmUser) => {
+  const setRealmUser = ({isNotify}: ISetRealmUser) => {
     const language = getLocales()[0].languageCode;
 
     realm.write(() => {
@@ -132,7 +170,7 @@ const AlarmRequestScreen = ({navigation}) => {
         _id: userId,
         language: language,
         isDarkMode: false,
-        isAlarm: isAlarm,
+        isNotify: isNotify,
         outingList: outingList,
       });
     });
@@ -144,22 +182,22 @@ const AlarmRequestScreen = ({navigation}) => {
     });
   };
 
-  const setRealm = async (isAlarm: boolean) => {
+  const setRealm = async (isNotify: boolean) => {
     deleteAllRealmData();
 
     setRealmTask({task: 'Safety'});
     setRealmTask({task: 'Taking'});
     setRealmTask({task: 'Todo'});
 
-    setRealmOuting({isAlarm: isAlarm});
-    setRealmUser({isAlarm: isAlarm});
+    setRealmOuting({isNotify: isNotify});
+    setRealmUser({isNotify: isNotify});
 
-    return true;
+    return false;
   };
 
   const onPress = async (isOK: boolean) => {
-    const isAlarm = await setNotifee(isOK);
-    const isSaveInRealm = await setRealm(isAlarm);
+    const isNotify = await setNotifee({isOK: isOK});
+    const isSaveInRealm = await setRealm(isNotify);
 
     return isSaveInRealm
       ? navigation.reset({
@@ -169,11 +207,11 @@ const AlarmRequestScreen = ({navigation}) => {
   };
 
   return (
-    <View>
+    <SafeAreaView>
       <RealmPlugin realms={[realm]} />
       <Stepper pos={4} />
       <View>
-        <Text>외출 전 알람을 받으면</Text>
+        <Text>외출 전 알림을 받으면</Text>
         <Text>까먹지 않고 실천할 수 있어요.</Text>
         <Text>외출 후 "아 까먹었다!" 하는 일이 없도록 도와줄게요.</Text>
       </View>
@@ -183,7 +221,7 @@ const AlarmRequestScreen = ({navigation}) => {
       <View>
         <DefaultButton
           id="alarm-on"
-          text="알람을 받을게요!"
+          text="알림을 받을게요!"
           onPress={() => onPress(true)}
         />
         <DefaultButton
@@ -192,8 +230,8 @@ const AlarmRequestScreen = ({navigation}) => {
           onPress={() => onPress(false)}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
-export default AlarmRequestScreen;
+export default NotificationRequestScreen;

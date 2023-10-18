@@ -1,4 +1,9 @@
 import {SafeAreaView, Text} from 'react-native';
+import {
+  ExpandableCalendar,
+  CalendarProvider,
+  WeekCalendar,
+} from 'react-native-calendars';
 
 const OutingManageScreen = () => {
   return (
