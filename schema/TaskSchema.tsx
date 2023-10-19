@@ -4,6 +4,7 @@ import {Realm} from '@realm/react';
 export class Task extends Realm.Object<Task> {
   _id!: string;
   outingId!: string;
+  taskNotifiId!: string;
   label?: string;
   emoji?: string;
   name!: string;
@@ -15,6 +16,7 @@ export class Task extends Realm.Object<Task> {
     properties: {
       _id: 'string',
       outingId: 'string',
+      taskNotifiId: 'string',
       label: 'string?',
       emoji: 'string?',
       name: 'string',

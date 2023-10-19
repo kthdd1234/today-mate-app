@@ -4,7 +4,7 @@ const getUniqueId = (num: number) => {
   return Date.now().toString() + num;
 };
 
-const todoGroupNames = {
+const taskNameInfo = {
   [eLabel.Safety]: '안전 점검',
   [eLabel.Taking]: '물건 챙기기',
   [eLabel.Todo]: '할 일',
@@ -113,19 +113,24 @@ const customStyles = {
   currentStepLabelColor: '#fe7013',
 };
 
-const notificationCategories = {
-  outingTitle: '모두 완료 했어요!',
-  taskTitle: '완료 했어요!',
+const notifiCategories = {
+  outingCId: '모두 완료 했어요!',
+  taskCId: '완료 했어요!',
 };
 
 const outingTimeNotifiMessage = {
-  title: '외출 시간이 되었어요!',
-  body: '혹시 까먹은 일이 없는지 확인 해보세요. 🔍',
+  title: '외출 시간이 되었어요 🌤️',
+  body: '외출 전 ${}가지 할 일을 깜빡하셨나요?\n앱을 실행해서 깜빡한 일을 확인해보세요 :)',
+};
+
+const beforeOutingTimeNotifiMessage = {
+  title: '외출 {}전 알림 💡',
+  body: '외출하기 전에 ${}가지 할 일이 있어요. 달성을 완료해주세요 :)',
 };
 
 export {
   getUniqueId,
-  todoGroupNames,
+  taskNameInfo,
   outingTimeStates,
   outingTimeItems,
   initOutingTime,
@@ -136,5 +141,6 @@ export {
   stepLabels,
   customStyles,
   outingTimeNotifiMessage,
-  notificationCategories,
+  notifiCategories,
+  beforeOutingTimeNotifiMessage,
 };

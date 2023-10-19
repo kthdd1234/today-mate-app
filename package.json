@@ -52,6 +52,7 @@
     "realm": "^12.2.1",
     "realm-flipper-plugin-device": "^1.1.0",
     "recoil": "^0.7.7",
+    "string-format": "^2.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

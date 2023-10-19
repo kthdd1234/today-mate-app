@@ -11,16 +11,14 @@ import {
 import {useQuery, useRealm} from '@realm/react';
 import {getLocales} from 'react-native-localize';
 import {
+  notifiCategories,
   safetyInspectionItems,
   takinkThingItems,
   todoWorkItems,
+  outingTimeNotifiMessage,
 } from '../../constants';
 import {eLabel} from '../../types/enum';
-import {
-  ISetRealmTask,
-  ISetRealmOuting,
-  ISetRealmUser,
-} from '../../types/interface';
+import {ISetRealmOuting} from '../../types/interface';
 import {useTranslation} from 'react-i18next';
 import {Task} from '../../schema/TaskSchema';
 import {Outing} from '../../schema/OutingSchema';
@@ -32,9 +30,9 @@ import {
   setNotificationCategories,
   createTriggerNotification,
   requestNotificationPermission,
-  createTaskTriggerNotification,
 } from '../../utils/notifee';
-import {outingTimeNotifiMessage, notificationCategories} from '../../constants';
+import {RepeatFrequency} from '@notifee/react-native';
+import format from 'string-format';
 
 const testImg = require('../../images/test-img.png');
 
@@ -59,6 +57,24 @@ const NotificationRequestScreen = ({navigation}) => {
   const takingSelectedIds = useRecoilValue(takingSelectedIdsAtom);
   const todoSelectedIds = useRecoilValue(todoSelectedIdsAtom);
 
+  /** taskInfo */
+  const taskInfo = {
+    Safety: {
+      id: Safety,
+      selectedIds: safetySelectedIds,
+      items: safetyInspectionItems,
+    },
+    Taking: {
+      id: Taking,
+      selectedIds: takingSelectedIds,
+      items: takinkThingItems,
+    },
+    Todo: {id: Todo, selectedIds: todoSelectedIds, items: todoWorkItems},
+  };
+
+  /** beforeOutingTime */
+  const beforeOutingTime = '3';
+
   const getOutingTime = () => {
     const now = moment();
 
@@ -72,97 +88,115 @@ const NotificationRequestScreen = ({navigation}) => {
     });
   };
 
-  const getBeforeOutingTime = () => {
-    const outingTime = getOutingTime();
+  const getTasks = (task: string) => {
+    const data = taskInfo[task];
 
-    return momentBeforeFormatter({
-      formatString: outingTime,
-      minute: 10,
+    return data.selectedIds.map(id => {
+      const item = data.items[id];
+
+      return {
+        _id: uuid(),
+        outingId: outingId,
+        label: data.id,
+        emoji: item.emoji,
+        name: t(`${item.text}`),
+        isChecked: false,
+      };
     });
   };
 
   const setNotifee = async ({isOK}: {isOK: boolean}) => {
+    const notificationInfo: {
+      isNotify: boolean;
+      outingTimeNotifiId: string | null;
+      beforeOutingTimeNotifiId: string | null;
+    } = {
+      isNotify: false,
+      outingTimeNotifiId: null,
+      beforeOutingTimeNotifiId: null,
+    };
+
     if (isOK) {
       const isPermission = await requestNotificationPermission();
-      const {title, body} = outingTimeNotifiMessage;
-      const {outingTitle, taskTitle} = notificationCategories;
 
       if (isPermission) {
+        const allTaskLength = [
+          ...safetySelectedIds,
+          ...takingSelectedIds,
+          ...todoSelectedIds,
+        ].length.toString();
+
         await setNotificationCategories({
-          outingTitle: t(outingTitle),
-          taskTitle: t(taskTitle),
+          outingTitle: t(notifiCategories.outingCId),
+          taskTitle: t(notifiCategories.taskCId),
         });
 
         const outingTime = getOutingTime();
-        const beforeOutingTime = getBeforeOutingTime();
+        const outingTimeNotifiId = await createTriggerNotification({
+          title: t(outingTimeNotifiMessage.title),
+          body: format(t(outingTimeNotifiMessage.body), allTaskLength),
+          dateTime: outingTime,
+          repeat: RepeatFrequency.DAILY,
+          categoryId: 'outing',
+        });
 
-        // const outingTimeNotifiId = await createTriggerNotification({
-        //   title: t(title),
-        //   body: t(body),
-        //   dateTime: outingTime,
-        //   repeat: RepeatFrequency.DAILY
-        // });
+        const beforeOutingTimeNotifiId = await createTriggerNotification({
+          title: format(t(outingTimeNotifiMessage.title), beforeOutingTime),
+          body: format(t(outingTimeNotifiMessage.body), allTaskLength),
+          dateTime: momentBeforeFormatter({
+            formatString: outingTime,
+            minute: parseInt(beforeOutingTime, 10),
+          }),
+          repeat: RepeatFrequency.DAILY,
+          categoryId: 'outing',
+        });
 
-        createTaskTriggerNotification();
+        notificationInfo.isNotify = true;
+        notificationInfo.outingTimeNotifiId = outingTimeNotifiId;
+        notificationInfo.beforeOutingTimeNotifiId = beforeOutingTimeNotifiId;
       }
-
-      return isPermission;
     }
 
-    return false;
+    return notificationInfo;
   };
 
-  const setRealmTask = ({task}: ISetRealmTask) => {
-    const taskInfo = {
-      Safety: {
-        id: Safety,
-        selectedIds: safetySelectedIds,
-        items: safetyInspectionItems,
-      },
-      Taking: {
-        id: Taking,
-        selectedIds: takingSelectedIds,
-        items: takinkThingItems,
-      },
-      Todo: {id: Todo, selectedIds: todoSelectedIds, items: todoWorkItems},
-    };
+  const setRealmTask = () => {
+    const allTaskList = [
+      getTasks('Safety'),
+      getTasks('Taking'),
+      getTasks('Todo'),
+    ];
 
-    const taskArg = taskInfo[task];
-
-    return taskArg.selectedIds.map(id => {
-      const item = taskArg.items[id];
-
+    return allTaskList.map(tasks => {
       realm.write(() => {
-        realm.create('Task', {
-          _id: uuid(),
-          outingId: outingId,
-          label: taskArg.id,
-          emoji: item.emoji,
-          name: t(`${item.text}`),
-          isChecked: false,
-        });
+        realm.create('Task', tasks);
       });
     });
   };
 
-  const setRealmOuting = ({isNotify}: ISetRealmOuting) => {
+  const setRealmOuting = ({
+    isNotify,
+    outingTimeNotifiId,
+    beforeOutingTimeNotifiId,
+  }: ISetRealmOuting) => {
     const outingTime = getOutingTime();
-    const beforeOutingTime = getBeforeOutingTime();
 
     realm.write(() => {
       realm.create('Outing', {
         _id: outingId,
         outingTime: outingTime,
         isNotifyOutingTime: isNotify,
-        isEveryDay: true,
+        outingTimeNotifiId: outingTimeNotifiId,
         beforeOutingTime: isNotify ? beforeOutingTime : null,
         isNotifyBeforeOutingTime: isNotify,
+        beforeOutingTimeNotifiId: beforeOutingTimeNotifiId,
         taskList: taskList,
+        isEveryDay: true,
       });
     });
   };
 
-  const setRealmUser = ({isNotify}: ISetRealmUser) => {
+  const setRealmUser = () => {
     const language = getLocales()[0].languageCode;
 
     realm.write(() => {
@@ -170,7 +204,6 @@ const NotificationRequestScreen = ({navigation}) => {
         _id: userId,
         language: language,
         isDarkMode: false,
-        isNotify: isNotify,
         outingList: outingList,
       });
     });
@@ -182,28 +215,24 @@ const NotificationRequestScreen = ({navigation}) => {
     });
   };
 
-  const setRealm = async (isNotify: boolean) => {
-    deleteAllRealmData();
-
-    setRealmTask({task: 'Safety'});
-    setRealmTask({task: 'Taking'});
-    setRealmTask({task: 'Todo'});
-
-    setRealmOuting({isNotify: isNotify});
-    setRealmUser({isNotify: isNotify});
-
-    return false;
-  };
-
   const onPress = async (isOK: boolean) => {
-    const isNotify = await setNotifee({isOK: isOK});
-    const isSaveInRealm = await setRealm(isNotify);
+    const {isNotify, outingTimeNotifiId, beforeOutingTimeNotifiId} =
+      await setNotifee({
+        isOK: isOK,
+      });
 
-    return isSaveInRealm
-      ? navigation.reset({
-          routes: [{name: 'MainScreen'}],
-        })
-      : console.log('경고창 띄우기');
+    deleteAllRealmData();
+    setRealmTask();
+    setRealmOuting({isNotify, outingTimeNotifiId, beforeOutingTimeNotifiId});
+    setRealmUser();
+
+    return console.log('경고창 띄우기');
+
+    // return isSaveInRealm
+    //   ? navigation.reset({
+    //       routes: [{name: 'MainScreen'}],
+    //     })
+    //   : console.log('경고창 띄우기');
   };
 
   return (

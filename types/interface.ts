@@ -38,16 +38,10 @@ export interface ISelectItemsSection {
   onPress: (id: string) => void;
 }
 
-export interface ISetRealmTask {
-  task: string;
-}
-
 export interface ISetRealmOuting {
   isNotify: boolean;
-}
-
-export interface ISetRealmUser {
-  isNotify: boolean;
+  outingTimeNotifiId: string | null;
+  beforeOutingTimeNotifiId: string | null;
 }
 
 export interface IMomentFormatter {
@@ -69,4 +63,15 @@ export interface ITriggerNotification {
   body: string;
   dateTime: string;
   repeat: RepeatFrequency;
+  categoryId: 'outing' | 'task';
+}
+
+export interface ITaskInfo {
+  id: string;
+  outingId: string;
+  taskNotifiId: string;
+  label: string;
+  emoji: string;
+  name: string;
+  isChecked: boolean;
 }

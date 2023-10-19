@@ -55,6 +55,7 @@ const createTriggerNotification = async ({
   body,
   dateTime,
   repeat,
+  categoryId,
 }: ITriggerNotification) => {
   const newDate = new Date(dateTime);
 
@@ -73,7 +74,7 @@ const createTriggerNotification = async ({
         channelId: channelId,
       },
       ios: {
-        categoryId: 'outing',
+        categoryId: categoryId,
       },
     },
     {
@@ -98,10 +99,6 @@ const updateTriggerNotification = async (
   return await createTriggerNotification(triggerNotification);
 };
 
-const createTaskTriggerNotification = async () => {
-  //
-};
-
 const getTriggerNotificationIds = async () => {
   const notificationIds = await notifee.getTriggerNotificationIds();
   console.log('notificationIds:', notificationIds);
@@ -123,6 +120,5 @@ export {
   setNotificationAndroid12,
   createTriggerNotification,
   cancelNotification,
-  createTaskTriggerNotification,
   setNotificationCategories,
 };
