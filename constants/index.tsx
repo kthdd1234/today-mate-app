@@ -120,12 +120,12 @@ const notifiCategories = {
 
 const outingTimeNotifiMessage = {
   title: '외출 시간이 되었어요 🌤️',
-  body: '외출 전 ${}가지 할 일을 깜빡하셨나요?\n앱을 실행해서 깜빡한 일을 확인해보세요 :)',
+  body: '외출 전 {}가지 할 일을 깜빡하셨나요?\n앱을 실행해서 깜빡한 일을 확인해보세요 :)',
 };
 
 const beforeOutingTimeNotifiMessage = {
-  title: '외출 {}전 알림 💡',
-  body: '외출하기 전에 ${}가지 할 일이 있어요. 달성을 완료해주세요 :)',
+  title: '외출 {}분 전 💡',
+  body: '외출 전 {}가지 할 일이 있어요. 달성을 완료해주세요 :)',
 };
 
 export {

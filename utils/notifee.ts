@@ -4,6 +4,7 @@ import notifee, {
   TriggerType,
 } from '@notifee/react-native';
 import {ITriggerNotification} from '../types/interface';
+import moment from 'moment';
 
 const requestNotificationPermission = async () => {
   const result = await notifee.requestPermission();
@@ -57,7 +58,13 @@ const createTriggerNotification = async ({
   repeat,
   categoryId,
 }: ITriggerNotification) => {
-  const newDate = new Date(dateTime);
+  const now = new Date(Date.now()); // 2023/10/20 오후 02:07
+  let newDate = new Date(dateTime); // 2023/10/20 오전 09:00
+
+  if (now.getTime() > newDate.getTime()) {
+    newDate = moment(dateTime).add(1, 'd').toDate();
+    console.log('다음 날에 알림 설정!', newDate.toLocaleString());
+  }
 
   // Create a channel (required for Android)
   const channelId = await notifee.createChannel({
@@ -113,6 +120,10 @@ const cancelNotification = async (notificationId: string) => {
   await getTriggerNotificationIds();
 };
 
+const cancelAllNotification = async () => {
+  await notifee.cancelAllNotifications();
+};
+
 export {
   getTriggerNotificationIds,
   requestNotificationPermission,
@@ -121,4 +132,5 @@ export {
   createTriggerNotification,
   cancelNotification,
   setNotificationCategories,
+  cancelAllNotification,
 };

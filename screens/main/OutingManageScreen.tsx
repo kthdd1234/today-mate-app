@@ -1,16 +1,14 @@
-import {SafeAreaView, Text} from 'react-native';
-import {
-  ExpandableCalendar,
-  CalendarProvider,
-  WeekCalendar,
-} from 'react-native-calendars';
+import {SafeAreaView} from 'react-native';
+import OutingManageCalenadr from '../../components/calendar/OutingManageCalendar';
 
 const OutingManageScreen = () => {
   return (
     <SafeAreaView>
-      <Text>외출 관리 화면</Text>
+      <OutingManageCalenadr />
     </SafeAreaView>
   );
 };
 
 export default OutingManageScreen;
+
+//

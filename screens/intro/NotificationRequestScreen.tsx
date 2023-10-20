@@ -16,6 +16,7 @@ import {
   takinkThingItems,
   todoWorkItems,
   outingTimeNotifiMessage,
+  beforeOutingTimeNotifiMessage,
 } from '../../constants';
 import {eLabel} from '../../types/enum';
 import {ISetRealmOuting} from '../../types/interface';
@@ -30,6 +31,7 @@ import {
   setNotificationCategories,
   createTriggerNotification,
   requestNotificationPermission,
+  cancelAllNotification,
 } from '../../utils/notifee';
 import {RepeatFrequency} from '@notifee/react-native';
 import format from 'string-format';
@@ -126,6 +128,8 @@ const NotificationRequestScreen = ({navigation}) => {
           ...todoSelectedIds,
         ].length.toString();
 
+        await cancelAllNotification();
+
         await setNotificationCategories({
           outingTitle: t(notifiCategories.outingCId),
           taskTitle: t(notifiCategories.taskCId),
@@ -141,8 +145,11 @@ const NotificationRequestScreen = ({navigation}) => {
         });
 
         const beforeOutingTimeNotifiId = await createTriggerNotification({
-          title: format(t(outingTimeNotifiMessage.title), beforeOutingTime),
-          body: format(t(outingTimeNotifiMessage.body), allTaskLength),
+          title: format(
+            t(beforeOutingTimeNotifiMessage.title),
+            beforeOutingTime,
+          ),
+          body: format(t(beforeOutingTimeNotifiMessage.body), allTaskLength),
           dateTime: momentBeforeFormatter({
             formatString: outingTime,
             minute: parseInt(beforeOutingTime, 10),
@@ -162,9 +169,9 @@ const NotificationRequestScreen = ({navigation}) => {
 
   const setRealmTask = () => {
     const allTaskList = [
-      getTasks('Safety'),
-      getTasks('Taking'),
-      getTasks('Todo'),
+      ...getTasks('Safety'),
+      ...getTasks('Taking'),
+      ...getTasks('Todo'),
     ];
 
     return allTaskList.map(tasks => {
@@ -226,7 +233,9 @@ const NotificationRequestScreen = ({navigation}) => {
     setRealmOuting({isNotify, outingTimeNotifiId, beforeOutingTimeNotifiId});
     setRealmUser();
 
-    return console.log('경고창 띄우기');
+    navigation.reset({
+      routes: [{name: 'MainScreen'}],
+    });
 
     // return isSaveInRealm
     //   ? navigation.reset({

@@ -33,6 +33,15 @@ const todoGroupIdAtom = atom({
   default: eLabel.None,
 });
 
+const selectedDateAtom = atom({
+  key: 'selectedDateAtom',
+  default: {
+    year: 0,
+    month: 0,
+    day: 0,
+  },
+});
+
 export {
   initOutingTime,
   outingTimeSettingValuesAtom,
@@ -41,4 +50,5 @@ export {
   takingSelectedIdsAtom,
   todoSelectedIdsAtom,
   todoGroupIdAtom,
+  selectedDateAtom,
 };
