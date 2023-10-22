@@ -10,10 +10,10 @@ export interface IDefaultButton {
 }
 
 export interface ITimeSettingSection {
-  initTime: ITimeValues;
+  initTime: IOutingTimeValues;
 }
 
-export interface ITimeValues {
+export interface IOutingTimeValues {
   ampm: string;
   hour: string;
   minute: string;
@@ -21,7 +21,7 @@ export interface ITimeValues {
 
 export interface IPropsBottomSheet {
   bottomSheetModalRef: Ref<BottomSheetModal> | null;
-  onPressCompleted: ({ampm, hour, minute}: ITimeValues) => void;
+  onPressCompleted: ({ampm, hour, minute}: IOutingTimeValues) => void;
 }
 
 export interface ITodoSettingState {
@@ -74,4 +74,10 @@ export interface ITaskInfo {
   emoji: string;
   name: string;
   isChecked: boolean;
+}
+
+export interface ITodoItems {
+  id: string;
+  text: string;
+  emoji: string;
 }

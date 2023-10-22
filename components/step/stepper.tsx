@@ -11,16 +11,15 @@ const Stepper = ({pos}: {pos: number}) => {
     stepStatus: string;
   }) => {
     const iconConfig = {
-      name: 'schedule',
+      name: 'access-time',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 15,
     };
     const iconNames = {
-      0: 'schedule',
-      1: 'health-and-safety',
-      2: 'work',
-      3: 'category',
-      4: 'notifications',
+      0: 'access-time',
+      1: 'category',
+      2: 'av-timer',
+      3: 'notifications',
     };
 
     iconConfig.name = iconNames[position];

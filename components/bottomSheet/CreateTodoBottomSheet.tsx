@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {todoGroupNames} from '../../constants';
 import DefaultButton from '../button/defaultButton';
 import {eLabel} from '../../types/enum';
+import {closeBottomSheetModal} from '../../utils/gorhom';
 
 const {Safety, Taking, Todo} = eLabel;
 
@@ -82,7 +83,7 @@ const CreateTodoBottomSheet = ({bottomSheetModalRef}: IPropsBottomSheet) => {
     // }
 
     // setTodoGroupIdState(eLabel.None);
-    bottomSheetModalRef?.current.close();
+    closeBottomSheetModal(bottomSheetModalRef);
   };
 
   return (

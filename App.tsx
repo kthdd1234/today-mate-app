@@ -7,14 +7,13 @@ import {RecoilRoot} from 'recoil';
 import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import StartScreen from './screens/intro/IntroStartScreen';
-import SafetyBeforeOutingScreen from './screens/intro/SafetyBeforeOutingScreen';
-import TakingBeforeOutingScreen from './screens/intro/TakingBeforeOutingScreen';
+import IntroStartScreen from './screens/intro/IntroStartScreen';
 import TodoBeforeOutingScreen from './screens/intro/TodoBeforeOutingScreen';
-import AlarmRequestScreen from './screens/intro/NotificationRequestScreen';
+import NotificationRequestScreen from './screens/intro/NotificationRequestScreen';
 import {realmConfig} from './schema';
 import MainScreen from './screens/main/MainScreen';
 import './i18n/i18n.config';
+import OutingReadyScreen from './screens/intro/OutingReadyScreen';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -24,12 +23,11 @@ const App = () => {
   const {t} = useTranslation();
 
   const screenList = [
-    {name: 'StartScreen', component: StartScreen},
+    {name: 'IntroStartScreen', component: IntroStartScreen},
     {name: 'OutingTimeSettingScreen', component: OutingTimeSettingScreen},
-    {name: 'SafetyBeforeOutingScreen', component: SafetyBeforeOutingScreen},
-    {name: 'TakingBeforeOutingScreen', component: TakingBeforeOutingScreen},
     {name: 'TodoBeforeOutingScreen', component: TodoBeforeOutingScreen},
-    {name: 'AlarmRequestScreen', component: AlarmRequestScreen},
+    {name: 'OutingReadyScreen', component: OutingReadyScreen},
+    {name: 'NotificationRequestScreen', component: NotificationRequestScreen},
     {name: 'MainScreen', component: MainScreen},
   ];
 
@@ -39,7 +37,7 @@ const App = () => {
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
-              <Navigator initialRouteName="MainScreen">
+              <Navigator initialRouteName="OutingTimeSettingScreen">
                 {screenList.map(({name, component}) => (
                   <Screen
                     key={name}

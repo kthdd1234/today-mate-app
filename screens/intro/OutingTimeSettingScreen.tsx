@@ -3,21 +3,20 @@ import {useRef, useState} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import DefaultButton from '../../components/button/defaultButton';
 import {useSetRecoilState} from 'recoil';
-import {outingTimeSettingValuesAtom} from '../../states';
+import {outingTimeValuesAtom} from '../../states';
 import OutingTimeSettingBottomSheet from '../../components/bottomSheet/OutingTimeSettingBottomSheet';
 import {useTranslation} from 'react-i18next';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import {outingTimeItems, outingTimeStates} from '../../constants';
 import Stepper from '../../components/step/stepper';
+import {openBottomSheetModal} from '../../utils/gorhom';
 
 const OutingTimeSettingScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
   /** useRecoilState */
-  const setOutingTimeSettingValues = useSetRecoilState(
-    outingTimeSettingValuesAtom,
-  );
+  const setOutingTimeValues = useSetRecoilState(outingTimeValuesAtom);
 
   /** useState */
   const [outingTimeItemState, setOutingTimeItemState] =
@@ -28,7 +27,7 @@ const OutingTimeSettingScreen = ({navigation}) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const onPressNext = () => {
-    navigation.navigate('SafetyBeforeOutingScreen');
+    navigation.navigate('TodoBeforeOutingScreen');
   };
 
   const onPressItem = (id: string) => {
@@ -37,9 +36,9 @@ const OutingTimeSettingScreen = ({navigation}) => {
       const {ampm, hour, minute} = timeState;
 
       setSelectedId(id);
-      setOutingTimeSettingValues({ampm, hour, minute});
+      setOutingTimeValues({ampm, hour, minute});
     } else {
-      bottomSheetModalRef.current?.present();
+      openBottomSheetModal(bottomSheetModalRef);
     }
   };
 
@@ -54,7 +53,7 @@ const OutingTimeSettingScreen = ({navigation}) => {
     <SafeAreaView className="h-full">
       <Stepper pos={0} />
       <SelectItemsSection
-        title="오늘 또는 내일, 몇시에 외출하나요?"
+        title="오늘(또는 내일) 몇시에 외출하나요?"
         renderList={outingTimeItemState}
         selectedIds={[selectedId]}
         onPress={onPressItem}

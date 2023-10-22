@@ -1,46 +1,55 @@
 import {SafeAreaView} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {useRecoilState} from 'recoil';
-import {todoWorkItems} from '../../constants';
-import {todoSelectedIdsAtom} from '../../states';
+import {useSetRecoilState} from 'recoil';
+import {todoItems} from '../../constants';
+import {todoBeforeOutingAtom} from '../../states';
 import SelectItemsSection from '../../components/section/SelectItemsSection';
 import DefaultButton from '../../components/button/defaultButton';
 import Stepper from '../../components/step/stepper';
+import {useState} from 'react';
+import {ITodoItems} from '../../types/interface';
 
 const TodoBeforeOutingScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
   /** useRecoilState */
-  const [todoSelectedIds, setTodoSelectedIds] =
-    useRecoilState(todoSelectedIdsAtom);
+  const setTodoBeforeOuting = useSetRecoilState(todoBeforeOutingAtom);
 
-  const onPressNext = () => {
-    //
-    navigation.navigate('AlarmRequestScreen'); //
-  };
+  /** useState */
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const onPressItem = (id: string) => {
-    if (todoSelectedIds.includes(id as never)) {
-      const newSelectedIds = todoSelectedIds.filter(
+    if (selectedIds.includes(id as never)) {
+      const newSelectedIds = selectedIds.filter(
         selectedId => selectedId !== id,
       );
-      setTodoSelectedIds(newSelectedIds);
+
+      setSelectedIds(newSelectedIds);
     } else {
-      const sliceSelectedIds = todoSelectedIds.slice();
+      const sliceSelectedIds = selectedIds.slice();
       sliceSelectedIds.push(id);
 
-      setTodoSelectedIds(sliceSelectedIds);
+      setSelectedIds(sliceSelectedIds);
     }
+  };
+
+  const onPressNext = () => {
+    const resultItems = selectedIds.map(id =>
+      todoItems.find(item => item.id === id),
+    );
+
+    setTodoBeforeOuting(resultItems as ITodoItems[]);
+    navigation.navigate('OutingReadyScreen');
   };
 
   return (
     <SafeAreaView className="h-full">
-      <Stepper pos={3} />
+      <Stepper pos={1} />
       <SelectItemsSection
-        title="외출 전에,\n해야 할 일이 있나요?"
-        renderList={todoWorkItems}
-        selectedIds={todoSelectedIds}
+        title="외출 전에 할 일을 모두 골라봐요:)"
+        renderList={todoItems}
+        selectedIds={selectedIds}
         onPress={onPressItem}
       />
       <DefaultButton id="next-btn" text={t('완료')} onPress={onPressNext} />

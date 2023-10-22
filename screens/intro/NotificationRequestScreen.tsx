@@ -3,22 +3,17 @@ import DefaultButton from '../../components/button/defaultButton';
 import Stepper from '../../components/step/stepper';
 import {useRecoilValue} from 'recoil';
 import {
-  outingTimeSettingValuesAtom,
-  safetySelectedIdsAtom,
-  takingSelectedIdsAtom,
-  todoSelectedIdsAtom,
+  beforeOutingMinuteAtom,
+  outingTimeValuesAtom,
+  todoBeforeOutingAtom,
 } from '../../states';
 import {useQuery, useRealm} from '@realm/react';
 import {getLocales} from 'react-native-localize';
 import {
   notifiCategories,
-  safetyInspectionItems,
-  takinkThingItems,
-  todoWorkItems,
   outingTimeNotifiMessage,
   beforeOutingTimeNotifiMessage,
 } from '../../constants';
-import {eLabel} from '../../types/enum';
 import {ISetRealmOuting} from '../../types/interface';
 import {useTranslation} from 'react-i18next';
 import {Task} from '../../schema/TaskSchema';
@@ -38,8 +33,6 @@ import format from 'string-format';
 
 const testImg = require('../../images/test-img.png');
 
-const {Safety, Taking, Todo} = eLabel;
-
 const NotificationRequestScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
@@ -54,28 +47,9 @@ const NotificationRequestScreen = ({navigation}) => {
   const outingId = uuid();
 
   /** useRecoilValue */
-  const {ampm, hour, minute} = useRecoilValue(outingTimeSettingValuesAtom);
-  const safetySelectedIds = useRecoilValue(safetySelectedIdsAtom);
-  const takingSelectedIds = useRecoilValue(takingSelectedIdsAtom);
-  const todoSelectedIds = useRecoilValue(todoSelectedIdsAtom);
-
-  /** taskInfo */
-  const taskInfo = {
-    Safety: {
-      id: Safety,
-      selectedIds: safetySelectedIds,
-      items: safetyInspectionItems,
-    },
-    Taking: {
-      id: Taking,
-      selectedIds: takingSelectedIds,
-      items: takinkThingItems,
-    },
-    Todo: {id: Todo, selectedIds: todoSelectedIds, items: todoWorkItems},
-  };
-
-  /** beforeOutingTime */
-  const beforeOutingTime = '3';
+  const {ampm, hour, minute} = useRecoilValue(outingTimeValuesAtom);
+  const todoBeforeOuting = useRecoilValue(todoBeforeOutingAtom);
+  const beforeOutingMinute = useRecoilValue(beforeOutingMinuteAtom);
 
   const getOutingTime = () => {
     const now = moment();
@@ -90,22 +64,22 @@ const NotificationRequestScreen = ({navigation}) => {
     });
   };
 
-  const getTasks = (task: string) => {
-    const data = taskInfo[task];
+  // const getTasks = (task: string) => {
+  //   const data = taskInfo[task];
 
-    return data.selectedIds.map(id => {
-      const item = data.items[id];
+  //   return data.selectedIds.map(id => {
+  //     const item = data.items[id];
 
-      return {
-        _id: uuid(),
-        outingId: outingId,
-        label: data.id,
-        emoji: item.emoji,
-        name: t(`${item.text}`),
-        isChecked: false,
-      };
-    });
-  };
+  //     return {
+  //       _id: uuid(),
+  //       outingId: outingId,
+  //       label: data.id,
+  //       emoji: item.emoji,
+  //       name: t(`${item.text}`),
+  //       isChecked: false,
+  //     };
+  //   });
+  // };
 
   const setNotifee = async ({isOK}: {isOK: boolean}) => {
     const notificationInfo: {
@@ -122,11 +96,7 @@ const NotificationRequestScreen = ({navigation}) => {
       const isPermission = await requestNotificationPermission();
 
       if (isPermission) {
-        const allTaskLength = [
-          ...safetySelectedIds,
-          ...takingSelectedIds,
-          ...todoSelectedIds,
-        ].length.toString();
+        const allTaskLength = [...todoSelectedIds].length.toString();
 
         await cancelAllNotification();
 
@@ -247,7 +217,7 @@ const NotificationRequestScreen = ({navigation}) => {
   return (
     <SafeAreaView>
       <RealmPlugin realms={[realm]} />
-      <Stepper pos={4} />
+      <Stepper pos={3} />
       <View>
         <Text>외출 전 알림을 받으면</Text>
         <Text>까먹지 않고 실천할 수 있어요.</Text>

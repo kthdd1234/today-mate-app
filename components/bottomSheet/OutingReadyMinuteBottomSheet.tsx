@@ -1,19 +1,19 @@
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetModalProvider,
+  BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
-import {useMemo, useCallback, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
 import DefaultButton from '../button/defaultButton';
+import {useMemo, useCallback, useState} from 'react';
 import {IPropsBottomSheet} from '../../types/interface';
-import TimeSettingSection from '../section/TimeSettingSection';
-import {initOutingTimeValues, outingTimeValuesAtom} from '../../states';
-import {useSetRecoilState} from 'recoil';
-import {useTranslation} from 'react-i18next';
 import {closeBottomSheetModal} from '../../utils/gorhom';
+import TimeSettingSection from '../section/TimeSettingSection';
+import {useSetRecoilState} from 'recoil';
+import {beforeOutingMinuteAtom} from '../../states';
 
-const OutingTimeSettingBottomSheet = ({
+const OutingReadyMinuteBottomSheet = ({
   bottomSheetModalRef,
   onPressCompleted,
 }: IPropsBottomSheet) => {
@@ -21,24 +21,10 @@ const OutingTimeSettingBottomSheet = ({
   const {t} = useTranslation();
 
   /** useState */
-  const [outingTimeValues, setOutingTimeValues] =
-    useState(initOutingTimeValues);
-  const {ampm, hour, minute} = outingTimeValues;
+  const [timeValues, setTimeValues] = useState({hour: '', minute: ''});
 
   /** useSetRecoilState */
-  const setOutingTimeValuesAtom = useSetRecoilState(outingTimeValuesAtom);
-
-  const onPressTime = (value: string) => {
-    setOutingTimeValues({...outingTimeValues, ampm: value});
-  };
-
-  const onPressHour = (value: string) => {
-    setOutingTimeValues({...outingTimeValues, hour: value});
-  };
-
-  const onPressMinute = (value: string) => {
-    setOutingTimeValues({...outingTimeValues, minute: value});
-  };
+  const setBeforeOutingTimeItems = useSetRecoilState(beforeOutingMinuteAtom);
 
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
@@ -60,11 +46,24 @@ const OutingTimeSettingBottomSheet = ({
     [],
   );
 
-  const onPressCompletedButton = () => {
-    closeBottomSheetModal(bottomSheetModalRef);
+  const onPressHour = (value: string) => {
+    setTimeValues({...timeValues, hour: value});
+  };
 
-    setOutingTimeValuesAtom({ampm, hour, minute});
-    onPressCompleted({ampm, hour, minute});
+  const onPressMinute = (value: string) => {
+    setTimeValues({...timeValues, minute: value});
+  };
+
+  const onPressCompletedButton = () => {
+    const m = `${Number(timeValues.hour) * 60 + timeValues.minute}`;
+
+    closeBottomSheetModal(bottomSheetModalRef);
+    setBeforeOutingTimeItems(m);
+    onPressCompleted({
+      ampm: '',
+      hour: timeValues.hour,
+      minute: timeValues.minute,
+    });
   };
 
   return (
@@ -76,17 +75,17 @@ const OutingTimeSettingBottomSheet = ({
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>
         <View>
-          <Text>{t('외출 시간 설정')}</Text>
+          <Text>{t('외출 전 시간 설정')}</Text>
           <TimeSettingSection
-            states={{ampm: ampm, hour: hour, minute: minute}}
+            states={{hour: timeValues.hour, minute: timeValues.minute}}
             onPressed={{
-              Time: onPressTime,
+              Time: () => null,
               Hour: onPressHour,
               Minute: onPressMinute,
             }}
           />
           <DefaultButton
-            id="time-setting"
+            id="miute-setting"
             text={t('완료')}
             onPress={onPressCompletedButton}
           />
@@ -96,4 +95,4 @@ const OutingTimeSettingBottomSheet = ({
   );
 };
 
-export default OutingTimeSettingBottomSheet;
+export default OutingReadyMinuteBottomSheet;
