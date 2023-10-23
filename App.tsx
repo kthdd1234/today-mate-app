@@ -37,7 +37,7 @@ const App = () => {
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
-              <Navigator initialRouteName="OutingTimeSettingScreen">
+              <Navigator initialRouteName="IntroStartScreen">
                 {screenList.map(({name, component}) => (
                   <Screen
                     key={name}

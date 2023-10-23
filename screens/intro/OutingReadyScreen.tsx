@@ -29,7 +29,7 @@ const OutingReadyScreen = ({navigation}) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const onPressItem = (id: string) => {
-    if (id === '5') {
+    if (id === '6') {
       return openBottomSheetModal(bottomSheetModalRef);
     }
 
@@ -48,18 +48,22 @@ const OutingReadyScreen = ({navigation}) => {
     hour: string;
     minute: string;
   }) => {
-    const formatString = format('{}시간 {}분', hour, minute);
-    beforeOutingTimeState[5].text = t(formatString);
+    const formatString =
+      hour === '0'
+        ? format('{}분 전', minute)
+        : format('{}시간 {}분 전', hour, minute);
+
+    beforeOutingTimeState[6].text = t(formatString);
 
     setBeforeOutingTimeState([...beforeOutingTimeState]);
-    setSelectedId('5');
+    setSelectedId('6');
   };
 
   return (
     <SafeAreaView className="h-full">
       <Stepper pos={2} />
       <SelectItemsSection
-        title="외출 준비는 몇분(또는 몇시간) 전에 해요?"
+        title="외출 준비는 보통 몇분(또는 몇시간) 전에 해요?"
         renderList={beforeOutingTimeState}
         selectedIds={[selectedId]}
         onPress={onPressItem}

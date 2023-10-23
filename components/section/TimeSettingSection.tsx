@@ -36,29 +36,33 @@ const TimeSettingSection = ({states, onPressed}: ITimeSettingSection) => {
     },
   };
 
-  const ampm = states.ampm ? info[states.ampm] : null;
-  const list = [ampm, info[states.hour], info[states.minute]];
+  !states.ampm && info.hour.values.unshift('0');
+  !states.ampm && info.minute.values.shift();
+
+  const ampm = states.ampm ? info.ampm : null;
+  const list = [ampm, info.hour, info.minute];
+
+  console.log(list);
 
   return (
     <View>
-      {list.map(
-        (item, key) =>
-          item && (
-            <View key={key} className="flex-row">
-              <Text>{item.title}</Text>
-              <View className="flex-row">
-                {item.values.map(text => (
-                  <DefaultButton
-                    key={text}
-                    selectedId={item.state}
-                    id={text}
-                    text={text}
-                    onPress={item.onPress}
-                  />
-                ))}
-              </View>
+      {list.map((item, key) =>
+        item !== null ? (
+          <View key={key} className="flex-row">
+            <Text>{item.title}</Text>
+            <View className="flex-row">
+              {item.values.map(text => (
+                <DefaultButton
+                  key={text}
+                  selectedId={item.state}
+                  id={text}
+                  text={text}
+                  onPress={item.onPress}
+                />
+              ))}
             </View>
-          ),
+          </View>
+        ) : null,
       )}
     </View>
   );

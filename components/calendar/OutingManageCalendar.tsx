@@ -12,12 +12,14 @@ const OutingManageCalenadr = () => {
   /** useRecoilState */
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
 
-  const onDayPress = ({year, month, day}: DateData) => {
-    setSelectedDate({year, month, day});
+  const onDayPress = ({dateString}: DateData) => {
+    setSelectedDate(dateString);
   };
 
+  console.log(selectedDate);
+
   return (
-    <CalendarProvider date={'2023-10-21'} showTodayButton>
+    <CalendarProvider date={selectedDate}>
       <ExpandableCalendar
         disablePan={true}
         initialPosition={Positions.OPEN}

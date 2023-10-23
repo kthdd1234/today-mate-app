@@ -12,6 +12,7 @@ import {closeBottomSheetModal} from '../../utils/gorhom';
 import TimeSettingSection from '../section/TimeSettingSection';
 import {useSetRecoilState} from 'recoil';
 import {beforeOutingMinuteAtom} from '../../states';
+import {initTimeValues} from '../../constants';
 
 const OutingReadyMinuteBottomSheet = ({
   bottomSheetModalRef,
@@ -21,7 +22,8 @@ const OutingReadyMinuteBottomSheet = ({
   const {t} = useTranslation();
 
   /** useState */
-  const [timeValues, setTimeValues] = useState({hour: '', minute: ''});
+  const [timeValues, setTimeValues] = useState(initTimeValues);
+  const {hour, minute} = timeValues;
 
   /** useSetRecoilState */
   const setBeforeOutingTimeItems = useSetRecoilState(beforeOutingMinuteAtom);
@@ -75,9 +77,9 @@ const OutingReadyMinuteBottomSheet = ({
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>
         <View>
-          <Text>{t('외출 전 시간 설정')}</Text>
+          <Text>{t('시간 설정')}</Text>
           <TimeSettingSection
-            states={{hour: timeValues.hour, minute: timeValues.minute}}
+            states={{hour: hour, minute: minute}}
             onPressed={{
               Time: () => null,
               Hour: onPressHour,

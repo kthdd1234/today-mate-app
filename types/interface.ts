@@ -41,7 +41,6 @@ export interface ISelectItemsSection {
 export interface ISetRealmOuting {
   isNotify: boolean;
   outingTimeNotifiId: string | null;
-  beforeOutingTimeNotifiId: string | null;
 }
 
 export interface IMomentFormatter {

@@ -32,6 +32,7 @@ const Stepper = ({pos}: {pos: number}) => {
 
   return (
     <StepIndicator
+      stepCount={4}
       customStyles={customStyles}
       labels={stepLabels}
       currentPosition={pos}

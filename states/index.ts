@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 import {IOutingTimeValues, ITodoItems} from '../types/interface';
-import {initOutingTimeValues} from '../constants';
+import {getCalendarDate, initOutingTimeValues} from '../constants';
 
 const outingTimeValuesAtom = atom<IOutingTimeValues>({
   key: 'outingTimeValuesAtom',
@@ -19,11 +19,7 @@ const beforeOutingMinuteAtom = atom<string>({
 
 const selectedDateAtom = atom({
   key: 'selectedDateAtom',
-  default: {
-    year: 0,
-    month: 0,
-    day: 0,
-  },
+  default: getCalendarDate(),
 });
 
 export {

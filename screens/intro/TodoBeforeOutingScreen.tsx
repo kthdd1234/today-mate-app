@@ -52,7 +52,7 @@ const TodoBeforeOutingScreen = ({navigation}) => {
         selectedIds={selectedIds}
         onPress={onPressItem}
       />
-      <DefaultButton id="next-btn" text={t('완료')} onPress={onPressNext} />
+      <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
     </SafeAreaView>
   );
 };

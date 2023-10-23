@@ -7,9 +7,8 @@ export class Outing extends Realm.Object<Outing> {
   outingTime!: string;
   isNotifyOutingTime!: boolean;
   outingTimeNotifiId?: string;
-  beforeOutingTime?: string;
+  beforeOutingMinute?: string;
   isNotifyBeforeOutingTime!: boolean;
-  beforeOutingTimeNotifiId?: string;
   taskList!: Realm.List<Task>;
   isEveryDay!: boolean;
 
@@ -21,9 +20,8 @@ export class Outing extends Realm.Object<Outing> {
       outingTime: 'string',
       isNotifyOutingTime: {type: 'bool', default: false},
       outingTimeNotifiId: 'string?',
-      beforeOutingTime: 'string?',
+      beforeOutingMinute: 'string?',
       isNotifyBeforeOutingTime: {type: 'bool', default: false},
-      beforeOutingTimeNotifiId: 'string?',
       taskList: {
         type: 'list',
         objectType: 'Task',

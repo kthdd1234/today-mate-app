@@ -1,19 +1,29 @@
+import moment from 'moment';
+import {getLocales} from 'react-native-localize';
+
+const getLng = () => {
+  return getLocales()[0].languageCode;
+};
+
+const getCalendarDate = () => {
+  return moment(Date.now()).format('YYYY-MM-DD');
+};
+
 const getUniqueId = (num: number) => {
   return Date.now().toString() + num;
 };
 
-const stepLabels = [
-  '외출 시간',
-  '할 일',
-  '외출 준비',
-  '지속 여부',
-  '알람 설정',
-];
+const stepLabels = ['외출 시간', '할 일', '외출 준비', '알림 설정'];
 
 const initOutingTimeValues = {
   ampm: '오전',
   hour: '9',
   minute: '30',
+};
+
+const initTimeValues = {
+  hour: '0',
+  minute: '5',
 };
 
 const outingTimeStates = [
@@ -110,16 +120,13 @@ const notifiCategories = {
 
 const outingTimeNotifiMessage = {
   title: '외출 시간이 되었어요 🌤️',
-  body: '외출 전 {}가지 할 일을 깜빡하셨나요?\n앱을 실행해서 깜빡한 일을 확인해보세요 :)',
-};
-
-const beforeOutingTimeNotifiMessage = {
-  title: '외출 {}분 전 💡',
-  body: '외출 전 {}가지 할 일이 있어요. 달성을 완료해주세요 :)',
+  body: '혹시 깜빡한 일은 없는지\n앱을 실행해서 확인해보세요 :)',
 };
 
 export {
+  getCalendarDate,
   getUniqueId,
+  getLng,
   outingTimeStates,
   outingTimeItems,
   initOutingTimeValues,
@@ -128,6 +135,6 @@ export {
   customStyles,
   outingTimeNotifiMessage,
   notifiCategories,
-  beforeOutingTimeNotifiMessage,
   beforeOutingTimeItems,
+  initTimeValues,
 };

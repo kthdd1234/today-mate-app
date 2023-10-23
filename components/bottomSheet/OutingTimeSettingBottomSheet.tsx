@@ -76,7 +76,7 @@ const OutingTimeSettingBottomSheet = ({
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>
         <View>
-          <Text>{t('외출 시간 설정')}</Text>
+          <Text>{t('시간 설정')}</Text>
           <TimeSettingSection
             states={{ampm: ampm, hour: hour, minute: minute}}
             onPressed={{

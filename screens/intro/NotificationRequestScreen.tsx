@@ -8,11 +8,10 @@ import {
   todoBeforeOutingAtom,
 } from '../../states';
 import {useQuery, useRealm} from '@realm/react';
-import {getLocales} from 'react-native-localize';
 import {
   notifiCategories,
   outingTimeNotifiMessage,
-  beforeOutingTimeNotifiMessage,
+  getLng,
 } from '../../constants';
 import {ISetRealmOuting} from '../../types/interface';
 import {useTranslation} from 'react-i18next';
@@ -64,40 +63,20 @@ const NotificationRequestScreen = ({navigation}) => {
     });
   };
 
-  // const getTasks = (task: string) => {
-  //   const data = taskInfo[task];
-
-  //   return data.selectedIds.map(id => {
-  //     const item = data.items[id];
-
-  //     return {
-  //       _id: uuid(),
-  //       outingId: outingId,
-  //       label: data.id,
-  //       emoji: item.emoji,
-  //       name: t(`${item.text}`),
-  //       isChecked: false,
-  //     };
-  //   });
-  // };
-
-  const setNotifee = async ({isOK}: {isOK: boolean}) => {
+  const setNotifeeOutingTime = async ({isOK}: {isOK: boolean}) => {
     const notificationInfo: {
       isNotify: boolean;
       outingTimeNotifiId: string | null;
-      beforeOutingTimeNotifiId: string | null;
     } = {
       isNotify: false,
       outingTimeNotifiId: null,
-      beforeOutingTimeNotifiId: null,
     };
 
     if (isOK) {
       const isPermission = await requestNotificationPermission();
+      const {title, body} = outingTimeNotifiMessage;
 
       if (isPermission) {
-        const allTaskLength = [...todoSelectedIds].length.toString();
-
         await cancelAllNotification();
 
         await setNotificationCategories({
@@ -107,66 +86,67 @@ const NotificationRequestScreen = ({navigation}) => {
 
         const outingTime = getOutingTime();
         const outingTimeNotifiId = await createTriggerNotification({
-          title: t(outingTimeNotifiMessage.title),
-          body: format(t(outingTimeNotifiMessage.body), allTaskLength),
+          title: t(title),
+          body: t(body),
           dateTime: outingTime,
-          repeat: RepeatFrequency.DAILY,
-          categoryId: 'outing',
-        });
-
-        const beforeOutingTimeNotifiId = await createTriggerNotification({
-          title: format(
-            t(beforeOutingTimeNotifiMessage.title),
-            beforeOutingTime,
-          ),
-          body: format(t(beforeOutingTimeNotifiMessage.body), allTaskLength),
-          dateTime: momentBeforeFormatter({
-            formatString: outingTime,
-            minute: parseInt(beforeOutingTime, 10),
-          }),
           repeat: RepeatFrequency.DAILY,
           categoryId: 'outing',
         });
 
         notificationInfo.isNotify = true;
         notificationInfo.outingTimeNotifiId = outingTimeNotifiId;
-        notificationInfo.beforeOutingTimeNotifiId = beforeOutingTimeNotifiId;
       }
     }
 
     return notificationInfo;
   };
 
-  const setRealmTask = () => {
-    const allTaskList = [
-      ...getTasks('Safety'),
-      ...getTasks('Taking'),
-      ...getTasks('Todo'),
-    ];
+  const setNotifeeTodo = async ({title, body}) => {
+    return await createTriggerNotification({
+      title: title,
+      body: body,
+      dateTime: momentBeforeFormatter({
+        formatString: getOutingTime(),
+        minute: Number(beforeOutingMinute),
+      }),
+      repeat: RepeatFrequency.DAILY,
+      categoryId: 'task',
+    });
+  };
 
-    return allTaskList.map(tasks => {
+  const setRealmTask = ({isNotify}: {isNotify: boolean}) => {
+    todoBeforeOuting.forEach(async todo => {
+      let taskNotifiId: string | undefined;
+
+      if (isNotify) {
+        const title = format(t('외출 {}분 전'), beforeOutingMinute);
+        const body = `${todo.emoji} ${t(todo.text)}`;
+
+        taskNotifiId = await setNotifeeTodo({title, body});
+      }
+
       realm.write(() => {
-        realm.create('Task', tasks);
+        realm.create('Task', {
+          _id: uuid(),
+          outingId: outingId,
+          taskNotifiId: taskNotifiId,
+          emoji: todo.emoji,
+          name: t(`${todo.text}`),
+          isChecked: false,
+        });
       });
     });
   };
 
-  const setRealmOuting = ({
-    isNotify,
-    outingTimeNotifiId,
-    beforeOutingTimeNotifiId,
-  }: ISetRealmOuting) => {
-    const outingTime = getOutingTime();
-
+  const setRealmOuting = ({isNotify, outingTimeNotifiId}: ISetRealmOuting) => {
     realm.write(() => {
       realm.create('Outing', {
         _id: outingId,
-        outingTime: outingTime,
         isNotifyOutingTime: isNotify,
-        outingTimeNotifiId: outingTimeNotifiId,
-        beforeOutingTime: isNotify ? beforeOutingTime : null,
         isNotifyBeforeOutingTime: isNotify,
-        beforeOutingTimeNotifiId: beforeOutingTimeNotifiId,
+        outingTime: getOutingTime(),
+        beforeOutingMinute: isNotify ? beforeOutingMinute : null,
+        outingTimeNotifiId: outingTimeNotifiId,
         taskList: taskList,
         isEveryDay: true,
       });
@@ -174,12 +154,10 @@ const NotificationRequestScreen = ({navigation}) => {
   };
 
   const setRealmUser = () => {
-    const language = getLocales()[0].languageCode;
-
     realm.write(() => {
       realm.create('User', {
         _id: userId,
-        language: language,
+        language: getLng(),
         isDarkMode: false,
         outingList: outingList,
       });
@@ -193,24 +171,19 @@ const NotificationRequestScreen = ({navigation}) => {
   };
 
   const onPress = async (isOK: boolean) => {
-    const {isNotify, outingTimeNotifiId, beforeOutingTimeNotifiId} =
-      await setNotifee({
-        isOK: isOK,
-      });
+    deleteAllRealmData(); // 임시 코드
 
-    deleteAllRealmData();
-    setRealmTask();
-    setRealmOuting({isNotify, outingTimeNotifiId, beforeOutingTimeNotifiId});
+    const {isNotify, outingTimeNotifiId} = await setNotifeeOutingTime({
+      isOK: isOK,
+    });
+
+    setRealmTask({isNotify});
+    setRealmOuting({isNotify, outingTimeNotifiId});
     setRealmUser();
 
     navigation.reset({
       routes: [{name: 'MainScreen'}],
     });
-
-    // return isSaveInRealm
-    //   ? navigation.reset({
-    //       routes: [{name: 'MainScreen'}],
-    //     })
     //   : console.log('경고창 띄우기');
   };
 
