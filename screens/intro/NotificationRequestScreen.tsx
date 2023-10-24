@@ -184,7 +184,7 @@ const NotificationRequestScreen = ({navigation}) => {
     navigation.reset({
       routes: [{name: 'MainScreen'}],
     });
-    //   : console.log('경고창 띄우기');
+    //  : console.log('경고창 띄우기');
   };
 
   return (

@@ -47,7 +47,7 @@ const TodoBeforeOutingScreen = ({navigation}) => {
     <SafeAreaView className="h-full">
       <Stepper pos={1} />
       <SelectItemsSection
-        title="외출 전에 할 일을 모두 골라봐요:)"
+        title="외출 전에 할 일을 골라봐요:)"
         renderList={todoItems}
         selectedIds={selectedIds}
         onPress={onPressItem}

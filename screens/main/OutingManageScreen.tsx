@@ -1,10 +1,15 @@
 import {SafeAreaView} from 'react-native';
-import OutingManageCalenadr from '../../components/calendar/OutingManageCalendar';
+import {FloatingAction} from 'react-native-floating-action';
 
 const OutingManageScreen = () => {
   return (
-    <SafeAreaView>
-      <OutingManageCalenadr />
+    <SafeAreaView className="h-full">
+      <FloatingAction
+        actions={[]}
+        onPressItem={name => {
+          console.log(`selected button: ${name}`);
+        }}
+      />
     </SafeAreaView>
   );
 };

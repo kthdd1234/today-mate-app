@@ -2,6 +2,7 @@ import {
   CalendarProvider,
   DateData,
   ExpandableCalendar,
+  CalendarList,
 } from 'react-native-calendars';
 import {Positions} from 'react-native-calendars/src/expandableCalendar';
 import CalendarHeader from '../header/calendarHeader';
@@ -16,16 +17,23 @@ const OutingManageCalenadr = () => {
     setSelectedDate(dateString);
   };
 
-  console.log(selectedDate);
-
   return (
+    // <CalendarList
+    //   horizontal={true}
+    //   pagingEnabled={true}
+    //   renderHeader={() => <CalendarHeader />}
+    //   onDayPress={onDayPress}
+    //   hideExtraDays={false}
+    // />
     <CalendarProvider date={selectedDate}>
       <ExpandableCalendar
         disablePan={true}
         initialPosition={Positions.OPEN}
         renderHeader={() => <CalendarHeader />}
-        renderArrow={() => ''}
+        hideArrows={true}
+        renderArrow={() => null}
         onDayPress={onDayPress}
+        onCalendarToggled={() => console.log('제발?')}
       />
     </CalendarProvider>
   );

@@ -1,6 +1,7 @@
 import {atom} from 'recoil';
 import {IOutingTimeValues, ITodoItems} from '../types/interface';
 import {getCalendarDate, initOutingTimeValues} from '../constants';
+import {eCanlenarDisplay} from '../types/enum';
 
 const outingTimeValuesAtom = atom<IOutingTimeValues>({
   key: 'outingTimeValuesAtom',
