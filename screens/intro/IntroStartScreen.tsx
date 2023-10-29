@@ -14,7 +14,6 @@ const IntroStartScreen = ({navigation}) => {
     <SafeAreaView>
       <Text>반가워요! 지금부터</Text>
       <Text>외출 준비를 해볼까요?</Text>
-      <Text>차근차근 오늘의 외출 준비를 해보아요.</Text>
       <DefaultButton id="start" text="시작하기" onPress={onPressStart} />
     </SafeAreaView>
   );

@@ -10,18 +10,19 @@ export interface IDefaultButton {
 }
 
 export interface ITimeSettingSection {
-  initTime: IOutingTimeValues;
+  initTime: ITimeParams;
 }
 
-export interface IOutingTimeValues {
-  ampm: string;
+export interface ITimeParams {
+  ampm?: string;
   hour: string;
   minute: string;
 }
 
 export interface IPropsBottomSheet {
-  bottomSheetModalRef: Ref<BottomSheetModal> | null;
-  onPressCompleted: ({ampm, hour, minute}: IOutingTimeValues) => void;
+  ref: Ref<BottomSheetModal> | null;
+  isAmpm: boolean;
+  onPressCompleted: ({ampm, hour, minute}: ITimeParams) => void;
 }
 
 export interface ITodoSettingState {

@@ -16,4 +16,4 @@ const OutingManageScreen = () => {
 
 export default OutingManageScreen;
 
-//
+// 할

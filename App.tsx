@@ -1,14 +1,14 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import OutingTimeSettingScreen from './screens/intro/OutingTimeSettingScreen';
+import AppointmentTimeScreen from './screens/intro/AppointmentTimeScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
 import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import IntroStartScreen from './screens/intro/IntroStartScreen';
-import TodoBeforeOutingScreen from './screens/intro/TodoBeforeOutingScreen';
+import TodoBeforeOutingScreen from './screens/intro/TodoScreen';
 import NotificationRequestScreen from './screens/intro/NotificationRequestScreen';
 import {realmConfig} from './schema';
 import MainScreen from './screens/main/MainScreen';
@@ -24,7 +24,7 @@ const App = () => {
 
   const screenList = [
     {name: 'IntroStartScreen', component: IntroStartScreen},
-    {name: 'OutingTimeSettingScreen', component: OutingTimeSettingScreen},
+    {name: 'AppointmentTimeScreen', component: AppointmentTimeScreen},
     {name: 'TodoBeforeOutingScreen', component: TodoBeforeOutingScreen},
     {name: 'OutingReadyScreen', component: OutingReadyScreen},
     {name: 'NotificationRequestScreen', component: NotificationRequestScreen},

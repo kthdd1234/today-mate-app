@@ -1,79 +1,75 @@
-import {SafeAreaView} from 'react-native';
-import Stepper from '../../components/step/stepper';
-import DefaultButton from '../../components/button/defaultButton';
-import {useTranslation} from 'react-i18next';
-import SelectItemsSection from '../../components/section/SelectItemsSection';
-import {beforeOutingTimeItems} from '../../constants';
+import {outingReadyItemList} from '../../constants';
 import {useSetRecoilState} from 'recoil';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useRef, useState} from 'react';
-import {beforeOutingMinuteAtom} from '../../states';
 import {openBottomSheetModal} from '../../utils/gorhom';
 import format from 'string-format';
-import OutingReadyMinuteBottomSheet from '../../components/bottomSheet/OutingReadyMinuteBottomSheet';
+import {outingReadyAtom} from '../../states';
+import OnBoarding from '../../components/onboarding/OnBoarding';
+import {useTranslation} from 'react-i18next';
+import {ITimeParams} from '../../types/interface';
+import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBottomSheet';
 
 const OutingReadyScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
+  /** lastIndex */
+  const lastIndex = outingReadyItemList.length - 1;
+
   /**  useSetRecoilState */
-  const setBeforeOutingMinute = useSetRecoilState(beforeOutingMinuteAtom);
+  const setOutingReady = useSetRecoilState(outingReadyAtom);
 
   /** useState */
-  const [beforeOutingTimeState, setBeforeOutingTimeState] = useState(
-    beforeOutingTimeItems,
-  );
+  const [itemList, setItemList] = useState(outingReadyItemList);
   const [selectedId, setSelectedId] = useState<string>('');
 
   /** useRef */
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const ref = useRef<BottomSheetModal>(null);
 
-  const onPressItem = (id: string) => {
-    if (id === '6') {
-      return openBottomSheetModal(bottomSheetModalRef);
+  const onNext = ({outingReady}: {outingReady: string}) => {
+    navigation.navigate('??');
+    setOutingReady(outingReady);
+  };
+
+  const onPressListItem = (id: string) => {
+    if (id === lastIndex.toString()) {
+      openBottomSheetModal(ref);
+    } else {
+      setSelectedId(id);
+      onNext(outingReadyItemList[id].minute);
     }
-
-    setSelectedId(id);
-    setBeforeOutingMinute(beforeOutingTimeState[id].minute);
   };
 
-  const onPressNext = () => {
-    navigation.navigate('NotificationRequestScreen');
-  };
+  const onCompletedBottomSheet = ({hour, minute}: ITimeParams) => {
+    const minuteString = `${Number(hour) * 60 + minute}`;
 
-  const onPressCompletedBottomSheet = ({
-    hour,
-    minute,
-  }: {
-    hour: string;
-    minute: string;
-  }) => {
     const formatString =
       hour === '0'
-        ? format('{}분 전', minute)
-        : format('{}시간 {}분 전', hour, minute);
+        ? format('{}분', minuteString)
+        : format('{}시간 {}분', hour, minuteString);
 
-    beforeOutingTimeState[6].text = t(formatString);
+    setItemList[lastIndex].text = t(formatString);
+    setSelectedId(`${lastIndex}`);
 
-    setBeforeOutingTimeState([...beforeOutingTimeState]);
-    setSelectedId('6');
+    onNext({outingReady: minuteString});
   };
 
   return (
-    <SafeAreaView className="h-full">
-      <Stepper pos={2} />
-      <SelectItemsSection
-        title="외출 준비는 보통 몇분(또는 몇시간) 전에 해요?"
-        renderList={beforeOutingTimeState}
-        selectedIds={[selectedId]}
-        onPress={onPressItem}
-      />
-      <OutingReadyMinuteBottomSheet
-        bottomSheetModalRef={bottomSheetModalRef}
-        onPressCompleted={onPressCompletedBottomSheet}
-      />
-      <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
-    </SafeAreaView>
+    <OnBoarding
+      step={4}
+      title="외출 준비 시간은 보통 얼머나 걸려요?"
+      list={itemList}
+      selectedIds={[selectedId]}
+      onPressListItem={onPressListItem}
+      bottomSheetModal={
+        <TimeSettingBottomSheet
+          ref={ref}
+          isAmpm={false}
+          onPressCompleted={onCompletedBottomSheet}
+        />
+      }
+    />
   );
 };
 

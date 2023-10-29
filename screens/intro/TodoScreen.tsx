@@ -1,15 +1,11 @@
-import {SafeAreaView} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useSetRecoilState} from 'recoil';
 import {todoItems} from '../../constants';
 import {todoBeforeOutingAtom} from '../../states';
-import SelectItemsSection from '../../components/section/SelectItemsSection';
-import DefaultButton from '../../components/button/defaultButton';
-import Stepper from '../../components/step/stepper';
 import {useState} from 'react';
 import {ITodoItems} from '../../types/interface';
 
-const TodoBeforeOutingScreen = ({navigation}) => {
+const TodoScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -44,17 +40,31 @@ const TodoBeforeOutingScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView className="h-full">
-      <Stepper pos={1} />
-      <SelectItemsSection
-        title="외출 전에 할 일을 골라봐요:)"
-        renderList={todoItems}
-        selectedIds={selectedIds}
-        onPress={onPressItem}
-      />
-      <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
-    </SafeAreaView>
+    // <SafeAreaView className="h-full">
+    //   <Stepper pos={1} />
+    //   <SelectItemsSection
+    //     title="외출 전에 할 일을 골라봐요:)"
+    //     renderList={todoItems}
+    //     selectedIds={selectedIds}
+    //     onPress={onPressItem}
+    //   />
+    //   <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
+    // </SafeAreaView>
+    <OnBoarding
+      step={0}
+      title=""
+      list={ItemList}
+      selectedIds={[selectedId]}
+      onPressListItem={onPressListItem}
+      bottomSheetModal={
+        <TimeSettingBottomSheet
+          ref={ref}
+          isAmpm={true}
+          onPressCompleted={onCompletedBottomSheet}
+        />
+      }
+    />
   );
 };
 
-export default TodoBeforeOutingScreen;
+export default TodoScreen;

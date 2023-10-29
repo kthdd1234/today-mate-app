@@ -1,11 +1,10 @@
 import {atom} from 'recoil';
-import {IOutingTimeValues, ITodoItems} from '../types/interface';
-import {getCalendarDate, initOutingTimeValues} from '../constants';
-import {eCanlenarDisplay} from '../types/enum';
+import {ITimeParams, ITodoItems} from '../types/interface';
+import {getCalendarDate, initFullTime} from '../constants';
 
-const outingTimeValuesAtom = atom<IOutingTimeValues>({
-  key: 'outingTimeValuesAtom',
-  default: initOutingTimeValues,
+const appintmentTimeAtom = atom<ITimeParams>({
+  key: 'appintmentTimeAtom',
+  default: initFullTime,
 });
 
 const todoBeforeOutingAtom = atom<ITodoItems[]>({
@@ -13,8 +12,8 @@ const todoBeforeOutingAtom = atom<ITodoItems[]>({
   default: [],
 });
 
-const beforeOutingMinuteAtom = atom<string>({
-  key: 'beforeOutingMinuteAtom',
+const outingReadyAtom = atom<string>({
+  key: 'outingReadyAtom',
   default: '',
 });
 
@@ -24,9 +23,8 @@ const selectedDateAtom = atom({
 });
 
 export {
-  initOutingTimeValues,
-  outingTimeValuesAtom,
+  appintmentTimeAtom,
   todoBeforeOutingAtom,
-  beforeOutingMinuteAtom,
+  outingReadyAtom,
   selectedDateAtom,
 };

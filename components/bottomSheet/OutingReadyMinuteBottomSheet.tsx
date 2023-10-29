@@ -11,11 +11,11 @@ import {IPropsBottomSheet} from '../../types/interface';
 import {closeBottomSheetModal} from '../../utils/gorhom';
 import TimeSettingSection from '../section/TimeSettingSection';
 import {useSetRecoilState} from 'recoil';
-import {beforeOutingMinuteAtom} from '../../states';
+// import {beforeOutingMinuteAtom} from '../../states';
 import {initTimeValues} from '../../constants';
 
 const OutingReadyMinuteBottomSheet = ({
-  bottomSheetModalRef,
+  ref,
   onPressCompleted,
 }: IPropsBottomSheet) => {
   /** useTranslation */
@@ -59,7 +59,7 @@ const OutingReadyMinuteBottomSheet = ({
   const onPressCompletedButton = () => {
     const m = `${Number(timeValues.hour) * 60 + timeValues.minute}`;
 
-    closeBottomSheetModal(bottomSheetModalRef);
+    closeBottomSheetModal(ref);
     setBeforeOutingTimeItems(m);
     onPressCompleted({
       ampm: '',
@@ -72,7 +72,7 @@ const OutingReadyMinuteBottomSheet = ({
     <BottomSheetModalProvider>
       <BottomSheetModal
         index={0}
-        ref={bottomSheetModalRef}
+        ref={ref}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>
