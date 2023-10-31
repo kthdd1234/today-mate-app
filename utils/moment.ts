@@ -28,9 +28,11 @@ const momentBeforeFormatter = ({
   formatString,
   minute,
 }: IGetBeforeOutingTime) => {
-  return moment(formatString, 'YYYY-MM-DD hh:mm a')
+  const result = moment(formatString, 'YYYY-MM-DD hh:mm a')
     .subtract(minute, 'minutes')
     .format();
+
+  return result;
 };
 
 export {momentFormatter, momentBeforeFormatter};

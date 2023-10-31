@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView, Text} from 'react-native';
 
-const OutingAddScreen = () => {
+const TodoAddScreen = () => {
   return (
     <SafeAreaView
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -10,4 +10,4 @@ const OutingAddScreen = () => {
   );
 };
 
-export default OutingAddScreen;
+export default TodoAddScreen;

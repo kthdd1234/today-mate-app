@@ -6,7 +6,7 @@ import OcticonsIcon from 'react-native-vector-icons/Octicons';
 interface IProps {
   step: number;
   title: string;
-  list: {[key: string]: string}[];
+  list: string[];
   selectedIds: string[];
   bottomButtonText?: string;
   isShowBottomButton?: boolean;
@@ -29,20 +29,23 @@ const OnBoarding = ({
   /** useTranslation */
   const {t} = useTranslation();
 
+  console.log(selectedIds);
+
   return (
-    <SafeAreaView className="f-full">
-      <View>{step}</View>
+    <SafeAreaView className="h-full">
+      <View>
+        <Text>{step}</Text>
+      </View>
       <View>
         <Text>{t(`${title}`)}</Text>
         <View>
-          {list.map(({id, text, emoji}) => (
+          {list.map((text, key) => (
             <TouchableOpacity
-              key={id}
+              key={key}
               className="flex-row"
-              onPress={() => onPressListItem(id)}>
-              <Text>{emoji}</Text>
+              onPress={() => onPressListItem(key.toString())}>
               <Text>{t(`${text}`)}</Text>
-              {selectedIds.includes(id as never) && (
+              {selectedIds.includes(key.toString() as never) && (
                 <OcticonsIcon
                   name="check-circle-fill"
                   size={15}
@@ -56,11 +59,11 @@ const OnBoarding = ({
           <DefaultButton
             id="bottom-button"
             text={t(bottomButtonText ?? '')}
-            onPress={() => onPressBottomButton}
+            onPress={onPressBottomButton || (_ => {})}
           />
         )}
-        {bottomSheetModal ?? false}
       </View>
+      {bottomSheetModal ?? false}
     </SafeAreaView>
   );
 };

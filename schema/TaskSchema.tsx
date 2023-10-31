@@ -3,10 +3,8 @@ import {Realm} from '@realm/react';
 
 export class Task extends Realm.Object<Task> {
   _id!: string;
-  outingId!: string;
-  taskNotifiId?: string;
+  itemId!: string;
   image?: string;
-  emoji?: string;
   name!: string;
   isChecked!: boolean;
 
@@ -15,10 +13,8 @@ export class Task extends Realm.Object<Task> {
     primaryKey: '_id',
     properties: {
       _id: 'string',
-      outingId: 'string',
-      taskNotifiId: 'string?',
+      itemId: 'string',
       image: 'string?',
-      emoji: 'string?',
       name: 'string',
       isChecked: {type: 'bool', default: false},
     },

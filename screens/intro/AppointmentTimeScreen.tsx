@@ -24,7 +24,7 @@ const AppointmentTimeScreen = ({navigation}) => {
 
   const onNext = ({ampm, hour, minute}: ITimeParams) => {
     setAppintmentTime({ampm, hour, minute});
-    navigation.navigate('???');
+    navigation.navigate('DestinationTimeScreen');
   };
 
   const onPressListItem = (id: string) => {
@@ -40,7 +40,7 @@ const AppointmentTimeScreen = ({navigation}) => {
   };
 
   const onCompletedBottomSheet = ({ampm, hour, minute}: ITimeParams) => {
-    ItemList[lastIndex].text = `${ampm} ${hour}:${minute}`;
+    ItemList[lastIndex].text = `⚙️ ${ampm} ${hour}:${minute}`;
 
     setItemList([...ItemList]);
     setSelectedId(lastIndex.toString());
@@ -49,14 +49,14 @@ const AppointmentTimeScreen = ({navigation}) => {
 
   return (
     <OnBoarding
-      step={0}
-      title="목적지가 어디에요?"
-      list={ItemList}
+      step={1}
+      title="몇시까지 가야해요?"
+      list={ItemList.map(item => item.text)}
       selectedIds={[selectedId]}
       onPressListItem={onPressListItem}
       bottomSheetModal={
         <TimeSettingBottomSheet
-          ref={ref}
+          targetRef={ref}
           isAmpm={true}
           onPressCompleted={onCompletedBottomSheet}
         />

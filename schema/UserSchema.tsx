@@ -1,12 +1,12 @@
 import {ObjectSchema} from 'realm';
-import {Outing} from './OutingSchema';
+import {Item} from './ItemSchema';
 import {Realm} from '@realm/react';
 
 export class User extends Realm.Object<User> {
   _id!: string;
   language!: string;
   isDarkMode!: boolean;
-  outingList!: Realm.List<Outing>;
+  itemList!: Realm.List<Item>;
 
   static schema: ObjectSchema = {
     name: 'User',
@@ -15,9 +15,9 @@ export class User extends Realm.Object<User> {
       _id: 'string',
       language: {type: 'string', default: 'ko'},
       isDarkMode: {type: 'bool', default: false},
-      outingList: {
+      itemList: {
         type: 'list',
-        objectType: 'Outing',
+        objectType: 'Item',
         optional: false,
       },
     },

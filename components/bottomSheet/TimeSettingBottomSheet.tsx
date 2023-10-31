@@ -6,7 +6,7 @@ import {
 import {useMemo, useCallback, useState} from 'react';
 import {Text, View} from 'react-native';
 import DefaultButton from '../button/defaultButton';
-import {IPropsBottomSheet} from '../../types/interface';
+import {ITimeSettingBottomSheet} from '../../types/interface';
 import TimeSettingSection from '../section/TimeSettingSection';
 import {useTranslation} from 'react-i18next';
 import {closeBottomSheetModal} from '../../utils/gorhom';
@@ -14,9 +14,9 @@ import {initFullTime} from '../../constants';
 
 const TimeSettingBottomSheet = ({
   isAmpm,
-  ref,
+  targetRef,
   onPressCompleted,
-}: IPropsBottomSheet) => {
+}: ITimeSettingBottomSheet) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -57,7 +57,7 @@ const TimeSettingBottomSheet = ({
   );
 
   const onPressCompletedButton = () => {
-    closeBottomSheetModal(ref);
+    closeBottomSheetModal(targetRef);
     onPressCompleted({ampm, hour, minute});
   };
 
@@ -65,7 +65,7 @@ const TimeSettingBottomSheet = ({
     <BottomSheetModalProvider>
       <BottomSheetModal
         index={0}
-        ref={ref}
+        ref={targetRef}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         backdropComponent={renderBackdrop}>

@@ -54,12 +54,16 @@ const setNotificationAndroid12 = async () => {
 const createTriggerNotification = async ({
   title,
   body,
+  subTitle,
   dateTime,
   repeat,
   categoryId,
 }: ITriggerNotification) => {
   const now = new Date(Date.now()); // 2023/10/20 오후 02:07
   let newDate = new Date(dateTime); // 2023/10/20 오전 09:00
+
+  console.log(now.toLocaleString());
+  console.log(newDate.toLocaleString());
 
   if (now.getTime() > newDate.getTime()) {
     newDate = moment(dateTime).add(1, 'd').toDate();
@@ -76,6 +80,7 @@ const createTriggerNotification = async ({
   const notificationId = await notifee.createTriggerNotification(
     {
       title: title,
+      subtitle: subTitle,
       body: body,
       android: {
         channelId: channelId,

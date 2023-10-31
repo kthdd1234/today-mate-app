@@ -19,13 +19,18 @@ export interface ITimeParams {
   minute: string;
 }
 
-export interface IPropsBottomSheet {
-  ref: Ref<BottomSheetModal> | null;
+export interface ITimeSettingBottomSheet {
+  targetRef: Ref<BottomSheetModal> | null;
   isAmpm: boolean;
   onPressCompleted: ({ampm, hour, minute}: ITimeParams) => void;
 }
 
-export interface ITodoSettingState {
+export interface ICreateItemBottomSheet {
+  targetRef: Ref<BottomSheetModal> | null;
+  onCompleted: ({id, text}: IDefaultItem) => void;
+}
+
+export interface IDefaultItemSettingState {
   groupId: string;
   groupName: string;
   itemId: string;
@@ -61,6 +66,7 @@ export interface IGetBeforeOutingTime {
 export interface ITriggerNotification {
   title: string;
   body: string;
+  subTitle?: string;
   dateTime: string;
   repeat: RepeatFrequency;
   categoryId: 'outing' | 'task';
@@ -76,8 +82,7 @@ export interface ITaskInfo {
   isChecked: boolean;
 }
 
-export interface ITodoItems {
+export interface IDefaultItem {
   id: string;
   text: string;
-  emoji: string;
 }

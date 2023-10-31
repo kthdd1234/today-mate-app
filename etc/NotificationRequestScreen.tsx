@@ -1,23 +1,19 @@
 import {Text, View, Image, SafeAreaView} from 'react-native';
-import DefaultButton from '../../components/button/defaultButton';
-import Stepper from '../../components/step/stepper';
+import DefaultButton from '../components/button/defaultButton';
+import Stepper from '../components/step/stepper';
 import {useRecoilValue} from 'recoil';
 import {
   beforeOutingMinuteAtom,
   outingTimeValuesAtom,
   todoBeforeOutingAtom,
-} from '../../states';
+} from '../states';
 import {useQuery, useRealm} from '@realm/react';
-import {
-  notifiCategories,
-  outingTimeNotifiMessage,
-  getLng,
-} from '../../constants';
-import {ISetRealmOuting} from '../../types/interface';
+import {notifiCategories, outingTimeNotifiMessage, getLng} from '../constants';
+import {ISetRealmOuting} from '../types/interface';
 import {useTranslation} from 'react-i18next';
-import {Task} from '../../schema/TaskSchema';
-import {Outing} from '../../schema/OutingSchema';
-import {momentBeforeFormatter, momentFormatter} from '../../utils/moment';
+import {Task} from '../schema/TaskSchema';
+import {Outing} from '../schema/ItemSchema';
+import {momentBeforeFormatter, momentFormatter} from '../utils/moment';
 import RealmPlugin from 'realm-flipper-plugin-device';
 import {v4 as uuid} from 'uuid';
 import moment from 'moment';
@@ -26,7 +22,7 @@ import {
   createTriggerNotification,
   requestNotificationPermission,
   cancelAllNotification,
-} from '../../utils/notifee';
+} from '../utils/notifee';
 import {RepeatFrequency} from '@notifee/react-native';
 import format from 'string-format';
 
@@ -41,7 +37,7 @@ const NotificationRequestScreen = ({navigation}) => {
   const taskList = useQuery(Task);
   const outingList = useQuery(Outing);
 
-  /** Realm.BSON.ObjectId */
+  /** uuid */
   const userId = uuid();
   const outingId = uuid();
 

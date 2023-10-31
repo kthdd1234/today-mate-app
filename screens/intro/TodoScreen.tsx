@@ -1,21 +1,29 @@
-import {useTranslation} from 'react-i18next';
 import {useSetRecoilState} from 'recoil';
-import {todoItems} from '../../constants';
-import {todoBeforeOutingAtom} from '../../states';
+import {getUniqueId, todoItemList} from '../../constants';
+import {todoAtom} from '../../states';
 import {useState} from 'react';
-import {ITodoItems} from '../../types/interface';
+import OnBoarding from '../../components/onboarding/OnBoarding';
 
 const TodoScreen = ({navigation}) => {
-  /** useTranslation */
-  const {t} = useTranslation();
-
   /** useRecoilState */
-  const setTodoBeforeOuting = useSetRecoilState(todoBeforeOutingAtom);
+  const setTodo = useSetRecoilState(todoAtom);
 
   /** useState */
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const onPressItem = (id: string) => {
+  const onNext = () => {
+    const itemList = selectedIds.map((selectedId, key) => {
+      const text =
+        todoItemList.find((_, idx) => idx.toString() === selectedId) || '';
+
+      return {id: getUniqueId(key), text: text};
+    });
+
+    setTodo(itemList);
+    navigation.navigate('OutingReadyScreen');
+  };
+
+  const onPressListItem = (id: string) => {
     if (selectedIds.includes(id as never)) {
       const newSelectedIds = selectedIds.filter(
         selectedId => selectedId !== id,
@@ -30,39 +38,16 @@ const TodoScreen = ({navigation}) => {
     }
   };
 
-  const onPressNext = () => {
-    const resultItems = selectedIds.map(id =>
-      todoItems.find(item => item.id === id),
-    );
-
-    setTodoBeforeOuting(resultItems as ITodoItems[]);
-    navigation.navigate('OutingReadyScreen');
-  };
-
   return (
-    // <SafeAreaView className="h-full">
-    //   <Stepper pos={1} />
-    //   <SelectItemsSection
-    //     title="외출 전에 할 일을 골라봐요:)"
-    //     renderList={todoItems}
-    //     selectedIds={selectedIds}
-    //     onPress={onPressItem}
-    //   />
-    //   <DefaultButton id="next-btn" text={t('다음')} onPress={onPressNext} />
-    // </SafeAreaView>
     <OnBoarding
-      step={0}
-      title=""
-      list={ItemList}
-      selectedIds={[selectedId]}
+      step={3}
+      title="외출 전에 할 일을 모두 골라주세요:)"
+      list={todoItemList}
+      selectedIds={selectedIds}
+      bottomButtonText="다음"
+      isShowBottomButton={true}
+      onPressBottomButton={onNext}
       onPressListItem={onPressListItem}
-      bottomSheetModal={
-        <TimeSettingBottomSheet
-          ref={ref}
-          isAmpm={true}
-          onPressCompleted={onCompletedBottomSheet}
-        />
-      }
     />
   );
 };

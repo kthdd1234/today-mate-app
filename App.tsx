@@ -7,13 +7,14 @@ import {RecoilRoot} from 'recoil';
 import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import IntroStartScreen from './screens/intro/IntroStartScreen';
-import TodoBeforeOutingScreen from './screens/intro/TodoScreen';
-import NotificationRequestScreen from './screens/intro/NotificationRequestScreen';
+import StartScreen from './screens/start/StartScreen';
 import {realmConfig} from './schema';
 import MainScreen from './screens/main/MainScreen';
-import './i18n/i18n.config';
 import OutingReadyScreen from './screens/intro/OutingReadyScreen';
+import DestinationScreen from './screens/intro/DestinationScreen';
+import DestinationTimeScreen from './screens/intro/DestinationTimeScreen';
+import TodoScreen from './screens/intro/TodoScreen';
+import './i18n/i18n.config';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -23,11 +24,12 @@ const App = () => {
   const {t} = useTranslation();
 
   const screenList = [
-    {name: 'IntroStartScreen', component: IntroStartScreen},
+    {name: 'StartScreen', component: StartScreen},
     {name: 'AppointmentTimeScreen', component: AppointmentTimeScreen},
-    {name: 'TodoBeforeOutingScreen', component: TodoBeforeOutingScreen},
+    {name: 'DestinationScreen', component: DestinationScreen},
+    {name: 'DestinationTimeScreen', component: DestinationTimeScreen},
+    {name: 'TodoScreen', component: TodoScreen},
     {name: 'OutingReadyScreen', component: OutingReadyScreen},
-    {name: 'NotificationRequestScreen', component: NotificationRequestScreen},
     {name: 'MainScreen', component: MainScreen},
   ];
 
@@ -37,7 +39,7 @@ const App = () => {
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
-              <Navigator initialRouteName="MainScreen">
+              <Navigator initialRouteName="StartScreen">
                 {screenList.map(({name, component}) => (
                   <Screen
                     key={name}

@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
 import DefaultButton from '../button/defaultButton';
 import {useMemo, useCallback, useState} from 'react';
-import {IPropsBottomSheet} from '../../types/interface';
+import {ITimeSettingBottomSheet} from '../../types/interface';
 import {closeBottomSheetModal} from '../../utils/gorhom';
 import TimeSettingSection from '../section/TimeSettingSection';
 import {useSetRecoilState} from 'recoil';
@@ -17,7 +17,7 @@ import {initTimeValues} from '../../constants';
 const OutingReadyMinuteBottomSheet = ({
   ref,
   onPressCompleted,
-}: IPropsBottomSheet) => {
+}: ITimeSettingBottomSheet) => {
   /** useTranslation */
   const {t} = useTranslation();
 

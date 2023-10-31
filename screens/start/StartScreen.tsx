@@ -2,12 +2,12 @@ import {SafeAreaView, Text} from 'react-native';
 import DefaultButton from '../../components/button/defaultButton';
 import {useTranslation} from 'react-i18next';
 
-const IntroStartScreen = ({navigation}) => {
+const StartScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
   const onPressStart = () => {
-    navigation.navigate('OutingTimeSettingScreen');
+    navigation.navigate('DestinationScreen');
   };
 
   return (
@@ -19,7 +19,7 @@ const IntroStartScreen = ({navigation}) => {
   );
 };
 
-export default IntroStartScreen;
+export default StartScreen;
 
 /**
  * 외추리
