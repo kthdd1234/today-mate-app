@@ -43,14 +43,14 @@ const DestinationTimeScreen = ({navigation}) => {
   };
 
   const onCompletedBottomSheet = ({hour, minute}: ITimeParams) => {
-    const minuteString = `${Number(hour) * 60 + minute}`;
+    const minuteString = `${Number(hour) * 60 + Number(minute)}`;
 
     const formatString =
       hour === '0'
         ? format('{}분', minuteString)
         : format('{}시간 {}분', hour, minuteString);
 
-    setItemList[lastIndex].text = t(formatString);
+    itemList[lastIndex].text = t(formatString);
     setSelectedId(`${lastIndex}`);
 
     onNext(minuteString);

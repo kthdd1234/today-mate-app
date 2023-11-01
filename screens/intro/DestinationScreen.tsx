@@ -31,11 +31,10 @@ const DestinationScreen = ({navigation}) => {
     if (id === lastIndex.toString()) {
       openBottomSheetModal(ref);
     } else {
-      const item = destinationItemList[id];
       const uid = getUniqueId(0);
 
       setSelectedId(id);
-      onNext({id: uid, text: item.text});
+      onNext({id: uid, text: destinationItemList[id]});
     }
   };
 

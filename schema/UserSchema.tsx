@@ -6,6 +6,7 @@ export class User extends Realm.Object<User> {
   _id!: string;
   language!: string;
   isDarkMode!: boolean;
+  defaultItemId!: string;
   itemList!: Realm.List<Item>;
 
   static schema: ObjectSchema = {
@@ -15,6 +16,7 @@ export class User extends Realm.Object<User> {
       _id: 'string',
       language: {type: 'string', default: 'ko'},
       isDarkMode: {type: 'bool', default: false},
+      defaultItemId: 'string',
       itemList: {
         type: 'list',
         objectType: 'Item',

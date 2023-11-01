@@ -29,41 +29,27 @@ const OnBoarding = ({
   /** useTranslation */
   const {t} = useTranslation();
 
-  console.log(selectedIds);
-
   return (
     <SafeAreaView className="h-full">
+      <Text>{t(`${title}`)}</Text>
       <View>
-        <Text>{step}</Text>
+        {list.map((text, key) => (
+          <TouchableOpacity
+            key={key}
+            className="flex-row"
+            onPress={() => onPressListItem(key.toString())}>
+            <Text>{t(`${text}`)}</Text>
+            {selectedIds.includes(key.toString() as never) && (
+              <OcticonsIcon name="check-circle-fill" size={15} color="black" />
+            )}
+          </TouchableOpacity>
+        ))}
       </View>
-      <View>
-        <Text>{t(`${title}`)}</Text>
-        <View>
-          {list.map((text, key) => (
-            <TouchableOpacity
-              key={key}
-              className="flex-row"
-              onPress={() => onPressListItem(key.toString())}>
-              <Text>{t(`${text}`)}</Text>
-              {selectedIds.includes(key.toString() as never) && (
-                <OcticonsIcon
-                  name="check-circle-fill"
-                  size={15}
-                  color="black"
-                />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-        {isShowBottomButton && (
-          <DefaultButton
-            id="bottom-button"
-            text={t(bottomButtonText ?? '')}
-            onPress={onPressBottomButton || (_ => {})}
-          />
-        )}
-      </View>
-      {bottomSheetModal ?? false}
+      <DefaultButton
+        id="bottom-button"
+        text={t('선택 완료')}
+        onPress={onPressBottomButton || (_ => {})}
+      />
     </SafeAreaView>
   );
 };

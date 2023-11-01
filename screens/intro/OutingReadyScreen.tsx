@@ -4,7 +4,7 @@ import {
   outingReadyNotificationMessage,
   getLng,
 } from '../../constants';
-import {useRecoilValue, useSetRecoilState} from 'recoil';
+import {useRecoilValue} from 'recoil';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useRef, useState} from 'react';
 import {openBottomSheetModal} from '../../utils/gorhom';
@@ -13,7 +13,6 @@ import {
   appintmentTimeAtom,
   destinationAtom,
   destinationTimeAtom,
-  outingReadyAtom,
   todoAtom,
 } from '../../states';
 import OnBoarding from '../../components/onboarding/OnBoarding';
@@ -34,6 +33,8 @@ import {RepeatFrequency} from '@notifee/react-native';
 import {View} from 'react-native';
 import RealmPlugin from 'realm-flipper-plugin-device';
 import {v4 as uuid} from 'uuid';
+
+let outingReadyTime: string = '';
 
 const OutingReadyScreen = ({navigation}) => {
   /** useTranslation */
@@ -56,10 +57,6 @@ const OutingReadyScreen = ({navigation}) => {
   const appintmentTime = useRecoilValue(appintmentTimeAtom);
   const destinationTime = useRecoilValue(destinationTimeAtom);
   const todo = useRecoilValue(todoAtom);
-  const outingReady = useRecoilValue(outingReadyAtom);
-
-  /**  useSetRecoilState */
-  const setOutingReady = useSetRecoilState(outingReadyAtom);
 
   /** useState */
   const [itemList, setItemList] = useState(outingReadyItemList);
@@ -99,7 +96,7 @@ const OutingReadyScreen = ({navigation}) => {
       }); // 외출 시간 (약속 시간 - (걸리는 시간 + 일찍 도착))
       const outingReadyStartTime = momentBeforeFormatter({
         formatString: outingTime,
-        minute: Number(outingReady),
+        minute: Number(outingReadyTime),
       }); // 외출 준비 시작 시간 (외출 시간 - 외출 준비 시간)
 
       await cancelAllNotification();
@@ -123,6 +120,7 @@ const OutingReadyScreen = ({navigation}) => {
         language: getLng(),
         isDarkMode: false,
         itemList: itemSchema,
+        defaultItemId: itemUuid,
       });
     });
   };
@@ -135,7 +133,7 @@ const OutingReadyScreen = ({navigation}) => {
         appointmentTime: getAppointmentTime(),
         destinationTime: destinationTime,
         earlyArrivalTime: earlyArrivalMinite.toString(),
-        outingReadyTime: outingReady,
+        outingReadyTime: outingReadyTime,
         isNotify: !!notificationId,
         notificationId: notificationId || '',
         taskList: taskSchema,
@@ -156,8 +154,16 @@ const OutingReadyScreen = ({navigation}) => {
     });
   };
 
+  const deleteAllRealmData = () => {
+    realm.write(() => {
+      realm.deleteAll();
+    });
+  };
+
   const onCompleted = async () => {
     const notificationId = await setNotifee();
+
+    deleteAllRealmData(); // 임시 코드
 
     setRealmTask();
     setRealmItem(notificationId);
@@ -172,7 +178,7 @@ const OutingReadyScreen = ({navigation}) => {
     if (id === lastIndex.toString()) {
       openBottomSheetModal(ref);
     } else {
-      setOutingReady(outingReadyItemList[id].minute);
+      outingReadyTime = outingReadyItemList[id].minute;
       setSelectedId(id);
 
       onCompleted();
@@ -187,7 +193,8 @@ const OutingReadyScreen = ({navigation}) => {
         ? format('{}분', minuteString)
         : format('{}시간 {}분', hour, minuteString);
 
-    setOutingReady(minuteString);
+    outingReadyTime = minuteString;
+
     setItemList[lastIndex].text = t(formatString);
     setSelectedId(`${lastIndex}`);
 

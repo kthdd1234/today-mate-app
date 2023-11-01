@@ -20,6 +20,11 @@ const destinationTimeAtom = atom<string>({
   default: '',
 });
 
+const earlyArrivalAtom = atom<string>({
+  key: 'earlyArrivalAtom',
+  default: '',
+});
+
 const todoAtom = atom<IDefaultItem[]>({
   key: 'todoAtom',
   default: [],
@@ -42,4 +47,5 @@ export {
   todoAtom,
   outingReadyAtom,
   selectedDateAtom,
+  earlyArrivalAtom,
 };

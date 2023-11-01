@@ -1,5 +1,7 @@
 import moment from 'moment';
 import {getLocales} from 'react-native-localize';
+import format from 'string-format';
+import 'moment/locale/ko';
 
 const getLng = () => {
   return getLocales()[0].languageCode;
@@ -11,6 +13,46 @@ const getCalendarDate = () => {
 
 const getUniqueId = (num: number) => {
   return Date.now().toString() + num;
+};
+
+const getTimeFormatStr = (timeString: string) => {
+  return moment(timeString).format(getLng() === 'ko' ? 'a H시 m분' : 'h:m a');
+};
+
+const setHourMinuteStr = (minutes: number) => {
+  const arg1 = getLng() === 'ko' ? 'H시간 m분' : 'H Hour m Minute';
+  const arg2 = getLng() === 'ko' ? 'm분' : 'm Minute';
+
+  return moment
+    .utc()
+    .startOf('day')
+    .add({minutes: minutes})
+    .format(minutes >= 60 ? arg1 : arg2);
+};
+
+const convertTimeToMinute = ({
+  hour,
+  minute,
+}: {
+  hour: number;
+  minute: number;
+}) => {
+  return `${hour * 60 + minute}`;
+};
+
+const getTimeFormatString = ({
+  hour,
+  minute,
+}: {
+  hour: number;
+  minute: number;
+}) => {
+  const hourLng = getLng() === 'ko' ? '{}시간' : '{} hour';
+  const minuteLng = getLng() === 'ko' ? '{}분' : '{} minute';
+
+  return hour === 0
+    ? format(minuteLng, minute)
+    : format(`${hourLng} ${minuteLng}`, hour, minute);
 };
 
 const stepLabels = ['외출 시간', '할 일', '외출 준비', '알림 설정'];
@@ -40,31 +82,31 @@ const appointmentTimeItemList = [
     time: '오전',
     hour: '9',
     minute: '00',
-    text: '🕘 오전 9:00',
+    text: '오전 9:00',
   },
   {
     time: '오전',
     hour: '10',
     minute: '00',
-    text: '🕙 오전 10:00',
+    text: '오전 10:00',
   },
   {
     time: '오전',
     hour: '12',
     minute: '30',
-    text: '🕧 오전 12:30',
+    text: '오전 12:30',
   },
-  {time: '오후', hour: '6', minute: '00', text: '🕕 오후 06:00'},
-  {time: '오후', hour: '7', minute: '30', text: '🕢 오후 07:30'},
+  {time: '오후', hour: '6', minute: '00', text: '오후 06:00'},
+  {time: '오후', hour: '7', minute: '30', text: '오후 07:30'},
   {time: '', hour: '', minute: '', text: '⚙️ 직접 설정하기'},
 ];
 
 const outingReadyItemList = [
-  {text: '👕 30분', minute: '30'},
-  {text: '👚 40분', minute: '40'},
-  {text: '🎽 50분', minute: '50'},
-  {text: '👔 1시간', minute: '60'},
-  {text: '👗 1시간 30분', minute: '90'},
+  {text: '30분', minute: '30'},
+  {text: '40분', minute: '40'},
+  {text: '50분', minute: '50'},
+  {text: '1시간', minute: '60'},
+  {text: '1시간 30분', minute: '90'},
   {text: '⚙️ 직접 설정하기', minute: ''},
 ];
 
@@ -104,11 +146,19 @@ const todoItemList = [
 ];
 
 const destinationTimeItemList = [
-  {text: '🚗 30분', minute: '30'},
-  {text: '🚕 40분', minute: '40'},
-  {text: '🚙 50분', minute: '50'},
-  {text: '🛻 1시간', minute: '60'},
-  {text: '🏎️ 1시간 30분', minute: '90'},
+  {text: '30분', minute: '30'},
+  {text: '40분', minute: '40'},
+  {text: '50분', minute: '50'},
+  {text: '1시간', minute: '60'},
+  {text: '1시간 30분', minute: '90'},
+  {text: '⚙️ 직접 설정하기', minute: ''},
+];
+
+const earlyArrivalItemList = [
+  {text: '10분', minute: '10'},
+  {text: '15분', minute: '15'},
+  {text: '20분', minute: '20'},
+  {text: '30분', minute: '20'},
   {text: '⚙️ 직접 설정하기', minute: ''},
 ];
 
@@ -165,5 +215,10 @@ export {
   initTimeValues,
   destinationItemList,
   destinationTimeItemList,
+  earlyArrivalItemList,
   earlyArrivalMinite,
+  getTimeFormatStr,
+  setHourMinuteStr,
+  getTimeFormatString,
+  convertTimeToMinute,
 };
