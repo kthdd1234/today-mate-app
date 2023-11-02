@@ -48,7 +48,7 @@ const DestinationScreen = ({navigation}) => {
   return (
     <OnBoarding
       step={0}
-      title="목적지가 어디에요?"
+      title="약속 장소가 어디에요?"
       list={destinationItemList}
       selectedIds={[selectedId]}
       onPressListItem={onPressListItem}

@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import Stepper from '../../components/step/stepper';
 import ChipSection from '../../components/section/ChipSection';
 import DefaultButton from '../../components/button/defaultButton';
@@ -66,6 +66,7 @@ const FirstScreen = ({navigation}) => {
     id;
 
     setDestinationState([...destinationState]);
+    setDestinationId(destinationLastIdx.toString());
   };
 
   const onCompletedAppointmentTimeBottomSheet = ({
@@ -75,42 +76,40 @@ const FirstScreen = ({navigation}) => {
   }: ITimeParams) => {
     appointmentTimeState[
       appointmentTimeLastIdx
-    ].text = `⚙️ ${ampm} ${hour}:${minute}`;
+    ].text = `${ampm} ${hour}:${minute}`;
 
     setAppointmentTimeState([...appointmentTimeState]);
     setAppointmentTimeId(appointmentTimeLastIdx.toString());
   };
 
   return (
-    <View>
+    <SafeAreaView className="h-full">
       <Stepper step={1} />
       <ChipSection
-        title="목적지가 어디에요?"
+        title="약속 장소가 어디에요?"
         chips={destinationState}
         selectedIds={[destinationId]}
-        bottomSheet={
-          <CreateItemBottomSheet
-            targetRef={destinationRef}
-            onCompleted={onCompletedDestinationBottomSheet}
-          />
-        }
         onPress={onPressDestinationItem}
       />
       <ChipSection
-        title="몇시까지 가야해요?"
+        title="몇시 약속이에요?"
         chips={appointmentTimeState.map(item => item.text)}
         selectedIds={[appointmentTimeId]}
-        bottomSheet={
-          <TimeSettingBottomSheet
-            targetRef={destinationRef}
-            isAmpm={true}
-            onPressCompleted={onCompletedAppointmentTimeBottomSheet}
-          />
-        }
         onPress={onPressAppointmentTimeItem}
       />
+      <CreateItemBottomSheet
+        initState={destinationState[destinationLastIdx]}
+        targetRef={destinationRef}
+        onCompleted={onCompletedDestinationBottomSheet}
+      />
+      <TimeSettingBottomSheet
+        targetRef={appointmentTimeRef}
+        isAmpm={true}
+        onPressCompleted={onCompletedAppointmentTimeBottomSheet}
+      />
+
       <DefaultButton id="next-btn" text={t('다음')} onPress={onNext} />
-    </View>
+    </SafeAreaView>
   );
 };
 

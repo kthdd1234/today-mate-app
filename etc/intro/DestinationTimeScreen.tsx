@@ -59,7 +59,7 @@ const DestinationTimeScreen = ({navigation}) => {
   return (
     <OnBoarding
       step={2}
-      title="목적지까지 가는데 얼마나 걸려요?"
+      title="약속 장소까지 가는데 얼마나 걸려요?"
       list={itemList.map(item => item.text)}
       selectedIds={[selectedId]}
       onPressListItem={onPressListItem}

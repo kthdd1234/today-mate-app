@@ -40,6 +40,11 @@ const selectedDateAtom = atom({
   default: getCalendarDate(),
 });
 
+const recoTodoAtom = atom<string[]>({
+  key: 'recoTodoAtom',
+  default: [],
+});
+
 export {
   destinationAtom,
   appintmentTimeAtom,
@@ -48,4 +53,5 @@ export {
   outingReadyAtom,
   selectedDateAtom,
   earlyArrivalAtom,
+  recoTodoAtom,
 };

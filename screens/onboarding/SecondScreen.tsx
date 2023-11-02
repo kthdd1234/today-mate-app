@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import Stepper from '../../components/step/stepper';
 import ChipSection from '../../components/section/ChipSection';
 import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBottomSheet';
@@ -104,36 +104,32 @@ const SecondScreen = ({navigation}) => {
   };
 
   return (
-    <View>
+    <SafeAreaView className="h-full">
       <Stepper step={2} />
       <ChipSection
-        title="목적지까지 가는데 얼마나 걸려요?"
+        title="약속 장소까지 가는데 얼마나 걸려요?"
         chips={destinationTimeState.map(state => state.text)}
         selectedIds={[destinationTimeId]}
-        bottomSheet={
-          <TimeSettingBottomSheet
-            targetRef={destinationTimeRef}
-            isAmpm={false}
-            onPressCompleted={onCompletedDestinationTimeBottomSheet}
-          />
-        }
         onPress={onPressDestinationTimeItem}
       />
       <ChipSection
-        title="목적지에 최소한 몇분 일찍 도착할까요?"
+        title="약속 장소에 몇분 일찍 도착할까요?"
         chips={earlyArrivalState.map(state => state.text)}
         selectedIds={[earlyArrivalId]}
-        bottomSheet={
-          <TimeSettingBottomSheet
-            targetRef={earlyArrivalRef}
-            isAmpm={false}
-            onPressCompleted={onCompletedEarlyArrivalBottomSheet}
-          />
-        }
         onPress={onPressEarlyArrivalItem}
       />
+      <TimeSettingBottomSheet
+        targetRef={destinationTimeRef}
+        isAmpm={false}
+        onPressCompleted={onCompletedDestinationTimeBottomSheet}
+      />
+      <TimeSettingBottomSheet
+        targetRef={earlyArrivalRef}
+        isAmpm={false}
+        onPressCompleted={onCompletedEarlyArrivalBottomSheet}
+      />
       <DefaultButton id="next-btn" text={t('다음')} onPress={onNext} />
-    </View>
+    </SafeAreaView>
   );
 };
 

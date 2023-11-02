@@ -1,20 +1,20 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AppointmentTimeScreen from './screens/intro/AppointmentTimeScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
 import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import StartScreen from './screens/start/StartScreen';
 import {realmConfig} from './schema';
+import StartScreen from './screens/start/StartScreen';
+import FirstScreen from './screens/onboarding/FirstScreen';
+import SecondScreen from './screens/onboarding/SecondScreen';
+import ThirdScreen from './screens/onboarding/ThirdScreen';
+import FourScreen from './screens/onboarding/FourScreen';
 import MainScreen from './screens/main/MainScreen';
-import OutingReadyScreen from './screens/intro/OutingReadyScreen';
-import DestinationScreen from './screens/intro/DestinationScreen';
-import DestinationTimeScreen from './screens/intro/DestinationTimeScreen';
-import TodoScreen from './screens/intro/TodoScreen';
 import './i18n/i18n.config';
+import RecoTodoScreen from './screens/additional/RecoTodoScreen';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
@@ -25,12 +25,12 @@ const App = () => {
 
   const screenList = [
     {name: 'StartScreen', component: StartScreen},
-    {name: 'AppointmentTimeScreen', component: AppointmentTimeScreen},
-    {name: 'DestinationScreen', component: DestinationScreen},
-    {name: 'DestinationTimeScreen', component: DestinationTimeScreen},
-    {name: 'TodoScreen', component: TodoScreen},
-    {name: 'OutingReadyScreen', component: OutingReadyScreen},
+    {name: 'FirstScreen', component: FirstScreen},
+    {name: 'SecondScreen', component: SecondScreen},
+    {name: 'ThirdScreen', component: ThirdScreen},
+    {name: 'FourScreen', component: FourScreen},
     {name: 'MainScreen', component: MainScreen},
+    {name: 'RecoTodoScreen', component: RecoTodoScreen},
   ];
 
   return (
@@ -39,7 +39,7 @@ const App = () => {
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
-              <Navigator initialRouteName="MainScreen">
+              <Navigator initialRouteName="StartScreen">
                 {screenList.map(({name, component}) => (
                   <Screen
                     key={name}

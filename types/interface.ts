@@ -26,6 +26,7 @@ export interface ITimeSettingBottomSheet {
 }
 
 export interface ICreateItemBottomSheet {
+  initState: string;
   targetRef: Ref<BottomSheetModal> | null;
   onCompleted: ({id, text}: IDefaultItem) => void;
 }

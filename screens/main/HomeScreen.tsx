@@ -79,7 +79,7 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 /**
- * 목적지
+ * 약속 장소
  * 약속 시간
  * 걸리는 시간
  * 일찍 도착

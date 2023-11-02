@@ -9,28 +9,22 @@ interface IProps {
   chips: string[];
   /** */
   selectedIds: string[];
-  /** */
-  bottomSheet: JSX.Element;
+
   /** */
   onPress: (id: string) => void;
 }
 
-const ChipSection = ({
-  title,
-  chips,
-  selectedIds,
-  bottomSheet,
-  onPress,
-}: IProps) => {
+const ChipSection = ({title, chips, selectedIds, onPress}: IProps) => {
   /** useTranslation */
   const {t} = useTranslation();
 
   return (
     <View>
       <Text>{t(`${title}`)}</Text>
-      <View>
+      <View className="flex-row flex-wrap gap-2">
         {chips.map((value, key) => (
           <Chip
+            mode="outlined"
             key={key}
             selected={selectedIds.includes(key.toString() as never)}
             onPress={() => onPress(key.toString())}>
@@ -38,7 +32,6 @@ const ChipSection = ({
           </Chip>
         ))}
       </View>
-      {bottomSheet}
     </View>
   );
 };

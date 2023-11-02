@@ -7,13 +7,14 @@ const StartScreen = ({navigation}) => {
   const {t} = useTranslation();
 
   const onPressStart = () => {
-    navigation.navigate('DestinationScreen');
+    navigation.navigate('FirstScreen');
   };
 
   return (
     <SafeAreaView>
       <Text>반가워요! 지금부터</Text>
-      <Text>외출 준비를 해볼까요?</Text>
+      <Text>약속 장소에 일찍 도착하는</Text>
+      <Text>습관을 만들어볼까요?</Text>
       <DefaultButton id="start" text="시작하기" onPress={onPressStart} />
     </SafeAreaView>
   );

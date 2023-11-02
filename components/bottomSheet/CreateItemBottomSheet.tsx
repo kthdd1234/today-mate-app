@@ -4,7 +4,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ICreateItemBottomSheet} from '../../types/interface';
 import {useTranslation} from 'react-i18next';
@@ -13,6 +13,7 @@ import {closeBottomSheetModal} from '../../utils/gorhom';
 import {getUniqueId} from '../../constants';
 
 const CreateItemBottomSheet = ({
+  initState,
   targetRef,
   onCompleted,
 }: ICreateItemBottomSheet) => {
@@ -25,9 +26,14 @@ const CreateItemBottomSheet = ({
   // variables
   const snapPoints = useMemo(() => ['15%'], []);
 
+  useEffect(() => {
+    console.log('뭐고', initState);
+    setText(initState);
+  }, [initState]);
+
   const onChangeText = (value: string) => setText(value);
 
-  const onDismiss = () => setText('');
+  // const onDismiss = () => setText('');
 
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -54,7 +60,7 @@ const CreateItemBottomSheet = ({
         index={0}
         ref={targetRef}
         snapPoints={snapPoints}
-        onDismiss={onDismiss}
+        // onDismiss={onDismiss}
         backdropComponent={renderBackdrop}>
         <View className="z-0 flex-row">
           <View className="grow">
