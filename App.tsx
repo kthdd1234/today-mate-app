@@ -12,9 +12,9 @@ import FirstScreen from './screens/onboarding/FirstScreen';
 import SecondScreen from './screens/onboarding/SecondScreen';
 import ThirdScreen from './screens/onboarding/ThirdScreen';
 import FourScreen from './screens/onboarding/FourScreen';
-import MainScreen from './screens/main/MainScreen';
-import './i18n/i18n.config';
+import MainScreen from './screens/main';
 import RecoTodoScreen from './screens/additional/RecoTodoScreen';
+import './i18n/i18n.config';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();

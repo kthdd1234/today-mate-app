@@ -7,7 +7,6 @@ import {useQuery, useRealm} from '@realm/react';
 import {Task} from '../../schema/TaskSchema';
 import {Item} from '../../schema/ItemSchema';
 import {useRecoilValue} from 'recoil';
-import format from 'string-format';
 import {v4 as uuid} from 'uuid';
 import {
   cancelAllNotification,
@@ -21,10 +20,13 @@ import {
   appintmentTimeAtom,
   destinationTimeAtom,
   todoAtom,
-  earlyArrivalAtom,
+  earlyStartAtom,
+  outingReadyAtom,
 } from '../../states';
+import moment from 'moment';
+import {getLng, outingReadyNotificationMessage} from '../../constants';
 
-const FourScreen = () => {
+const FourScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
@@ -41,8 +43,43 @@ const FourScreen = () => {
   const destination = useRecoilValue(destinationAtom);
   const appintmentTime = useRecoilValue(appintmentTimeAtom);
   const destinationTime = useRecoilValue(destinationTimeAtom);
-  const earlyArrivalTime = useRecoilValue(earlyArrivalAtom);
+  const outingReadyTime = useRecoilValue(outingReadyAtom);
+  const earlyStartTime = useRecoilValue(earlyStartAtom);
   const todo = useRecoilValue(todoAtom);
+
+  const setNotifee = async () => {
+    const isPermission = await requestNotificationPermission();
+
+    if (isPermission) {
+      const {title, subTitle, body} = outingReadyNotificationMessage; // 외출 준비 시작 알림 메세지
+
+      /** time calculate */
+      const appointmentTime = getAppointmentTime(); // 약속 시간
+      const sumMinutes = Number(destinationTime) + Number(earlyStartTime); // 걸리는 시간 + 일찍 출발
+
+      const outingTime = momentBeforeFormatter({
+        formatString: appointmentTime,
+        minute: sumMinutes,
+      }); // 외출 시간 (약속 시간 - (걸리는 시간 + 일찍 출발))
+      const outingReadyStartTime = momentBeforeFormatter({
+        formatString: outingTime,
+        minute: Number(outingReadyTime),
+      }); // 외출 준비 시작 시간 (외출 시간 - 외출 준비 시간)
+
+      await cancelAllNotification();
+
+      return await createTriggerNotification({
+        title: t(title),
+        subTitle: t(subTitle),
+        body: t(body),
+        dateTime: outingReadyStartTime,
+        repeat: RepeatFrequency.DAILY,
+        categoryId: 'outing',
+      });
+    }
+
+    return null;
+  };
 
   const getAppointmentTime = () => {
     const {ampm, hour, minute} = appintmentTime;
@@ -58,7 +95,70 @@ const FourScreen = () => {
     });
   };
 
-  const onPressButton = (isAllow: boolean) => {
+  const setRealmUser = () => {
+    realm.write(() => {
+      realm.create('User', {
+        _id: userUuid,
+        language: getLng(),
+        isDarkMode: false,
+        itemList: itemSchema,
+        defaultItemId: itemUuid,
+      });
+    });
+  };
+
+  const setRealmItem = (notificationId: string | null) => {
+    realm.write(() => {
+      realm.create('Item', {
+        _id: itemUuid,
+        destination: t(destination),
+        appointmentTime: getAppointmentTime(),
+        destinationTime: destinationTime,
+        earlyStartTime: earlyStartTime,
+        outingReadyTime: outingReadyTime,
+        isNotify: !!notificationId,
+        notificationId: notificationId || '',
+        taskList: taskSchema,
+      });
+    });
+  };
+
+  const setRealmTask = () => {
+    realm.write(() => {
+      todo.forEach(task => {
+        realm.create('Task', {
+          _id: uuid(),
+          itemId: itemUuid,
+          name: t(`${task}`),
+          isChecked: false,
+        });
+      });
+    });
+  };
+
+  const deleteAllRealmData = () => {
+    realm.write(() => realm.deleteAll());
+  };
+
+  const onSave = async (isAllow: boolean) => {
+    let notificationId: string | null = null;
+
+    if (isAllow) {
+      notificationId = await setNotifee();
+    }
+
+    deleteAllRealmData(); // 임시 코드
+
+    setRealmTask();
+    setRealmItem(notificationId);
+    setRealmUser();
+
+    navigation.reset({
+      routes: [{name: 'MainScreen'}],
+    });
+  };
+
+  const showNotificationBottonSheet = () => {
     //
   };
 
@@ -76,12 +176,12 @@ const FourScreen = () => {
         <DefaultButton
           id="allow-btn"
           text={t('알림을 받을게요!')}
-          onPress={() => onPressButton(true)}
+          onPress={() => onSave(true)}
         />
         <DefaultButton
           id="reject-btn"
           text={t('아니요. 안 받을게요.')}
-          onPress={() => onPressButton(false)}
+          onPress={() => onSave(false)}
         />
       </View>
     </SafeAreaView>

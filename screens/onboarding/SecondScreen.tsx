@@ -11,7 +11,7 @@ import {
   getTimeFormatString,
 } from '../../constants';
 import {useSetRecoilState} from 'recoil';
-import {destinationTimeAtom, earlyArrivalAtom} from '../../states';
+import {destinationTimeAtom, earlyStartAtom} from '../../states';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useRef, useState} from 'react';
 import {openBottomSheetModal} from '../../utils/gorhom';
@@ -27,7 +27,7 @@ const SecondScreen = ({navigation}) => {
 
   /** useSetRecoilState */
   const setDestinationAtom = useSetRecoilState(destinationTimeAtom);
-  const setEarlyArrivalAtom = useSetRecoilState(earlyArrivalAtom);
+  const setearlyStartAtom = useSetRecoilState(earlyStartAtom);
 
   /** useState */
   const [destinationTimeState, setDestinationTimeState] = useState(
@@ -48,7 +48,7 @@ const SecondScreen = ({navigation}) => {
       const earlyArrivalItem = earlyArrivalItemList[earlyArrivalId];
 
       setDestinationAtom(destinationTimeItem.minute);
-      setEarlyArrivalAtom(earlyArrivalItem.minute);
+      setearlyStartAtom(earlyArrivalItem.minute);
 
       navigation.navigate('ThirdScreen');
     }
@@ -113,7 +113,7 @@ const SecondScreen = ({navigation}) => {
         onPress={onPressDestinationTimeItem}
       />
       <ChipSection
-        title="약속 장소에 몇분 일찍 도착할까요?"
+        title="지각하지 않으려면 일찍 출발하는 것이 좋아요.\n몇분 일찍 출발 할까요?"
         chips={earlyArrivalState.map(state => state.text)}
         selectedIds={[earlyArrivalId]}
         onPress={onPressEarlyArrivalItem}

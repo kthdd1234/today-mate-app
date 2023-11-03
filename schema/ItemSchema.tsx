@@ -7,7 +7,7 @@ export class Item extends Realm.Object<Item> {
   destination!: string;
   appointmentTime!: string;
   destinationTime!: string;
-  earlyArrivalTime!: string;
+  earlyStartTime!: string;
   outingReadyTime!: string;
   isNotify!: boolean;
   notificationId!: string;
@@ -21,7 +21,7 @@ export class Item extends Realm.Object<Item> {
       destination: 'string',
       appointmentTime: 'string',
       destinationTime: 'string',
-      earlyArrivalTime: 'string',
+      earlyStartTime: 'string',
       outingReadyTime: 'string',
       isNotify: {type: 'bool', default: false},
       notificationId: {type: 'string', default: ''},

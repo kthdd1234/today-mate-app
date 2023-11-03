@@ -86,7 +86,7 @@ const FirstScreen = ({navigation}) => {
     <SafeAreaView className="h-full">
       <Stepper step={1} />
       <ChipSection
-        title="약속 장소가 어디에요?"
+        title="어떤 약속인가요?"
         chips={destinationState}
         selectedIds={[destinationId]}
         onPress={onPressDestinationItem}

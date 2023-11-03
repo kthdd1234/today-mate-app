@@ -31,6 +31,17 @@ export interface ICreateItemBottomSheet {
   onCompleted: ({id, text}: IDefaultItem) => void;
 }
 
+export interface INotificationBottomSheet {
+  initState: INotificationRepeatState;
+  targetRef: Ref<BottomSheetModal> | null;
+  onCompleted: ({isRepeat, days}: INotificationRepeatState) => void;
+}
+
+export interface INotificationRepeatState {
+  isRepeat: boolean;
+  days: string[];
+}
+
 export interface IDefaultItemSettingState {
   groupId: string;
   groupName: string;

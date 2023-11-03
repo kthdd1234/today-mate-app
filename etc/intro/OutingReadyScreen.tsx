@@ -132,7 +132,7 @@ const OutingReadyScreen = ({navigation}) => {
         destination: t(destination.text),
         appointmentTime: getAppointmentTime(),
         destinationTime: destinationTime,
-        earlyArrivalTime: earlyArrivalMinite.toString(),
+        earlyStartTime: earlyArrivalMinite.toString(),
         outingReadyTime: outingReadyTime,
         isNotify: !!notificationId,
         notificationId: notificationId || '',

@@ -2,12 +2,9 @@ import {atom} from 'recoil';
 import {ITimeParams, IDefaultItem} from '../types/interface';
 import {getCalendarDate, initFullTime} from '../constants';
 
-const destinationAtom = atom<IDefaultItem>({
+const destinationAtom = atom<string>({
   key: 'destinationAtom',
-  default: {
-    id: '',
-    text: '',
-  },
+  default: '',
 });
 
 const appintmentTimeAtom = atom<ITimeParams>({
@@ -20,8 +17,8 @@ const destinationTimeAtom = atom<string>({
   default: '',
 });
 
-const earlyArrivalAtom = atom<string>({
-  key: 'earlyArrivalAtom',
+const earlyStartAtom = atom<string>({
+  key: 'earlyStartAtom',
   default: '',
 });
 
@@ -52,6 +49,6 @@ export {
   todoAtom,
   outingReadyAtom,
   selectedDateAtom,
-  earlyArrivalAtom,
+  earlyStartAtom,
   recoTodoAtom,
 };
