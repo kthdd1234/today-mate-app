@@ -1,6 +1,6 @@
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, Text, View} from 'react-native';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import Stepper from '../../components/step/stepper';
 import RealmPlugin from 'realm-flipper-plugin-device';
 import {useQuery, useRealm} from '@realm/react';

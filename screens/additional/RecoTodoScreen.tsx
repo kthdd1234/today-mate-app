@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import {todoItemList} from '../../constants';
 import {useSetRecoilState} from 'recoil';
 import {recoTodoAtom} from '../../states';
@@ -57,6 +57,7 @@ const RecoTodoScreen = ({navigation}) => {
       </View>
       <DefaultButton
         id="bottom-button"
+        isEnable={false}
         text={t('선택 완료')}
         onPress={onCompleted}
       />

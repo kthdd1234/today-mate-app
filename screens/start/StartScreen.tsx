@@ -1,5 +1,5 @@
 import {SafeAreaView, Text} from 'react-native';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import {useTranslation} from 'react-i18next';
 
 const StartScreen = ({navigation}) => {

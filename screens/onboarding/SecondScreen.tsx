@@ -2,7 +2,7 @@ import {SafeAreaView} from 'react-native';
 import Stepper from '../../components/step/stepper';
 import ChipSection from '../../components/section/ChipSection';
 import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBottomSheet';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import {useTranslation} from 'react-i18next';
 import {
   convertTimeToMinute,
@@ -128,7 +128,12 @@ const SecondScreen = ({navigation}) => {
         isAmpm={false}
         onPressCompleted={onCompletedEarlyArrivalBottomSheet}
       />
-      <DefaultButton id="next-btn" text={t('다음')} onPress={onNext} />
+      <DefaultButton
+        id="next-btn"
+        text={t('다음')}
+        isEnable={false}
+        onPress={onNext}
+      />
     </SafeAreaView>
   );
 };

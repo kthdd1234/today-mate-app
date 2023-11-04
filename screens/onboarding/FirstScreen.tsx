@@ -1,7 +1,7 @@
 import {SafeAreaView} from 'react-native';
 import Stepper from '../../components/step/stepper';
 import ChipSection from '../../components/section/ChipSection';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import {appointmentTimeItemList, destinationItemList} from '../../constants';
 import {appintmentTimeAtom, destinationAtom} from '../../states';
 import {useSetRecoilState} from 'recoil';
@@ -108,7 +108,12 @@ const FirstScreen = ({navigation}) => {
         onPressCompleted={onCompletedAppointmentTimeBottomSheet}
       />
 
-      <DefaultButton id="next-btn" text={t('다음')} onPress={onNext} />
+      <DefaultButton
+        id="next-btn"
+        text={t('다음')}
+        isEnable={false}
+        onPress={onNext}
+      />
     </SafeAreaView>
   );
 };

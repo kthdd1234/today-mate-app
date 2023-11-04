@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import {useMemo, useCallback, useState} from 'react';
 import {Text, View} from 'react-native';
-import DefaultButton from '../button/defaultButton';
+import DefaultButton from '../button/DefaultButton';
 import {ITimeSettingBottomSheet} from '../../types/interface';
 import TimeSettingSection from '../section/TimeSettingSection';
 import {useTranslation} from 'react-i18next';
@@ -84,6 +84,7 @@ const TimeSettingBottomSheet = ({
             }}
           />
           <DefaultButton
+            isEnable={true}
             id="time-setting"
             text={t('완료')}
             onPress={onPressCompletedButton}

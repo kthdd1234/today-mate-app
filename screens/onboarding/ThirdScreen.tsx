@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 import Stepper from '../../components/step/stepper';
-import DefaultButton from '../../components/button/defaultButton';
+import DefaultButton from '../../components/button/DefaultButton';
 import {useTranslation} from 'react-i18next';
 import ChipSection from '../../components/section/ChipSection';
 import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBottomSheet';
@@ -154,7 +154,12 @@ const ThirdScreen = ({navigation}) => {
             onPress={onPressOutingReadyItem}
           />
 
-          <DefaultButton id="next-btn" text={t('다음')} onPress={onNext} />
+          <DefaultButton
+            id="next-btn"
+            text={t('다음')}
+            isEnable={false}
+            onPress={onNext}
+          />
           <TimeSettingBottomSheet
             targetRef={outingReadyRef}
             isAmpm={false}

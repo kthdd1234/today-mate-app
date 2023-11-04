@@ -202,7 +202,21 @@ const outingTimeNotifiMessage = {
   body: '혹시 깜빡한 일은 없는지\n앱을 실행해서 확인해보세요 :)',
 };
 
-const earlyArrivalMinite = 20;
+const repeatInfo = [
+  {id: 'None', text: '없음'},
+  {id: 'EverayWeek', text: '매주'},
+];
+
+const daysInfo = [
+  {id: 'Sun', text: '일'},
+  {id: 'Mon', text: '월'},
+  {id: 'Tue', text: '화'},
+  {id: 'Wed', text: '수'},
+  {id: 'Thu', text: '목'},
+  {id: 'Fri', text: '금'},
+  {id: 'Sat', text: '토'},
+  {id: 'Mon', text: '일'},
+];
 
 export {
   getCalendarDate,
@@ -220,7 +234,8 @@ export {
   destinationItemList,
   destinationTimeItemList,
   earlyArrivalItemList,
-  earlyArrivalMinite,
+  repeatInfo,
+  daysInfo,
   getTimeFormatStr,
   setHourMinuteStr,
   getTimeFormatString,

@@ -1,5 +1,5 @@
 import {Text, View, Image, SafeAreaView} from 'react-native';
-import DefaultButton from '../components/button/defaultButton';
+import DefaultButton from '../components/button/DefaultButton';
 import Stepper from '../components/step/stepper';
 import {useRecoilValue} from 'recoil';
 import {

@@ -5,7 +5,7 @@ import {RepeatFrequency} from '@notifee/react-native';
 export interface IDefaultButton {
   id: string;
   text: string;
-  selectedId?: string;
+  isEnable: boolean;
   onPress: (id: string) => void;
 }
 
@@ -97,4 +97,11 @@ export interface ITaskInfo {
 export interface IDefaultItem {
   id: string;
   text: string;
+}
+
+export interface ISelectedButton {
+  id: string;
+  text: string;
+  selectedIds: string[];
+  onPress: (id: string) => void;
 }

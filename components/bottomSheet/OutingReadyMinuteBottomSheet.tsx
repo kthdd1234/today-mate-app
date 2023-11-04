@@ -5,7 +5,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
-import DefaultButton from '../button/defaultButton';
+import DefaultButton from '../button/DefaultButton';
 import {useMemo, useCallback, useState} from 'react';
 import {ITimeSettingBottomSheet} from '../../types/interface';
 import {closeBottomSheetModal} from '../../utils/gorhom';

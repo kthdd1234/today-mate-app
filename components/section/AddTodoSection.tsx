@@ -2,7 +2,7 @@ import {useTranslation} from 'react-i18next';
 import {View, Text, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import IconTextButton from '../button/IconTextButton';
+import IconTextButton from '../button/IconButton';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {Input} from 'react-native-elements';
 import DraggableFlatList, {
@@ -77,13 +77,12 @@ const AddTodoSection = ({
     <View>
       <View className="flex-row justify-between">
         <View>
-          <Text>{t('외출 준비 목록을 작성하고')}</Text>
-          <Text>{t('순서를 정해보세요 :)')}</Text>
+          <Text>{t('외출 준비 리스트를 작성해볼까요?')}</Text>
         </View>
         <View className="flex-row ">
           <IconTextButton
             icon={<EntypoIcon name="star" />}
-            text={t('추천 목록')}
+            text={t('추천 리스트')}
             onPress={onPressRecoList}
           />
         </View>
@@ -95,7 +94,7 @@ const AddTodoSection = ({
               blurOnSubmit={false}
               enterKeyHint="done"
               autoFocus={true}
-              placeholder={t('할 일')}
+              placeholder={t('ex. 썬크림 바르기, 향수 뿌리기')}
               value={inputText}
               onChangeText={onChangeText}
               onSubmitEditing={onSubmitEditing}
@@ -103,7 +102,7 @@ const AddTodoSection = ({
           ) : (
             <IconTextButton
               icon={<EntypoIcon name="plus" />}
-              text={t('할 일 추가')}
+              text={t('외출 준비')}
               onPress={onPressAddTodo}
             />
           )}

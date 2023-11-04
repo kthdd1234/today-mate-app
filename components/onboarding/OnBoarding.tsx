@@ -1,6 +1,6 @@
 import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import DefaultButton from '../button/defaultButton';
+import DefaultButton from '../button/DefaultButton';
 import OcticonsIcon from 'react-native-vector-icons/Octicons';
 
 interface IProps {

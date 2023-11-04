@@ -8,7 +8,7 @@ import {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ICreateItemBottomSheet} from '../../types/interface';
 import {useTranslation} from 'react-i18next';
-import DefaultButton from '../button/defaultButton';
+import DefaultButton from '../button/DefaultButton';
 import {closeBottomSheetModal} from '../../utils/gorhom';
 import {getUniqueId} from '../../constants';
 
