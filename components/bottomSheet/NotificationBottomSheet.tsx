@@ -6,10 +6,11 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
 import DefaultButton from '../button/DefaultButton';
-import SeletedButton from '../button/SeletedButton';
-import {useMemo, useCallback, useState} from 'react';
+import SeletedButton from '../button/SelectedButton';
+import {useMemo, useCallback, useState, useEffect} from 'react';
 import {INotificationBottomSheet} from '../../types/interface';
-import {repeatInfo, daysInfo} from '../../constants';
+import {repeatTypes, days} from '../../constants';
+import {closeBottomSheetModal} from '../../utils/gorhom';
 
 const NotificationBottomSheet = ({
   initState,
@@ -20,8 +21,13 @@ const NotificationBottomSheet = ({
   const {t} = useTranslation();
 
   /** useState */
-  const [selectedRepeatId, setSelectedRepeatId] = useState('');
-  const [selectedDaysIds, setSelectedDaysIds] = useState([]);
+  const [selectedRepeatType, setSelectedRepeatType] = useState('');
+  const [selectedDaysIds, setSelectedDaysIds] = useState<string[]>([]);
+
+  // variables
+  useEffect(() => {
+    console.log(initState);
+  }, [initState]);
 
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
@@ -38,12 +44,24 @@ const NotificationBottomSheet = ({
     [],
   );
 
-  const onPressRepeatButton = (id: string) => {
-    //
+  const onPressRepeatButton = (type: string) => {
+    setSelectedRepeatType(type);
   };
 
-  const onPressCompletedButton = () => {
-    //
+  const onPressDaysButton = (id: string) => {
+    const isDays = selectedDaysIds.includes(id as never);
+
+    if (isDays) {
+      setSelectedDaysIds([...selectedDaysIds, id]);
+    } else {
+      selectedDaysIds.splice(Number(id), 1);
+      setSelectedDaysIds(selectedDaysIds);
+    }
+  };
+
+  const onPressCompletedButton = _ => {
+    closeBottomSheetModal(targetRef);
+    onCompleted({repeatType: selectedRepeatType, days: selectedDaysIds});
   };
 
   return (
@@ -62,10 +80,11 @@ const NotificationBottomSheet = ({
               <Text>{t('반복 주기')}</Text>
             </View>
             <View className="flex-row">
-              {repeatInfo.map(info => (
+              {repeatTypes.map(info => (
                 <SeletedButton
                   key={info.id}
-                  selectedIds={[selectedRepeatId]}
+                  id={info.id}
+                  selectedIds={[selectedRepeatType]}
                   text={info.text}
                   onPress={onPressRepeatButton}
                 />
@@ -73,18 +92,20 @@ const NotificationBottomSheet = ({
             </View>
           </View>
           <View className="flex-row">
-            {daysInfo.map(info => (
+            {days.map(info => (
               <SeletedButton
                 key={info.id}
+                id={info.id}
                 selectedIds={selectedDaysIds}
                 text={info.text}
-                onPress={onPressRepeatButton}
+                onPress={onPressDaysButton}
               />
             ))}
           </View>
 
           <DefaultButton
             id="miute-setting"
+            isEnable={false}
             text={t('완료')}
             onPress={onPressCompletedButton}
           />

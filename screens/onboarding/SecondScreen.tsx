@@ -7,11 +7,11 @@ import {useTranslation} from 'react-i18next';
 import {
   convertTimeToMinute,
   destinationTimeItemList,
-  earlyArrivalItemList,
+  outingReadyItemList,
   getTimeFormatString,
 } from '../../constants';
 import {useSetRecoilState} from 'recoil';
-import {destinationTimeAtom, earlyStartAtom} from '../../states';
+import {destinationTimeAtom, outingReadyAtom} from '../../states';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useRef, useState} from 'react';
 import {openBottomSheetModal} from '../../utils/gorhom';
@@ -23,32 +23,31 @@ const SecondScreen = ({navigation}) => {
 
   /** lastIndex */
   const destinationTimeLastIdx = destinationTimeItemList.length - 1;
-  const earlyArrivalLastIdx = earlyArrivalItemList.length - 1;
+  const outingReadyLastIdx = outingReadyItemList.length - 1;
 
   /** useSetRecoilState */
-  const setDestinationAtom = useSetRecoilState(destinationTimeAtom);
-  const setearlyStartAtom = useSetRecoilState(earlyStartAtom);
+  const setDestinationTimeAtom = useSetRecoilState(destinationTimeAtom);
+  const setOutingReadyAtom = useSetRecoilState(outingReadyAtom);
 
   /** useState */
   const [destinationTimeState, setDestinationTimeState] = useState(
     destinationTimeItemList,
   );
-  const [earlyArrivalState, setEarlyArrivalState] =
-    useState(earlyArrivalItemList);
+  const [outingReadyState, setoutingReadyState] = useState(outingReadyItemList);
   const [destinationTimeId, setDestinationTimeId] = useState('');
-  const [earlyArrivalId, setEarlyArrivalId] = useState('');
+  const [outingReadyId, setoutingReadyId] = useState('');
 
   /** useRef */
   const destinationTimeRef = useRef<BottomSheetModal>(null);
-  const earlyArrivalRef = useRef<BottomSheetModal>(null);
+  const outingReadyRef = useRef<BottomSheetModal>(null);
 
   const onNext = () => {
-    if (destinationTimeId !== '' && earlyArrivalId !== '') {
+    if (destinationTimeId !== '' && outingReadyId !== '') {
       const destinationTimeItem = destinationTimeItemList[destinationTimeId];
-      const earlyArrivalItem = earlyArrivalItemList[earlyArrivalId];
+      const outingReadyItem = outingReadyItemList[outingReadyId];
 
-      setDestinationAtom(destinationTimeItem.minute);
-      setearlyStartAtom(earlyArrivalItem.minute);
+      setDestinationTimeAtom(destinationTimeItem.minute);
+      setOutingReadyAtom(outingReadyItem.minute);
 
       navigation.navigate('ThirdScreen');
     }
@@ -60,10 +59,10 @@ const SecondScreen = ({navigation}) => {
       : setDestinationTimeId(id);
   };
 
-  const onPressEarlyArrivalItem = (id: string) => {
-    id === earlyArrivalLastIdx.toString()
-      ? openBottomSheetModal(earlyArrivalRef)
-      : setEarlyArrivalId(id);
+  const onPressOutingReadyItem = (id: string) => {
+    id === outingReadyLastIdx.toString()
+      ? openBottomSheetModal(outingReadyRef)
+      : setoutingReadyId(id);
   };
 
   const onCompletedDestinationTimeBottomSheet = ({
@@ -86,21 +85,21 @@ const SecondScreen = ({navigation}) => {
     setDestinationTimeId(`${destinationTimeLastIdx}`);
   };
 
-  const onCompletedEarlyArrivalBottomSheet = ({hour, minute}: ITimeParams) => {
+  const onCompletedOutingReadyBottomSheet = ({hour, minute}: ITimeParams) => {
     const [Hour, Minute] = [Number(hour), Number(minute)];
     const timeText = getTimeFormatString({
       hour: Hour,
       minute: Minute,
     });
 
-    earlyArrivalState[earlyArrivalLastIdx].text = timeText;
-    earlyArrivalState[earlyArrivalLastIdx].minute = convertTimeToMinute({
+    outingReadyState[outingReadyLastIdx].text = timeText;
+    outingReadyState[outingReadyLastIdx].minute = convertTimeToMinute({
       hour: Hour,
       minute: Minute,
     });
 
-    setEarlyArrivalState([...earlyArrivalState]);
-    setEarlyArrivalId(`${earlyArrivalLastIdx}`);
+    setoutingReadyState([...outingReadyState]);
+    setoutingReadyId(`${outingReadyLastIdx}`);
   };
 
   return (
@@ -113,10 +112,10 @@ const SecondScreen = ({navigation}) => {
         onPress={onPressDestinationTimeItem}
       />
       <ChipSection
-        title="지각하지 않으려면 일찍 출발하는 것이 좋아요.\n몇분 일찍 출발 할까요?"
-        chips={earlyArrivalState.map(state => state.text)}
-        selectedIds={[earlyArrivalId]}
-        onPress={onPressEarlyArrivalItem}
+        title="외출 준비는 보통 얼마나 걸려요?"
+        chips={outingReadyState.map(state => state.text)}
+        selectedIds={[outingReadyId]}
+        onPress={onPressOutingReadyItem}
       />
       <TimeSettingBottomSheet
         targetRef={destinationTimeRef}
@@ -124,9 +123,9 @@ const SecondScreen = ({navigation}) => {
         onPressCompleted={onCompletedDestinationTimeBottomSheet}
       />
       <TimeSettingBottomSheet
-        targetRef={earlyArrivalRef}
+        targetRef={outingReadyRef}
         isAmpm={false}
-        onPressCompleted={onCompletedEarlyArrivalBottomSheet}
+        onPressCompleted={onCompletedOutingReadyBottomSheet}
       />
       <DefaultButton
         id="next-btn"
@@ -139,3 +138,11 @@ const SecondScreen = ({navigation}) => {
 };
 
 export default SecondScreen;
+{
+  /* <ChipSection
+        title="지각하지 않으려면 일찍 출발하는 것이 좋아요.\n몇분 일찍 출발 할까요?"
+        chips={outingReadyState.map(state => state.text)}
+        selectedIds={[outingReadyId]}
+        onPress={onPressoutingReadyItem}
+      /> */
+}

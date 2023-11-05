@@ -34,11 +34,11 @@ export interface ICreateItemBottomSheet {
 export interface INotificationBottomSheet {
   initState: INotificationRepeatState;
   targetRef: Ref<BottomSheetModal> | null;
-  onCompleted: ({isRepeat, days}: INotificationRepeatState) => void;
+  onCompleted: ({repeatType, days}: INotificationRepeatState) => void;
 }
 
 export interface INotificationRepeatState {
-  isRepeat: boolean;
+  repeatType: string;
   days: string[];
 }
 

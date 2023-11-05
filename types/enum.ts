@@ -5,4 +5,28 @@ enum eCanlenarDisplay {
   oneMonth = '1개월',
 }
 
-export {eCanlenarDisplay};
+enum eRepeatType {
+  /** */
+  None = 'None',
+  /** */
+  EveryWeek = 'EveryWeek',
+}
+
+enum eDays {
+  /** */
+  Sun = 'Sun',
+  /** */
+  Mon = 'Mon',
+  /** */
+  Tue = 'Tue',
+  /** */
+  Wed = 'Wed',
+  /** */
+  Thu = 'Thu',
+  /** */
+  Fri = 'Fri',
+  /** */
+  Sat = 'Sat',
+}
+
+export {eCanlenarDisplay, eDays, eRepeatType};

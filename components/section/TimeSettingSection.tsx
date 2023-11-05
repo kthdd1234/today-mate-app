@@ -1,7 +1,6 @@
 import {Text, View} from 'react-native';
-import DefaultButton from '../button/DefaultButton';
-import SelectedButton from '../button/SelectedButton';
 import {useTranslation} from 'react-i18next';
+import SelectedButton from '../button/SelectedButton';
 
 interface ITimeSettingSection {
   states: {ampm?: string; hour: string; minute: string};
@@ -43,6 +42,8 @@ const TimeSettingSection = ({states, onPressed}: ITimeSettingSection) => {
   const ampm = states.ampm ? info.ampm : null;
   const list = [ampm, info.hour, info.minute];
 
+  console.log(list);
+
   return (
     <View>
       {list.map((item, key) =>
@@ -50,11 +51,12 @@ const TimeSettingSection = ({states, onPressed}: ITimeSettingSection) => {
           <View key={key} className="flex-row">
             <Text>{item.title}</Text>
             <View className="flex-row">
-              {item.values.map(info => (
+              {item.values.map(text => (
                 <SelectedButton
-                  key={info.id}
-                  selectedIds={item.state}
-                  text={info.text}
+                  key={text}
+                  id={text}
+                  text={text}
+                  selectedIds={[item.state || '']}
                   onPress={item.onPress}
                 />
               ))}
@@ -67,12 +69,3 @@ const TimeSettingSection = ({states, onPressed}: ITimeSettingSection) => {
 };
 
 export default TimeSettingSection;
-{
-  /* <DefaultButton
-key={text}
-selectedId={item.state}
-id={text}
-text={text}
-onPress={item.onPress}
-/> */
-}

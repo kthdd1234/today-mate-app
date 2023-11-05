@@ -19,12 +19,17 @@ import {
   destinationAtom,
   appintmentTimeAtom,
   destinationTimeAtom,
-  todoAtom,
+  goalsAtom,
   earlyStartAtom,
   outingReadyAtom,
 } from '../../states';
 import moment from 'moment';
 import {getLng, outingReadyNotificationMessage} from '../../constants';
+import NotificationBottomSheet from '../../components/bottomSheet/NotificationBottomSheet';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {useRef} from 'react';
+import {INotificationRepeatState} from '../../types/interface';
+import {eDays, eRepeatType} from '../../types/enum';
 
 const FourScreen = ({navigation}) => {
   /** useTranslation */
@@ -45,7 +50,10 @@ const FourScreen = ({navigation}) => {
   const destinationTime = useRecoilValue(destinationTimeAtom);
   const outingReadyTime = useRecoilValue(outingReadyAtom);
   const earlyStartTime = useRecoilValue(earlyStartAtom);
-  const todo = useRecoilValue(todoAtom);
+  const goals = useRecoilValue(goalsAtom);
+
+  /** useRef */
+  const notificationRef = useRef<BottomSheetModal>(null);
 
   const setNotifee = async () => {
     const isPermission = await requestNotificationPermission();
@@ -125,7 +133,7 @@ const FourScreen = ({navigation}) => {
 
   const setRealmTask = () => {
     realm.write(() => {
-      todo.forEach(task => {
+      goals.forEach(task => {
         realm.create('Task', {
           _id: uuid(),
           itemId: itemUuid,
@@ -158,7 +166,10 @@ const FourScreen = ({navigation}) => {
     });
   };
 
-  const showNotificationBottonSheet = () => {
+  const onCompletedNotificationBottonSheet = ({
+    repeatType,
+    days,
+  }: INotificationRepeatState) => {
     //
   };
 
@@ -174,16 +185,26 @@ const FourScreen = ({navigation}) => {
       <View>{/* <Image /> */}</View>
       <View>
         <DefaultButton
+          isEnable={true}
           id="allow-btn"
           text={t('알림을 받을게요!')}
           onPress={() => onSave(true)}
         />
         <DefaultButton
+          isEnable={false}
           id="reject-btn"
           text={t('아니요. 안 받을게요.')}
           onPress={() => onSave(false)}
         />
       </View>
+      <NotificationBottomSheet
+        targetRef={notificationRef}
+        initState={{
+          repeatType: eRepeatType.EveryWeek,
+          days: Object.values(eDays),
+        }}
+        onCompleted={onCompletedNotificationBottonSheet}
+      />
     </SafeAreaView>
   );
 };

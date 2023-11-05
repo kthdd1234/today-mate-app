@@ -55,6 +55,31 @@ const getTimeFormatString = ({
     : format(`${hourLng} ${minuteLng}`, hour, minute);
 };
 
+const customStyles = {
+  stepIndicatorSize: 30,
+  currentStepIndicatorSize: 40,
+  separatorStrokeWidth: 2,
+  currentStepStrokeWidth: 3,
+  stepStrokeCurrentColor: '#fe7013',
+  stepStrokeWidth: 3,
+  separatorStrokeFinishedWidth: 4,
+  stepStrokeFinishedColor: '#fe7013',
+  stepStrokeUnFinishedColor: '#aaaaaa',
+  separatorFinishedColor: '#fe7013',
+  separatorUnFinishedColor: '#aaaaaa',
+  stepIndicatorFinishedColor: '#fe7013',
+  stepIndicatorUnFinishedColor: '#ffffff',
+  stepIndicatorCurrentColor: '#ffffff',
+  stepIndicatorLabelFontSize: 13,
+  currentStepIndicatorLabelFontSize: 13,
+  stepIndicatorLabelCurrentColor: '#fe7013',
+  stepIndicatorLabelFinishedColor: '#ffffff',
+  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
+  labelColor: '#999999',
+  labelSize: 13,
+  currentStepLabelColor: '#fe7013',
+};
+
 const stepLabels = ['외출 시간', '할 일', '외출 준비', '알림 설정'];
 
 const initFullTime = {
@@ -158,38 +183,24 @@ const destinationTimeItemList = [
   {text: '⚙️ 직접 설정하기', minute: ''},
 ];
 
-const earlyArrivalItemList = [
+const earlyStartItemList = [
   {text: '10분', minute: '10'},
   {text: '15분', minute: '15'},
   {text: '20분', minute: '20'},
-  {text: '30분', minute: '20'},
+  {text: '30분', minute: '30'},
+  {text: '40분', minute: '40'},
   {text: '⚙️ 직접 설정하기', minute: ''},
 ];
 
-const customStyles = {
-  stepIndicatorSize: 30,
-  currentStepIndicatorSize: 40,
-  separatorStrokeWidth: 2,
-  currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: '#fe7013',
-  stepStrokeWidth: 3,
-  separatorStrokeFinishedWidth: 4,
-  stepStrokeFinishedColor: '#fe7013',
-  stepStrokeUnFinishedColor: '#aaaaaa',
-  separatorFinishedColor: '#fe7013',
-  separatorUnFinishedColor: '#aaaaaa',
-  stepIndicatorFinishedColor: '#fe7013',
-  stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#ffffff',
-  stepIndicatorLabelFontSize: 13,
-  currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: '#fe7013',
-  stepIndicatorLabelFinishedColor: '#ffffff',
-  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
-  labelColor: '#999999',
-  labelSize: 13,
-  currentStepLabelColor: '#fe7013',
-};
+const goalsItemList = [
+  '📖 독서하기',
+  '📝 영어 공부하기',
+  '🗂️ 오늘의 업무 정리하기',
+  '🚶‍♂️ 주변 산책하기',
+  '📑 수업 자료 예습하기',
+  '📊 경제 뉴스 보기',
+  '⚙️ 직접 입력하기',
+];
 
 const outingReadyNotificationMessage = {
   title: '외출 준비 할 시간이에요 👕',
@@ -202,12 +213,12 @@ const outingTimeNotifiMessage = {
   body: '혹시 깜빡한 일은 없는지\n앱을 실행해서 확인해보세요 :)',
 };
 
-const repeatInfo = [
+const repeatTypes = [
   {id: 'None', text: '없음'},
   {id: 'EverayWeek', text: '매주'},
 ];
 
-const daysInfo = [
+const days = [
   {id: 'Sun', text: '일'},
   {id: 'Mon', text: '월'},
   {id: 'Tue', text: '화'},
@@ -215,13 +226,9 @@ const daysInfo = [
   {id: 'Thu', text: '목'},
   {id: 'Fri', text: '금'},
   {id: 'Sat', text: '토'},
-  {id: 'Mon', text: '일'},
 ];
 
 export {
-  getCalendarDate,
-  getUniqueId,
-  getLng,
   appointmentTimeItemList,
   outingReadyItemList,
   todoItemList,
@@ -233,9 +240,13 @@ export {
   initTimeValues,
   destinationItemList,
   destinationTimeItemList,
-  earlyArrivalItemList,
-  repeatInfo,
-  daysInfo,
+  earlyStartItemList,
+  repeatTypes,
+  days,
+  goalsItemList,
+  getCalendarDate,
+  getUniqueId,
+  getLng,
   getTimeFormatStr,
   setHourMinuteStr,
   getTimeFormatString,

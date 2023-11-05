@@ -9,7 +9,6 @@ interface IProps {
   chips: string[];
   /** */
   selectedIds: string[];
-
   /** */
   onPress: (id: string) => void;
 }
@@ -21,9 +20,10 @@ const ChipSection = ({title, chips, selectedIds, onPress}: IProps) => {
   return (
     <View>
       <Text>{t(`${title}`)}</Text>
-      <View className="flex-row flex-wrap gap-2">
+      <View className="flex-row flex-wrap gap-2 ">
         {chips.map((value, key) => (
           <Chip
+            className="whitespace-pre-wrap"
             mode="outlined"
             key={key}
             selected={selectedIds.includes(key.toString() as never)}
