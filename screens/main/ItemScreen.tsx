@@ -3,6 +3,7 @@ import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import {useObject, useQuery} from '@realm/react';
 import {User} from '../../schema/UserSchema';
 import {Item} from '../../schema/ItemSchema';
+import {getAmpmHHmm} from '../../constants';
 
 const ItemScreen = () => {
   /** realm */
@@ -19,7 +20,7 @@ const ItemScreen = () => {
   const timeInfo = [
     {
       name: '약속 시간',
-      value: getTimeFormatStr(appointmentTime),
+      value: getAmpmHHmm(appointmentTime),
     },
     {name: '걸리는 시간', value: setHourMinuteStr(Number(destinationTime))},
     {name: '일찍 출발', value: '20분'},

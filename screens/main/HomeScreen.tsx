@@ -1,17 +1,30 @@
 import {SafeAreaView, Text, View} from 'react-native';
-import {FloatingAction} from 'react-native-floating-action';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import {useQuery} from '@realm/react';
 import {Item} from '../../schema/ItemSchema';
-import {getTimeFormatStr, setHourMinuteStr} from '../../constants';
+import {getAmpmHHmm, getDay} from '../../constants';
+import {useTranslation} from 'react-i18next';
+import {FAB} from '@rneui/themed';
+import {useState} from 'react';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
+  const [visible, setVisible] = useState(true);
+
   /** realm */
   const items = useQuery(Item);
 
-  const onPress = () => {
+  console.log(items[0]);
+
+  const onPressItem = () => {
     //
+  };
+
+  const onPressFloatingAction = () => {
+    navigation.navigate('FirstScreen');
   };
 
   return (
@@ -20,21 +33,28 @@ const HomeScreen = () => {
         <Text className="text-3xl">홈</Text>
       </View>
       <View>
-        <TouchableOpacity onPress={onPress}>
-          <View className="flex-row">
-            <Text>회사</Text>
-            <FeatherIcons name="more-vertical" />
-          </View>
-          <Text>오전 9시 30분 외출</Text>
-          <Text>월 화 수 목 금</Text>
-        </TouchableOpacity>
+        {items.map(item => (
+          <TouchableOpacity key={item._id} onPress={onPressItem}>
+            <View className="flex-row">
+              <Text>{item.destination}</Text>
+              <FeatherIcons name="more-vertical" />
+            </View>
+            <Text>{getAmpmHHmm(item.appointmentTime)}</Text>
+            <View className="flex-row">
+              {item.notificationIds.map(info => (
+                <Text key={info._id}>{t(getDay(info.date))}</Text>
+              ))}
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      <FloatingAction
-        actions={[]}
-        onPressItem={name => {
-          console.log(`selected button: ${name}`);
-        }}
+      <FAB
+        placement="right"
+        visible={visible}
+        icon={{name: 'add', color: 'white'}}
+        color="blue"
+        onPress={onPressFloatingAction}
       />
     </SafeAreaView>
   );

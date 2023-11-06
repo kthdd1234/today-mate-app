@@ -38,6 +38,7 @@ export interface INotificationBottomSheet {
 }
 
 export interface INotificationRepeatState {
+  notificationTime?: string;
   repeatType: string;
   days: string[];
 }
@@ -78,9 +79,9 @@ export interface IGetBeforeOutingTime {
 export interface ITriggerNotification {
   title: string;
   body: string;
-  subTitle?: string;
-  dateTime: string;
-  repeat: RepeatFrequency;
+  subtitle?: string;
+  dateTime: Date;
+  repeatFrequency: RepeatFrequency;
   categoryId: 'outing' | 'task';
 }
 
@@ -104,4 +105,12 @@ export interface ISelectedButton {
   text: string;
   selectedIds: string[];
   onPress: (id: string) => void;
+}
+
+export interface INotificationInfo {
+  notificationInfo: {id: string; date: string}[];
+}
+
+export interface IParamsSetRealm extends INotificationInfo {
+  repeatType: string;
 }

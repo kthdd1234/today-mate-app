@@ -1,6 +1,7 @@
 import {ObjectSchema} from 'realm';
 import {Task} from './TaskSchema';
 import {Realm} from '@realm/react';
+import {Notification} from './NotificationSchema';
 
 export class Item extends Realm.Object<Item> {
   _id!: string;
@@ -10,7 +11,8 @@ export class Item extends Realm.Object<Item> {
   earlyStartTime!: string;
   outingReadyTime!: string;
   isNotify!: boolean;
-  notificationId!: string;
+  repeatType!: string;
+  notificationIds!: Realm.List<Notification>;
   taskList!: Realm.List<Task>;
 
   static schema: ObjectSchema = {
@@ -24,7 +26,12 @@ export class Item extends Realm.Object<Item> {
       earlyStartTime: 'string',
       outingReadyTime: 'string',
       isNotify: {type: 'bool', default: false},
-      notificationId: {type: 'string', default: ''},
+      repeatType: 'string',
+      notificationIds: {
+        type: 'list',
+        objectType: 'Notification',
+        optional: false,
+      },
       taskList: {
         type: 'list',
         objectType: 'Task',

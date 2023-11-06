@@ -29,4 +29,21 @@ enum eDays {
   Sat = 'Sat',
 }
 
-export {eCanlenarDisplay, eDays, eRepeatType};
+enum eDayIndex {
+  /** */
+  Sun,
+  /** */
+  Mon,
+  /** */
+  Tue,
+  /** */
+  Wed,
+  /** */
+  Thu,
+  /** */
+  Fri,
+  /** */
+  Sat,
+}
+
+export {eCanlenarDisplay, eDays, eRepeatType, eDayIndex};

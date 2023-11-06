@@ -9,8 +9,9 @@ import DefaultButton from '../button/DefaultButton';
 import SeletedButton from '../button/SelectedButton';
 import {useMemo, useCallback, useState, useEffect} from 'react';
 import {INotificationBottomSheet} from '../../types/interface';
-import {repeatTypes, days} from '../../constants';
+import {repeatTypes, days, initDays} from '../../constants';
 import {closeBottomSheetModal} from '../../utils/gorhom';
+import {eDayIndex, eRepeatType} from '../../types/enum';
 
 const NotificationBottomSheet = ({
   initState,
@@ -22,12 +23,16 @@ const NotificationBottomSheet = ({
 
   /** useState */
   const [selectedRepeatType, setSelectedRepeatType] = useState('');
-  const [selectedDaysIds, setSelectedDaysIds] = useState<string[]>([]);
+  const [selectedDays, setSelectedDays] = useState<string[]>(initDays);
+  const [isShowDays, setIsShowDays] = useState(false);
 
-  // variables
   useEffect(() => {
-    console.log(initState);
-  }, [initState]);
+    setSelectedRepeatType(initState.repeatType);
+    setSelectedDays(initState.days);
+    setIsShowDays(initState.repeatType === eRepeatType.EveryWeek);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
@@ -45,23 +50,37 @@ const NotificationBottomSheet = ({
   );
 
   const onPressRepeatButton = (type: string) => {
+    const isEveryWeek = type === eRepeatType.EveryWeek;
+
+    if (isEveryWeek) {
+      setIsShowDays(true);
+    } else {
+      setIsShowDays(false);
+      setSelectedDays(initDays);
+    }
+
     setSelectedRepeatType(type);
   };
 
-  const onPressDaysButton = (id: string) => {
-    const isDays = selectedDaysIds.includes(id as never);
+  const onPressDaysButton = (day: string) => {
+    const isDays = selectedDays.includes(day as never);
+    const idx = eDayIndex[day];
+    const sliceList = selectedDays.slice();
 
-    if (isDays) {
-      setSelectedDaysIds([...selectedDaysIds, id]);
-    } else {
-      selectedDaysIds.splice(Number(id), 1);
-      setSelectedDaysIds(selectedDaysIds);
-    }
+    isDays ? (sliceList[idx] = '') : (sliceList[idx] = day);
+    setSelectedDays([...sliceList]);
   };
 
   const onPressCompletedButton = _ => {
     closeBottomSheetModal(targetRef);
-    onCompleted({repeatType: selectedRepeatType, days: selectedDaysIds});
+    onCompleted({
+      repeatType: selectedRepeatType,
+      days: selectedDays.filter(day => !!day),
+    });
+
+    setSelectedRepeatType(eRepeatType.None);
+    setSelectedDays([]);
+    setIsShowDays(false);
   };
 
   return (
@@ -76,9 +95,11 @@ const NotificationBottomSheet = ({
             <Text>{t('외출 준비 알림')}</Text>
           </View>
           <View className="flex-row">
-            <View>
-              <Text>{t('반복 주기')}</Text>
-            </View>
+            <Text>{t('알림 시간')}</Text>
+            <Text>{initState.notificationTime}</Text>
+          </View>
+          <View className="flex-row">
+            <Text>{t('반복 주기')}</Text>
             <View className="flex-row">
               {repeatTypes.map(info => (
                 <SeletedButton
@@ -91,17 +112,22 @@ const NotificationBottomSheet = ({
               ))}
             </View>
           </View>
-          <View className="flex-row">
-            {days.map(info => (
-              <SeletedButton
-                key={info.id}
-                id={info.id}
-                selectedIds={selectedDaysIds}
-                text={info.text}
-                onPress={onPressDaysButton}
-              />
-            ))}
-          </View>
+          {isShowDays && (
+            <View className="flex-row">
+              <Text>{t('요일')}</Text>
+              <View className="flex-row">
+                {days.map(info => (
+                  <SeletedButton
+                    key={info.id}
+                    id={info.id}
+                    selectedIds={selectedDays}
+                    text={info.text}
+                    onPress={onPressDaysButton}
+                  />
+                ))}
+              </View>
+            </View>
+          )}
 
           <DefaultButton
             id="miute-setting"

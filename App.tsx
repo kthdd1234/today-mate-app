@@ -8,10 +8,10 @@ import {PaperProvider} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import {realmConfig} from './schema';
 import StartScreen from './screens/start/StartScreen';
-import FirstScreen from './screens/onboarding/FirstScreen';
-import SecondScreen from './screens/onboarding/SecondScreen';
-import ThirdScreen from './screens/onboarding/ThirdScreen';
-import FourScreen from './screens/onboarding/FourScreen';
+import FirstScreen from './screens/add/FirstScreen';
+import SecondScreen from './screens/add/SecondScreen';
+import ThirdScreen from './screens/add/ThirdScreen';
+import FourScreen from './screens/add/FourScreen';
 import MainScreen from './screens/main';
 import RecoTodoScreen from './screens/additional/RecoTodoScreen';
 import './i18n/i18n.config';
@@ -39,7 +39,7 @@ const App = () => {
         <RecoilRoot>
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
-              <Navigator initialRouteName="StartScreen">
+              <Navigator initialRouteName="MainScreen">
                 {screenList.map(({name, component}) => (
                   <Screen
                     key={name}

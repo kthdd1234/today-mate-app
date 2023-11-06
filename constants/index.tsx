@@ -2,6 +2,9 @@ import moment from 'moment';
 import {getLocales} from 'react-native-localize';
 import format from 'string-format';
 import 'moment/locale/ko';
+import {ITimeParams} from '../types/interface';
+import {momentFormatter} from '../utils/moment';
+import {eDays, eRepeatType} from '../types/enum';
 
 const getLng = () => {
   return getLocales()[0].languageCode;
@@ -15,8 +18,8 @@ const getUniqueId = (num: number) => {
   return Date.now().toString() + num;
 };
 
-const getTimeFormatStr = (timeString: string) => {
-  return moment(timeString).format(getLng() === 'ko' ? 'a H시 m분' : 'h:m a');
+const getAmpmHHmm = (timeString: string) => {
+  return moment(timeString).format(getLng() === 'ko' ? 'a HH:mm' : 'HH:mm a');
 };
 
 const setHourMinuteStr = (minutes: number) => {
@@ -53,6 +56,20 @@ const getTimeFormatString = ({
   return hour === 0
     ? format(minuteLng, minute)
     : format(`${hourLng} ${minuteLng}`, hour, minute);
+};
+
+const getAppointmentTime = (appintmentTime: ITimeParams) => {
+  const {ampm, hour, minute} = appintmentTime;
+  const now = moment();
+
+  return momentFormatter({
+    year: now.format('YYYY'),
+    month: now.format('MM'),
+    day: now.format('DD'),
+    ampm: ampm!,
+    hour: hour,
+    minute: minute,
+  });
 };
 
 const customStyles = {
@@ -204,7 +221,7 @@ const goalsItemList = [
 
 const outingReadyNotificationMessage = {
   title: '외출 준비 할 시간이에요 👕',
-  subTitle: '지금부터 준비해야 지각하지 않아요.',
+  subtitle: '지금부터 준비해야 지각하지 않아요.',
   body: '앱을 실행해서 외출 준비를 시작해보세요 :)',
 };
 
@@ -214,19 +231,28 @@ const outingTimeNotifiMessage = {
 };
 
 const repeatTypes = [
-  {id: 'None', text: '없음'},
-  {id: 'EverayWeek', text: '매주'},
+  {id: eRepeatType.None, text: '없음'},
+  {id: eRepeatType.EveryWeek, text: '매주'},
 ];
 
 const days = [
-  {id: 'Sun', text: '일'},
-  {id: 'Mon', text: '월'},
-  {id: 'Tue', text: '화'},
-  {id: 'Wed', text: '수'},
-  {id: 'Thu', text: '목'},
-  {id: 'Fri', text: '금'},
-  {id: 'Sat', text: '토'},
+  {id: eDays.Sun, text: '일'},
+  {id: eDays.Mon, text: '월'},
+  {id: eDays.Tue, text: '화'},
+  {id: eDays.Wed, text: '수'},
+  {id: eDays.Thu, text: '목'},
+  {id: eDays.Fri, text: '금'},
+  {id: eDays.Sat, text: '토'},
 ];
+
+const initDays = ['', '', '', '', '', '', ''];
+
+const getDay = (date: string) => {
+  const index = moment(date).day();
+  const day = days[index].text;
+
+  return day;
+};
 
 export {
   appointmentTimeItemList,
@@ -244,11 +270,14 @@ export {
   repeatTypes,
   days,
   goalsItemList,
+  initDays,
   getCalendarDate,
   getUniqueId,
   getLng,
-  getTimeFormatStr,
+  getAmpmHHmm,
   setHourMinuteStr,
   getTimeFormatString,
   convertTimeToMinute,
+  getAppointmentTime,
+  getDay,
 };
