@@ -1,21 +1,20 @@
 import {SafeAreaView} from 'react-native';
-import Stepper from '../../components/step/stepper';
-import ChipSection from '../../components/section/ChipSection';
-import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBottomSheet';
-import DefaultButton from '../../components/button/DefaultButton';
+import ChipSection from '../components/section/ChipSection';
+import TimeSettingBottomSheet from '../components/bottomSheet/TimeSettingBottomSheet';
+import DefaultButton from '../components/button/DefaultButton';
 import {useTranslation} from 'react-i18next';
 import {
   convertTimeToMinute,
   destinationTimeItemList,
   outingReadyItemList,
   getTimeFormatString,
-} from '../../constants';
+} from '../constants';
 import {useSetRecoilState} from 'recoil';
-import {destinationTimeAtom, outingReadyAtom} from '../../states';
+import {destinationTimeAtom, outingReadyAtom} from '../states';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useRef, useState} from 'react';
-import {openBottomSheetModal} from '../../utils/gorhom';
-import {ITimeParams} from '../../types/interface';
+import {openBottomSheetModal} from '../utils/gorhom';
+import {ITimeParams} from '../types/interface';
 
 const SecondScreen = ({navigation}) => {
   /** useTranslation */
@@ -104,7 +103,6 @@ const SecondScreen = ({navigation}) => {
 
   return (
     <SafeAreaView className="h-full">
-      <Stepper step={2} />
       <ChipSection
         title="약속 장소까지 가는데 얼마나 걸려요?"
         chips={destinationTimeState.map(state => state.text)}

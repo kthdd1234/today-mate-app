@@ -1,5 +1,4 @@
 import {SafeAreaView} from 'react-native';
-import Stepper from '../../components/step/stepper';
 import ChipSection from '../../components/section/ChipSection';
 import DefaultButton from '../../components/button/DefaultButton';
 import {appointmentTimeItemList, destinationItemList} from '../../constants';
@@ -45,7 +44,7 @@ const FirstScreen = ({navigation}) => {
       setDestinationAtom(destinationItem);
       setAppintmentTimeAtom({ampm, hour, minute});
 
-      navigation.navigate('SecondScreen');
+      navigation.navigate('ThirdScreen');
     }
   };
 
@@ -84,9 +83,8 @@ const FirstScreen = ({navigation}) => {
 
   return (
     <SafeAreaView className="h-full">
-      <Stepper step={1} />
       <ChipSection
-        title="어떤 약속인가요?"
+        title="약속 장소가 어디에요?"
         chips={destinationState}
         selectedIds={[destinationId]}
         onPress={onPressDestinationItem}

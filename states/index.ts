@@ -17,8 +17,8 @@ const destinationTimeAtom = atom<string>({
   default: '',
 });
 
-const earlyStartAtom = atom<string>({
-  key: 'earlyStartAtom',
+const earlyArrivalAtom = atom<string>({
+  key: 'earlyArrivalAtom',
   default: '',
 });
 
@@ -44,5 +44,5 @@ export {
   goalsAtom,
   outingReadyAtom,
   selectedDateAtom,
-  earlyStartAtom,
+  earlyArrivalAtom,
 };

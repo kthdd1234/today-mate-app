@@ -14,27 +14,29 @@ const MainScreen = () => {
 
   const bottomTabList = [
     {
-      icon: 'home',
-      name: '홈',
+      icon: 'appstore-o',
+      name: '약속',
+      headerShown: false,
       component: HomeScreen,
     },
     {
       icon: 'setting',
       name: '설정',
+      headerShown: true,
       component: SettingScreen,
     },
   ];
 
   return (
     <Navigator initialRouteName="HomeScreen">
-      {bottomTabList.map(({icon, name, component}) => (
+      {bottomTabList.map(({icon, name, headerShown, component}) => (
         <Screen
           key={name}
           name={t(name)}
           component={component}
           options={{
-            headerShown: false,
-            headerShadowVisible: false,
+            headerShown: headerShown,
+            headerShadowVisible: headerShown,
             tabBarLabel: t(name),
             tabBarIcon: ({color, size}) => (
               <AntDesignIcons name={icon} color={color} size={size} />

@@ -1,21 +1,20 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface IProps {
   /** */
-  icon: JSX.Element;
+  className?: string;
   /** */
-  text: string;
+  icon: JSX.Element;
   /** */
   onPress: () => void;
 }
 
-const IconTextButton = ({icon, text, onPress}: IProps) => {
+const IconButton = ({className, icon, onPress}: IProps) => {
   return (
-    <TouchableOpacity className="flex-row" onPress={onPress}>
-      <View className="mr-1">{icon}</View>
-      <Text>{text}</Text>
+    <TouchableOpacity className={className} onPress={onPress}>
+      {icon}
     </TouchableOpacity>
   );
 };
 
-export default IconTextButton;
+export default IconButton;

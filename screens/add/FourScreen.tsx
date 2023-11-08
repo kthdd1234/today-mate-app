@@ -1,28 +1,24 @@
 import {useTranslation} from 'react-i18next';
 import {SafeAreaView, Text, View} from 'react-native';
 import DefaultButton from '../../components/button/DefaultButton';
-import Stepper from '../../components/step/stepper';
 import RealmPlugin from 'realm-flipper-plugin-device';
 import {useQuery, useRealm} from '@realm/react';
 import {Task} from '../../schema/TaskSchema';
 import {Item} from '../../schema/ItemSchema';
 import {Notification} from '../../schema/NotificationSchema';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useResetRecoilState} from 'recoil';
 import {v4 as uuid} from 'uuid';
 import {
-  cancelAllNotification,
+  // cancelAllNotification,
   createTriggerNotification,
   requestNotificationPermission,
 } from '../../utils/notifee';
-import {momentBeforeFormatter} from '../../utils/moment';
 import {RepeatFrequency} from '@notifee/react-native';
 import {
   destinationAtom,
   appintmentTimeAtom,
-  destinationTimeAtom,
   goalsAtom,
-  earlyStartAtom,
-  outingReadyAtom,
+  earlyArrivalAtom,
 } from '../../states';
 import {
   getAppointmentTime,
@@ -41,6 +37,7 @@ import {
 import {eDayIndex, eRepeatType} from '../../types/enum';
 import {openBottomSheetModal} from '../../utils/gorhom';
 import moment from 'moment';
+import {momentBeforeFormatter} from '../../utils/moment';
 
 const FourScreen = ({navigation}) => {
   /** useTranslation */
@@ -59,26 +56,34 @@ const FourScreen = ({navigation}) => {
   /**  useRecoilValue */
   const destination = useRecoilValue(destinationAtom);
   const appintmentTime = useRecoilValue(appintmentTimeAtom);
-  const destinationTime = useRecoilValue(destinationTimeAtom);
-  const outingReadyTime = useRecoilValue(outingReadyAtom);
-  const earlyStartTime = useRecoilValue(earlyStartAtom);
+  const earlyArrivalTime = useRecoilValue(earlyArrivalAtom);
   const goals = useRecoilValue(goalsAtom);
+
+  /** useResetRecoilState */
+  const resetDestination = useResetRecoilState(destinationAtom);
+  const resetAppintmentTime = useResetRecoilState(appintmentTimeAtom);
+  const resetEarlyArrivalTime = useResetRecoilState(earlyArrivalAtom);
+  const resetGoals = useResetRecoilState(goalsAtom);
 
   /** useRef */
   const notificationRef = useRef<BottomSheetModal>(null);
 
-  /** time calculate */
-  const time = getAppointmentTime(appintmentTime); // 약속 시간
-  const sumMinutes = Number(destinationTime) + Number(earlyStartTime); // 걸리는 시간 + 일찍 출발
+  /** appointmentDateTime */
+  const appointmentDateTime = getAppointmentTime(appintmentTime); // 약속 시간
 
-  const outingTime = momentBeforeFormatter({
-    formatString: time,
-    minute: sumMinutes,
-  }); // 외출 시간 (약속 시간 - (걸리는 시간 + 일찍 출발))
-  const outingReadyStartTime = momentBeforeFormatter({
-    formatString: outingTime,
-    minute: Number(outingReadyTime),
-  }); // 외출 준비 시작 시간 (외출 시간 - 외출 준비 시간)
+  let notifiyDateTime = new Date(
+    momentBeforeFormatter({
+      formatString: appointmentDateTime,
+      minute: Number(earlyArrivalTime),
+    }),
+  );
+
+  const onResetAllRecoilState = () => {
+    resetDestination();
+    resetAppintmentTime();
+    resetEarlyArrivalTime();
+    resetGoals();
+  };
 
   const setNotifee = async ({repeatType, days}: INotificationRepeatState) => {
     let notificationInfo: {id: string; date: string}[] = [];
@@ -88,34 +93,32 @@ const FourScreen = ({navigation}) => {
       [eRepeatType.EveryWeek]: RepeatFrequency.WEEKLY,
     }[repeatType]!;
 
-    let dateTime = new Date(outingReadyStartTime);
-
     // await cancelAllNotification();
 
     if (isPermission) {
       const {title, subtitle, body} = outingReadyNotificationMessage;
 
       if (repeatFrequency === RepeatFrequency.NONE) {
-        if (new Date(Date.now()).getTime() > dateTime.getTime()) {
-          dateTime = moment(dateTime).add(1, 'd').toDate();
-          console.log('다음 날에 알림 설정!', dateTime.toLocaleString());
+        if (new Date(Date.now()).getTime() > notifiyDateTime.getTime()) {
+          notifiyDateTime = moment(notifiyDateTime).add(1, 'd').toDate();
+          console.log('다음 날에 알림 설정!', notifiyDateTime.toLocaleString());
         }
 
         const notificationId = await createTriggerNotification({
           title,
           subtitle,
           body,
-          dateTime: dateTime,
+          dateTime: notifiyDateTime,
           categoryId: 'outing',
           repeatFrequency: repeatFrequency,
         });
 
         notificationInfo.push({
           id: notificationId,
-          date: moment(dateTime).format(),
+          date: moment(notifiyDateTime).format(),
         });
       } else {
-        const nextWeekDay = moment(outingReadyStartTime).add(1, 'weeks');
+        const nextWeekDay = moment(notifiyDateTime).add(1, 'weeks');
         const dateList = days.map(day =>
           moment(nextWeekDay).day(eDayIndex[day]).toDate(),
         );
@@ -158,9 +161,7 @@ const FourScreen = ({navigation}) => {
         _id: itemUuid,
         destination: t(destination),
         appointmentTime: getAppointmentTime(appintmentTime),
-        destinationTime: destinationTime,
-        earlyStartTime: earlyStartTime,
-        outingReadyTime: outingReadyTime,
+        earlyArrivalTime: earlyArrivalTime,
         isNotify: notificationInfo.length !== 0,
         repeatType: repeatType,
         notificationIds: notificationSchema,
@@ -182,9 +183,9 @@ const FourScreen = ({navigation}) => {
     });
   };
 
-  const deleteAllRealmData = () => {
-    realm.write(() => realm.deleteAll());
-  };
+  // const deleteAllRealmData = () => {
+  //   realm.write(() => realm.deleteAll());
+  // };
 
   const setRealmNotification = ({notificationInfo}: INotificationInfo) => {
     realm.write(() => {
@@ -205,6 +206,8 @@ const FourScreen = ({navigation}) => {
     setRealmTask();
     setRealmItem({notificationInfo, repeatType});
     setRealmUser();
+
+    onResetAllRecoilState();
 
     navigation.reset({
       routes: [{name: 'MainScreen'}],
@@ -230,11 +233,10 @@ const FourScreen = ({navigation}) => {
   return (
     <SafeAreaView className="h-full">
       <RealmPlugin realms={[realm]} />
-      <Stepper step={4} />
       <View>
-        <Text>{t('외출 준비 알림을 받으면')}</Text>
-        <Text>{t('차근차근 외출 준비를 시작해서')}</Text>
-        <Text>{t('외출 시간이 되었을 때 여유롭게 출발 할 수 있어요 :)')}</Text>
+        <Text>{t('할 일 실천 알림을 받으면')}</Text>
+        <Text>{t('약속 장소에 일찍 도착 했을 때')}</Text>
+        <Text>{t('잊지 않고 할 일을 실천할 수 있어요:)')}</Text>
       </View>
       <View>{/* <Image /> */}</View>
       <View>
@@ -254,7 +256,7 @@ const FourScreen = ({navigation}) => {
       <NotificationBottomSheet
         targetRef={notificationRef}
         initState={{
-          notificationTime: moment(outingReadyStartTime).format('a HH:mm'),
+          notificationTime: moment(notifiyDateTime).format('a HH:mm'),
           repeatType: eRepeatType.None,
           days: initDays,
         }}

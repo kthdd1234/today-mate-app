@@ -1,5 +1,4 @@
 import {SafeAreaView, View} from 'react-native';
-import Stepper from '../../components/step/stepper';
 import DefaultButton from '../../components/button/DefaultButton';
 import {useTranslation} from 'react-i18next';
 import ChipSection from '../../components/section/ChipSection';
@@ -7,10 +6,10 @@ import TimeSettingBottomSheet from '../../components/bottomSheet/TimeSettingBott
 import {
   convertTimeToMinute,
   getTimeFormatString,
-  earlyStartItemList,
+  earlyArrivalItemList,
   goalsItemList,
 } from '../../constants';
-import {earlyStartAtom, goalsAtom} from '../../states';
+import {earlyArrivalAtom, goalsAtom} from '../../states';
 import {useSetRecoilState} from 'recoil';
 import {useRef, useState} from 'react';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
@@ -23,39 +22,40 @@ const ThirdScreen = ({navigation}) => {
   const {t} = useTranslation();
 
   /** lastIndex */
-  const earlyStartLastIndex = earlyStartItemList.length - 1;
+  const earlyArrivalLastIndex = earlyArrivalItemList.length - 1;
   const goalsLastIndex = goalsItemList.length - 1;
 
   /** useSetRecoilState */
-  const setEarlyStartAtom = useSetRecoilState(earlyStartAtom);
+  const setearlyArrivalAtom = useSetRecoilState(earlyArrivalAtom);
   const setGoalsAtom = useSetRecoilState(goalsAtom);
 
   /** useState */
-  const [earlyStartState, setEarlyStartState] = useState(earlyStartItemList);
-  const [earlyStartId, setEarlyStartId] = useState('');
+  const [earlyArrivalState, setearlyArrivalState] =
+    useState(earlyArrivalItemList);
+  const [earlyArrivalId, setearlyArrivalId] = useState('');
   const [goalState, setGolaState] = useState(goalsItemList);
   const [goalId, setGoalId] = useState('');
 
   /** useRef */
-  const earlyStartRef = useRef<BottomSheetModal>(null);
+  const earlyArrivalRef = useRef<BottomSheetModal>(null);
   const goalRef = useRef<BottomSheetModal>(null);
 
   const onNext = () => {
-    if (earlyStartId !== '') {
-      const earlyStartItem = earlyStartState[earlyStartId];
+    if (earlyArrivalId !== '') {
+      const earlyArrivalItem = earlyArrivalState[earlyArrivalId];
       const goalItem = goalsItemList[goalId];
 
-      setEarlyStartAtom(earlyStartItem.minute);
+      setearlyArrivalAtom(earlyArrivalItem.minute);
       setGoalsAtom([goalItem]);
 
       navigation.navigate('FourScreen');
     }
   };
 
-  const onPressEarlyStartItem = (id: string) => {
-    id === earlyStartLastIndex.toString()
-      ? openBottomSheetModal(earlyStartRef)
-      : setEarlyStartId(id);
+  const onPressearlyArrivalItem = (id: string) => {
+    id === earlyArrivalLastIndex.toString()
+      ? openBottomSheetModal(earlyArrivalRef)
+      : setearlyArrivalId(id);
   };
 
   const onPressGoalItem = (id: string) => {
@@ -64,21 +64,21 @@ const ThirdScreen = ({navigation}) => {
       : setGoalId(id);
   };
 
-  const onCompletedEarlyStartBottomSheet = ({hour, minute}: ITimeParams) => {
+  const onCompletedearlyArrivalBottomSheet = ({hour, minute}: ITimeParams) => {
     const [Hour, Minute] = [Number(hour), Number(minute)];
     const timeText = getTimeFormatString({
       hour: Hour,
       minute: Minute,
     });
 
-    earlyStartState[earlyStartLastIndex].text = timeText;
-    earlyStartState[earlyStartLastIndex].minute = convertTimeToMinute({
+    earlyArrivalState[earlyArrivalLastIndex].text = timeText;
+    earlyArrivalState[earlyArrivalLastIndex].minute = convertTimeToMinute({
       hour: Hour,
       minute: Minute,
     });
 
-    setEarlyStartState([...earlyStartState]);
-    setEarlyStartId(`${earlyStartLastIndex}`);
+    setearlyArrivalState([...earlyArrivalState]);
+    setearlyArrivalId(`${earlyArrivalLastIndex}`);
   };
 
   const onCompletedGoalBottomSheet = ({id, text}: IDefaultItem) => {
@@ -92,15 +92,14 @@ const ThirdScreen = ({navigation}) => {
   return (
     <SafeAreaView className="h-full">
       <View className="h-full">
-        <Stepper step={3} />
         <ChipSection
-          title="일찍 출발하는 습관을 만들어봐요 :)\n몇분 일찍 출발할까요?"
-          chips={earlyStartState.map(state => state.text)}
-          selectedIds={[earlyStartId]}
-          onPress={onPressEarlyStartItem}
+          title="일찍 도착하는 습관을 만들어봐요 :)\n최소한 몇분 일찍 도착할까요?"
+          chips={earlyArrivalState.map(state => state.text)}
+          selectedIds={[earlyArrivalId]}
+          onPress={onPressearlyArrivalItem}
         />
         <ChipSection
-          title="약속 장소에 일찍 도착 했을 때 \n실천할 한 가지 목표를 정해보세요!"
+          title="약속 장소에 일찍 도착 했을 때 \n실천할 한 가지 할 일을 정해보세요!"
           chips={goalState}
           selectedIds={[goalId]}
           onPress={onPressGoalItem}
@@ -112,9 +111,9 @@ const ThirdScreen = ({navigation}) => {
           onPress={onNext}
         />
         <TimeSettingBottomSheet
-          targetRef={earlyStartRef}
+          targetRef={earlyArrivalRef}
           isAmpm={false}
-          onPressCompleted={onCompletedEarlyStartBottomSheet}
+          onPressCompleted={onCompletedearlyArrivalBottomSheet}
         />
         <CreateItemBottomSheet
           initState={goalState[goalsLastIndex]}

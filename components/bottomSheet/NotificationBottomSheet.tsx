@@ -92,7 +92,7 @@ const NotificationBottomSheet = ({
         backdropComponent={renderBackdrop}>
         <View>
           <View>
-            <Text>{t('외출 준비 알림')}</Text>
+            <Text>{t('할 일 실천 알림')}</Text>
           </View>
           <View className="flex-row">
             <Text>{t('알림 시간')}</Text>

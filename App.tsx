@@ -5,32 +5,65 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RecoilRoot} from 'recoil';
 import {RealmProvider} from '@realm/react';
 import {PaperProvider} from 'react-native-paper';
-import {useTranslation} from 'react-i18next';
 import {realmConfig} from './schema';
 import StartScreen from './screens/start/StartScreen';
 import FirstScreen from './screens/add/FirstScreen';
-import SecondScreen from './screens/add/SecondScreen';
+import SecondScreen from './etc/SecondScreen';
 import ThirdScreen from './screens/add/ThirdScreen';
 import FourScreen from './screens/add/FourScreen';
 import MainScreen from './screens/main';
 import RecoTodoScreen from './screens/additional/RecoTodoScreen';
 import './i18n/i18n.config';
+import ItemScreen from './screens/main/ItemScreen';
+import ProgressBar from './components/step/ProgressBar';
 
 /** createNativeStackNavigator */
 const {Navigator, Screen} = createNativeStackNavigator();
 
 const App = () => {
-  /** useTranslation */
-  const {t} = useTranslation();
-
   const screenList = [
-    {name: 'StartScreen', component: StartScreen},
-    {name: 'FirstScreen', component: FirstScreen},
-    {name: 'SecondScreen', component: SecondScreen},
-    {name: 'ThirdScreen', component: ThirdScreen},
-    {name: 'FourScreen', component: FourScreen},
-    {name: 'MainScreen', component: MainScreen},
-    {name: 'RecoTodoScreen', component: RecoTodoScreen},
+    {
+      name: 'StartScreen',
+      component: StartScreen,
+      headerShown: false,
+      hedaerTitle: null,
+    },
+    {
+      name: 'FirstScreen',
+      component: FirstScreen,
+      headerShown: true,
+      hedaerTitle: <ProgressBar step={0} />,
+    },
+    {
+      name: 'ThirdScreen',
+      component: ThirdScreen,
+      headerShown: true,
+      hedaerTitle: <ProgressBar step={1} />,
+    },
+    {
+      name: 'FourScreen',
+      component: FourScreen,
+      headerShown: true,
+      hedaerTitle: <ProgressBar step={2} />,
+    },
+    {
+      name: 'MainScreen',
+      component: MainScreen,
+      headerShown: false,
+      hedaerTitle: null,
+    },
+    {
+      name: 'ItemScreen',
+      component: ItemScreen,
+      headerShown: false,
+      hedaerTitle: null,
+    },
+    {
+      name: 'RecoTodoScreen',
+      component: RecoTodoScreen,
+      headerShown: true,
+      hedaerTitle: null,
+    },
   ];
 
   return (
@@ -40,14 +73,22 @@ const App = () => {
           <GestureHandlerRootView style={{flex: 1}}>
             <NavigationContainer>
               <Navigator initialRouteName="MainScreen">
-                {screenList.map(({name, component}) => (
-                  <Screen
-                    key={name}
-                    name={name}
-                    component={component}
-                    options={{headerBackTitle: t('뒤로'), headerShown: false}}
-                  />
-                ))}
+                {screenList.map(
+                  ({name, headerShown, hedaerTitle, component}) => (
+                    <Screen
+                      key={name}
+                      name={name}
+                      component={component}
+                      options={{
+                        headerTitle: () => hedaerTitle,
+                        headerShown: headerShown,
+                        // headerStyle: {backgroundColor: 'transparent'},
+                        headerShadowVisible: false,
+                        headerBackTitleVisible: false,
+                      }}
+                    />
+                  ),
+                )}
               </Navigator>
             </NavigationContainer>
           </GestureHandlerRootView>

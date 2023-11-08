@@ -1,27 +1,17 @@
 import {SafeAreaView, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import FeatherIcons from 'react-native-vector-icons/Feather';
 import {useQuery} from '@realm/react';
 import {Item} from '../../schema/ItemSchema';
-import {getAmpmHHmm, getDay} from '../../constants';
 import {useTranslation} from 'react-i18next';
 import {FAB} from '@rneui/themed';
-import {useState} from 'react';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AppointmentItem from '../../components/item/AppointmentItem';
 
 const HomeScreen = ({navigation}) => {
   /** useTranslation */
   const {t} = useTranslation();
 
-  const [visible, setVisible] = useState(true);
-
   /** realm */
-  const items = useQuery(Item);
-
-  console.log(items[0]);
-
-  const onPressItem = () => {
-    //
-  };
+  const itemList = useQuery(Item);
 
   const onPressFloatingAction = () => {
     navigation.navigate('FirstScreen');
@@ -29,29 +19,24 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView className="h-full">
-      <View>
-        <Text className="text-3xl">홈</Text>
-      </View>
-      <View>
-        {items.map(item => (
-          <TouchableOpacity key={item._id} onPress={onPressItem}>
-            <View className="flex-row">
-              <Text>{item.destination}</Text>
-              <FeatherIcons name="more-vertical" />
-            </View>
-            <Text>{getAmpmHHmm(item.appointmentTime)}</Text>
-            <View className="flex-row">
-              {item.notificationIds.map(info => (
-                <Text key={info._id}>{t(getDay(info.date))}</Text>
-              ))}
-            </View>
-          </TouchableOpacity>
-        ))}
+      <View className="p-4 mt-4">
+        <View className="flex-row items-center justify-between">
+          <Text className="text-2xl">{t('약속')}</Text>
+          <View className="flex-row">
+            <EvilIcons name="calendar" size={35} />
+            <EvilIcons name="chart" size={35} />
+          </View>
+        </View>
+        <View>
+          {itemList.map((item, key) => (
+            <AppointmentItem key={key} item={item} />
+          ))}
+        </View>
       </View>
 
       <FAB
         placement="right"
-        visible={visible}
+        visible={true}
         icon={{name: 'add', color: 'white'}}
         color="blue"
         onPress={onPressFloatingAction}

@@ -1,10 +1,10 @@
 import moment from 'moment';
 import {getLocales} from 'react-native-localize';
 import format from 'string-format';
-import 'moment/locale/ko';
 import {ITimeParams} from '../types/interface';
 import {momentFormatter} from '../utils/moment';
 import {eDays, eRepeatType} from '../types/enum';
+import 'moment/locale/ko';
 
 const getLng = () => {
   return getLocales()[0].languageCode;
@@ -22,7 +22,7 @@ const getAmpmHHmm = (timeString: string) => {
   return moment(timeString).format(getLng() === 'ko' ? 'a HH:mm' : 'HH:mm a');
 };
 
-const setHourMinuteStr = (minutes: number) => {
+const setHourMinute = (minutes: number) => {
   const arg1 = getLng() === 'ko' ? 'H시간 m분' : 'H Hour m Minute';
   const arg2 = getLng() === 'ko' ? 'm분' : 'm Minute';
 
@@ -111,15 +111,13 @@ const initTimeValues = {
 };
 
 const destinationItemList = [
-  '🏢 회사 출근',
-  '🏫 학교 등교',
+  '🏢 회사',
+  '🏫 학교',
   '🏤 학원',
   '🍽️ 식당',
   '🚉 지하철역 출구',
   '☕️ 카페',
-  '🏪 아르바이트',
   '📝 시험장',
-  '👨‍👦‍👦 취미 모임',
   '⚙️ 직접 입력하기',
 ];
 
@@ -200,7 +198,7 @@ const destinationTimeItemList = [
   {text: '⚙️ 직접 설정하기', minute: ''},
 ];
 
-const earlyStartItemList = [
+const earlyArrivalItemList = [
   {text: '10분', minute: '10'},
   {text: '15분', minute: '15'},
   {text: '20분', minute: '20'},
@@ -266,7 +264,7 @@ export {
   initTimeValues,
   destinationItemList,
   destinationTimeItemList,
-  earlyStartItemList,
+  earlyArrivalItemList,
   repeatTypes,
   days,
   goalsItemList,
@@ -275,7 +273,7 @@ export {
   getUniqueId,
   getLng,
   getAmpmHHmm,
-  setHourMinuteStr,
+  setHourMinute,
   getTimeFormatString,
   convertTimeToMinute,
   getAppointmentTime,

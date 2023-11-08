@@ -1,60 +1,99 @@
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
 import {useObject, useQuery} from '@realm/react';
 import {User} from '../../schema/UserSchema';
 import {Item} from '../../schema/ItemSchema';
-import {getAmpmHHmm} from '../../constants';
+import {getAmpmHHmm, setHourMinute} from '../../constants';
+import {useTranslation} from 'react-i18next';
+import {momentBeforeFormatter} from '../../utils/moment';
+import Video from 'react-native-video';
 
-const ItemScreen = () => {
+const ItemScreen = ({route}) => {
+  /** useTranslation */
+  const {t} = useTranslation();
+
+  /** route.params */
+  const {itemId} = route.params;
+
   /** realm */
-  const users = useQuery(User);
-  const itemObj = useObject(Item, users[0].defaultItemId);
+  const item = useObject(Item, itemId || '');
 
-  const destination = itemObj ? itemObj.destination : '';
-
-  const appointmentTime = itemObj ? itemObj.appointmentTime : '';
-  const destinationTime = itemObj ? itemObj.destinationTime : '';
-  const earlyStartTime = itemObj ? itemObj.earlyStartTime : '';
-  const outingReadyTime = itemObj ? itemObj.outingReadyTime : '';
+  /** item */
+  const destination = item ? item.destination : '';
+  const appointmentTime = item ? item.appointmentTime : '';
+  const earlyArrivalTime = item ? item.earlyArrivalTime : '';
+  const taskList = item ? item.taskList : [];
 
   const timeInfo = [
     {
       name: '약속 시간',
       value: getAmpmHHmm(appointmentTime),
     },
-    {name: '걸리는 시간', value: setHourMinuteStr(Number(destinationTime))},
-    {name: '일찍 출발', value: '20분'},
-    {name: '외출 준비', value: '50분'},
-  ];
-
-  const todoInfo = [
-    {id: 'u-1', todo: '🪟 창문 제대로 잠겼는지 확인하기'},
-    {id: 'u-2', todo: '🔌 전기 코드 뽑기'},
-    {id: 'u-3', todo: '🔑 차 키 챙기기'},
+    {name: '일찍 출발', value: setHourMinute(Number(earlyArrivalTime))},
   ];
 
   return (
-    <SafeAreaView className="h-full">
-      <View>
-        <Text>회사</Text>
-        <Text>01:30:29</Text>
-        <Text>오전 8:30 외출</Text>
-      </View>
-      <View>
-        <Text>외출 전까지 할 일</Text>
+    <SafeAreaView>
+      {/* <Video
+        style={styles.backgroundVideo}
+        source={require('../../videos/sun.mp4')}
+        muted={true}
+        repeat={true}
+        resizeMode={'cover'}
+        rate={1.0}
+        ignoreSilentSwitch={'obey'}
+      /> */}
+      <View className="h-full p-4 ">
         <View>
-          {todoInfo.map((item, key) => (
-            <TouchableOpacity key={key} className="flex-row">
-              <Text>{item.todo}</Text>
-              <AntDesignIcons name="checkcircleo" />
-            </TouchableOpacity>
-          ))}
+          <Text>{destination}</Text>
+          <Text>{t('외출까지 남은 시간')}</Text>
+          <Text>01:30:29</Text>
+        </View>
+        <View>
+          <Text>{t('설정 시간')}</Text>
+          <View className="flex-row justify-around">
+            {timeInfo.map((info, key) => (
+              <TouchableOpacity className="items-center" key={key}>
+                <Text>{t(info.name)}</Text>
+                <Text>{info.value}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+        <View>
+          <Text>{t('일찍 도착 시 할 일')}</Text>
+          <View>
+            {taskList
+              .filter(task => task.itemId === itemId)
+              .map((task, key) => (
+                <TouchableOpacity key={key} className="flex-row">
+                  <Text>{task.name}</Text>
+                  <AntDesignIcons name="checkcircleo" />
+                </TouchableOpacity>
+              ))}
+          </View>
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default ItemScreen;
+var styles = StyleSheet.create({
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+});
 
-// 할
+export default ItemScreen;
+{
+}
