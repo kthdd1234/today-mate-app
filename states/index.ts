@@ -37,6 +37,11 @@ const selectedDateAtom = atom({
   default: getCalendarDate(),
 });
 
+const isFeedbackAtom = atom({
+  key: 'isFeedbackAtom',
+  default: false,
+});
+
 export {
   destinationAtom,
   appintmentTimeAtom,
@@ -45,4 +50,5 @@ export {
   outingReadyAtom,
   selectedDateAtom,
   earlyArrivalAtom,
+  isFeedbackAtom,
 };

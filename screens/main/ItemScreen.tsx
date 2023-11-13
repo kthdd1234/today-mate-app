@@ -6,13 +6,10 @@ import {
   View,
 } from 'react-native';
 import AntDesignIcons from 'react-native-vector-icons/AntDesign';
-import {useObject, useQuery} from '@realm/react';
-import {User} from '../../schema/UserSchema';
+import {useObject} from '@realm/react';
 import {Item} from '../../schema/ItemSchema';
 import {getAmpmHHmm, setHourMinute} from '../../constants';
 import {useTranslation} from 'react-i18next';
-import {momentBeforeFormatter} from '../../utils/moment';
-import Video from 'react-native-video';
 
 const ItemScreen = ({route}) => {
   /** useTranslation */

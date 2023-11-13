@@ -3,9 +3,10 @@ import {
   DateData,
   ExpandableCalendar,
   CalendarList,
+  WeekCalendar,
 } from 'react-native-calendars';
 import {Positions} from 'react-native-calendars/src/expandableCalendar';
-import CalendarHeader from '../header/calendarHeader';
+import CalendarHeader from '../../etc/HeaderCalendar';
 import {useRecoilState} from 'recoil';
 import {selectedDateAtom} from '../../states';
 
@@ -25,17 +26,18 @@ const OutingManageCalenadr = () => {
     //   onDayPress={onDayPress}
     //   hideExtraDays={false}
     // />
-    <CalendarProvider date={selectedDate}>
-      <ExpandableCalendar
-        disablePan={true}
-        initialPosition={Positions.OPEN}
-        renderHeader={() => <CalendarHeader />}
-        hideArrows={true}
-        renderArrow={() => null}
-        onDayPress={onDayPress}
-        onCalendarToggled={() => console.log('제발?')}
-      />
-    </CalendarProvider>
+    // <CalendarProvider date={selectedDate}>
+    //   <ExpandableCalendar
+    //     disablePan={true}
+    //     initialPosition={Positions.OPEN}
+    //     hideArrows={true}
+    //     renderArrow={() => null}
+    //     onDayPress={onDayPress}
+    //     onCalendarToggled={() => console.log('제발?')}
+    //   />
+    // </CalendarProvider>
+
+    <WeekCalendar firstDay={1} />
   );
 };
 

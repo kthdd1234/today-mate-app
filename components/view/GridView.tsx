@@ -8,7 +8,7 @@ interface IProps<T> {
 
 const GridView = <T extends any>({data, renderItem, col = 2}: IProps<T>) => {
   return (
-    <View style={styles.container}>
+    <View className="mb-3" style={styles.container}>
       {data.map((item, index) => {
         return (
           <View style={{width: 100 / col + '%'}} key={index}>

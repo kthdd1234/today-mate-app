@@ -2,7 +2,7 @@ import {useTranslation} from 'react-i18next';
 import {View, Text, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import IconTextButton from '../button/IconTextButton';
+import IconTextButton from '../components/button/IconTextButton';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {Input} from 'react-native-elements';
 import DraggableFlatList, {

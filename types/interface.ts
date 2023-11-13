@@ -114,3 +114,8 @@ export interface INotificationInfo {
 export interface IParamsSetRealm extends INotificationInfo {
   repeatType: string;
 }
+
+export interface IParamsChecked {
+  id: string;
+  newValue: boolean;
+}

@@ -9,7 +9,7 @@ import {Notification} from '../../schema/NotificationSchema';
 import {useRecoilValue, useResetRecoilState} from 'recoil';
 import {v4 as uuid} from 'uuid';
 import {
-  // cancelAllNotification,
+  cancelAllNotification,
   createTriggerNotification,
   requestNotificationPermission,
 } from '../../utils/notifee';
@@ -93,7 +93,7 @@ const FourScreen = ({navigation}) => {
       [eRepeatType.EveryWeek]: RepeatFrequency.WEEKLY,
     }[repeatType]!;
 
-    // await cancelAllNotification();
+    await cancelAllNotification();
 
     if (isPermission) {
       const {title, subtitle, body} = outingReadyNotificationMessage;
@@ -183,9 +183,9 @@ const FourScreen = ({navigation}) => {
     });
   };
 
-  // const deleteAllRealmData = () => {
-  //   realm.write(() => realm.deleteAll());
-  // };
+  const deleteAllRealmData = () => {
+    realm.write(() => realm.deleteAll());
+  };
 
   const setRealmNotification = ({notificationInfo}: INotificationInfo) => {
     realm.write(() => {
@@ -200,7 +200,7 @@ const FourScreen = ({navigation}) => {
   };
 
   const setRealm = async ({notificationInfo, repeatType}: IParamsSetRealm) => {
-    // deleteAllRealmData();
+    deleteAllRealmData();
 
     setRealmNotification({notificationInfo});
     setRealmTask();

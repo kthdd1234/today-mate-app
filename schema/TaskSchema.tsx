@@ -5,6 +5,7 @@ export class Task extends Realm.Object<Task> {
   _id!: string;
   itemId!: string;
   image?: string;
+  memo?: string;
   name!: string;
   isChecked!: boolean;
 
@@ -15,6 +16,7 @@ export class Task extends Realm.Object<Task> {
       _id: 'string',
       itemId: 'string',
       image: 'string?',
+      memo: 'string?',
       name: 'string',
       isChecked: {type: 'bool', default: false},
     },

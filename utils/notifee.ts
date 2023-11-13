@@ -1,7 +1,11 @@
 import notifee, {
   AndroidNotificationSetting,
   AuthorizationStatus,
+  RepeatFrequency,
+  TimeUnit,
   TriggerType,
+  TimestampTrigger,
+  IntervalTrigger,
 } from '@notifee/react-native';
 import {ITriggerNotification} from '../types/interface';
 
@@ -63,8 +67,6 @@ const createTriggerNotification = async ({
     name: 'Default Channel',
   });
 
-  console.log('createTriggerNotification =>', dateTime.toLocaleString());
-
   const notificationId = await notifee.createTriggerNotification(
     {
       title: title,
@@ -78,7 +80,7 @@ const createTriggerNotification = async ({
       },
     },
     {
-      type: TriggerType.TIMESTAMP,
+      type: TriggerType.,
       timestamp: dateTime.getTime(),
       repeatFrequency: repeatFrequency,
       alarmManager: {
